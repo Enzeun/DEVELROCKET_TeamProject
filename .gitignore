@@ -28,6 +28,11 @@
 
 # Visual Studio cache directory
 .vs/
+.vscode/
+
+# JetBrains Rider / IntelliJ
+.idea/
+/[Aa]ssets/Plugins/Editor/JetBrains*
 
 # Gradle cache directory
 .gradle/
@@ -63,6 +68,13 @@ sysinfo.txt
 *.aab
 *.unitypackage
 *.app
+
+# Windows (윈도우 폴더 썸네일/속성 파일)
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
 
 # Crashlytics generated file
 crashlytics-build.properties
