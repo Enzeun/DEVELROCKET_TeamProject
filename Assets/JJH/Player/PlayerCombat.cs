@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using SF = UnityEngine.SerializeField;
@@ -12,6 +13,8 @@ public class PlayerCombat : MonoBehaviour
 
     private Transform nowTarget;
     private SkillBaseStat nowSkillData;
+
+    private event Action OnPlayerSkillActived;
 
     private void Start()
     {
@@ -35,9 +38,20 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
+    public void EffectActiveTest(int id)
+    {
+        nowSkillData = SkillData.BaseSkillData[id];
+        nowTarget = DummyTarget;
+        playerAnimator.Play(nowSkillData.Pose.ToString());
+    }
+
+    public void PlayerAnmationActive()
+    {
+        playerAnimator.Play(nowSkillData.Pose.ToString());
+    }
+
     public void EffectActive()
     {
-        //임시
         nowSkillData = SkillData.BaseSkillData[1001];
         playerAnimator.Play(nowSkillData.Pose.ToString());
         nowTarget = DummyTarget;

@@ -55,7 +55,7 @@ public class SkillEffectSpawner : MonoBehaviour
     public IEnumerator HitTarget(float time)
     {
         yield return new WaitForSeconds(time);
-
+        Debug.Log("공격 히트");
         // 호출 UI 및 히트 판정 호출
     }
 
@@ -87,7 +87,6 @@ public class SkillEffectSpawner : MonoBehaviour
             obj.SetActive(true);
             float hitTime = 0;
 
-            Debug.Log("엥?");
             foreach (var item in prefabs)
             {
                 if (skillName == item.name) hitTime = item.hitTime;
