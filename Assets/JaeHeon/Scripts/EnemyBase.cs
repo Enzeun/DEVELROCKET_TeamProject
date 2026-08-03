@@ -31,69 +31,74 @@ public class EnemyBase : MonoBehaviour
     //가중치는 적 타입에 따라 정해지게끔
     //적들 필요한 필드 내용 : 몬스터타입, 체력, 방어력, 가중치, 현재 할 행동 내역, 
 
-    [SerializeField] private EnemyInfo enemyInfo = new EnemyInfo();
-
     [BoxGroup("적 초기스탯"), SerializeField]
     private float maxHp;
     [BoxGroup("적 초기스탯"), SerializeField]
-    private float attack;
+    private float attackPower;
+    [BoxGroup("적 초기스탯"), SerializeField]
+    private float defencePower;
+    [BoxGroup("적 초기스탯"), SerializeField]
+    private float attackWeight;
+    [BoxGroup("적 초기스탯"), SerializeField]
+    private float defenceWeight;
+    [BoxGroup("적 초기스탯"), SerializeField]
+    private float buffWeight;
 
-    [BoxGroup("적 현재스탯"), ShowInInspector,ReadOnly]
+    [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
     public float currentHp { get; private set; }
-    [BoxGroup("적 현재스탯"), ShowInInspector,ReadOnly]
+    [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
     public bool isDead { get; private set; } = false;
 
 
-    private int currentEnemyHp;
-    public int EnemyHp
-    {
-        get => currentEnemyHp;
-        private set
-        {
-            currentEnemyHp = Mathf.Clamp(value, 0, enemyMaxHp);
-            if(currentEnemyHp <= 0)
-            {
-                OnEnemyDie?.Invoke();
-            }
-        }
-    }
-    public int enemyMaxHp
-    {
-        get => enemyMaxHp;
-        set
-        {
-            value = enemyInfo.maxHp;
-        }
-    }
-    public int enemyDefence
-    {
-        get => enemyDefence;
-        set
-        {
-            value = enemyInfo.defence;
-        }
-    }
-
+    private float currentEnemyHp;
+    //public int EnemyHp
+    //{
+    //    get => currentEnemyHp;
+    //    private set
+    //    {
+    //        currentEnemyHp = Mathf.Clamp(value, 0, enemyMaxHp);
+    //        if(currentEnemyHp <= 0)
+    //        {
+    //            OnEnemyDie?.Invoke();
+    //        }
+    //    }
+    //}
+    
     public event Action OnEnemyDie;
 
 
     private void Awake()
     {
         OnEnemyDie += EnemyDie;
-        currentEnemyHp = enemyInfo.hp;
-
-        Debug.Log($"현재 HP : {currentEnemyHp} / maxHP : {enemyMaxHp}  / defence : {enemyDefence}");
+        currentEnemyHp = maxHp;
+        Debug.Log($"현재 HP : {currentEnemyHp} / maxHP : {maxHp}  / attack : {attackPower} weight : {attackWeight} / defence : {defencePower}");
     }
-    [ContextMenu("hp0")]    
-    
-    public void EnemyHP0()
+
+    public float GetAttackWeight()
     {
-        currentEnemyHp = 0;
+        return attackWeight;
+    }
+    public float GetDefenceWeight()
+    {
+        return defenceWeight;
+    }
+    public float GetBuffWeight()
+    {
+        return buffWeight;
     }
 
     [Button]
-    private void EnemyDie()
+    private void EnemyDie() 
     {
         Debug.Log($"{gameObject.name} >> EnemyDie");
+    }
+
+    public void TakeDamage(float amount)
+    {
+        currentEnemyHp -= amount;
+        if(currentEnemyHp <= 0)
+        {
+            OnEnemyDie?.Invoke();
+        }
     }
 }

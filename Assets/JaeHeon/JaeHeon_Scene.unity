@@ -368,7 +368,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47d43e8fc98caa64497aaca5e3f9266c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySetValue
-  enemyInfo: {fileID: 11400000, guid: 566af795e5f79984f9dedfac41e0c986, type: 2}
+  enemyBase: {fileID: 0}
+  finalValue: 0
 --- !u!114 &1636009398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,9 +382,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933a5412bb7fe8b46824de0f283f049e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
-  enemyInfo: {fileID: 11400000, guid: 566af795e5f79984f9dedfac41e0c986, type: 2}
-  maxHp: 0
-  attack: 0
+  maxHp: 100
+  attackPower: 5
+  defencePower: 4
+  attackWeight: 6
+  defenceWeight: 5
+  buffWeight: 4
 --- !u!4 &1636009399
 Transform:
   m_ObjectHideFlags: 0
