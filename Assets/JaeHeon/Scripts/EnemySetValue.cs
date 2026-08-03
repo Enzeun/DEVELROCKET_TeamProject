@@ -2,10 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 enum Enemy_Behaviour
 {
-    None,
     Attack,
-    Buff,
-    Defence
+    Buff
 }
 
 public class EnemySetValue : MonoBehaviour
@@ -31,8 +29,13 @@ public class EnemySetValue : MonoBehaviour
     /// </summary>
     private void SetValue_EnemyBehaviour()
     {
-        SetWeight(Enemy_Behaviour.Attack, enemyBase.GetAttackWeight());
-        SetWeight(Enemy_Behaviour.Defence, enemyBase.GetDefenceWeight());
+        float sumAttackWeight = 0f;
+
+        for (int i = 0; i < enemyBase.GetAttackWeights().Count; i++)
+        {
+            sumAttackWeight = enemyBase.GetAttackWeights()[i];
+        }
+        SetWeight(Enemy_Behaviour.Attack, sumAttackWeight);
         SetWeight(Enemy_Behaviour.Buff, enemyBase.GetBuffWeight());
     }
 
@@ -45,26 +48,22 @@ public class EnemySetValue : MonoBehaviour
     private Enemy_Behaviour Calc_Enemy_Behaviour()
     {
         float sumWeight = 0;
+
         foreach(var weight in enemyBehaviourValue)
         {
             sumWeight += weight.Value;
         }
 
         float behaviourRange = Random.Range(1, sumWeight);
-        float attackValue = GetWeight(Enemy_Behaviour.Attack);
-        float defenceValue = GetWeight(Enemy_Behaviour.Defence);
-        //int buffValue = GetWeight(Enemy_Behaviour.Buff);
+        float buffValue = sumWeight - GetWeight(Enemy_Behaviour.Buff);
 
-        Debug.Log($"랜덤 값 범위 : 1~{sumWeight}");
-        Debug.Log($"랜덤값? : {behaviourRange} / 공격값 :  0 ~ {attackValue} / 방어 값 : {attackValue} ~ {attackValue + defenceValue} / 버프 값 : {attackValue + defenceValue} ~");
+        Debug.Log($"랜덤 값 범위 : 1 ~ {sumWeight}");
+        Debug.Log($"랜덤값? : {behaviourRange} / 공격 값 :  0 ~ {sumWeight} / 버프 값 : {sumWeight} ~ {behaviourRange}");
 
-        if(behaviourRange >= 1 && behaviourRange <= attackValue)
+        //case문으로 여기if문 내부에서 짜르거나 case문으로 통일
+        if(behaviourRange >= 1 && behaviourRange < buffValue)
         {
             finalValue = Enemy_Behaviour.Attack;
-        }
-        else if( behaviourRange > attackValue && behaviourRange <= attackValue + defenceValue)
-        {
-            finalValue = Enemy_Behaviour.Defence;
         }
         else
         {
@@ -88,8 +87,13 @@ public class EnemySetValue : MonoBehaviour
         return value;
     }
 
-    private void EnemyTurn()
+    private void StartEnemyTurn()
     {
         Calc_Enemy_Behaviour();
+    }
+
+    private void EndTurn()
+    {
+
     }
 }

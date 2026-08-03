@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
@@ -17,9 +18,10 @@ public class EnemyBase : MonoBehaviour
     [BoxGroup("적 초기스탯"), SerializeField]
     private float defencePower;
     [BoxGroup("적 초기스탯"), SerializeField]
-    private float attackWeight;
+    private List<float> attackWeights;
+    
     [BoxGroup("적 초기스탯"), SerializeField]
-    private float defenceWeight;
+    private float attackWeight;
     [BoxGroup("적 초기스탯"), SerializeField]
     private float buffWeight;
 
@@ -38,13 +40,9 @@ public class EnemyBase : MonoBehaviour
         Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attackPower} weight : {attackWeight} / defence : {defencePower}");
     }
 
-    public float GetAttackWeight()
+    public List<float> GetAttackWeights()
     {
-        return attackWeight;
-    }
-    public float GetDefenceWeight()
-    {
-        return defenceWeight;
+        return attackWeights;
     }
     public float GetBuffWeight()
     {
