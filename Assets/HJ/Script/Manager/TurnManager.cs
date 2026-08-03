@@ -9,12 +9,14 @@ public class TurnManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null && instance != this.gameObject)
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
         }
 
         instance = this;
+
+        DontDestroyOnLoad(gameObject);
     }
 
     //===============================================================================================
@@ -28,7 +30,7 @@ public class TurnManager : MonoBehaviour
         PlayerPlanning, // 스킬 등록을 여기서 함.
         ExecuteSkills, // 등록된 스킬 사용
         PlayerTurnEnd, // 플레이어 턴 종료
-        CheckBattleState, // 전투가 지속 가능한 상황인지 체크
+        //CheckBattleState, // 전투가 지속 가능한 상황인지 체크
         EnemyTurn, // 적 턴
         EnemyTurnEnd, // 적 턴 종료
         EndBattle, // 배틀 종료 (전체 배틀이 종료된 상태)
@@ -44,12 +46,98 @@ public class TurnManager : MonoBehaviour
     public void InitializeBattle()
     {
         turnState = TurnState.Wait;
+        if (skillQueue.Count > 0)
+        {
+            skillQueue.Clear();
+        }
     }
 
-    //===============================================================================================\
+    //===============================================================================================
       
     // 플레이어의 스킬을 큐 형식으로 저장함
-    Queue<int> skillQueue = new ();
+    public Queue<SkillBaseStat> skillQueue { get; private set; } = new ();
+
+    //===============================================================================================
+
+    // 지정된 state 로 넘어가기
+    public void GoToStep(TurnState state)
+    {
+        turnState = state;
+
+        RunTurnBehavior();
+
+    }
+
+    /// <summary>
+    /// 현재 State 에 따른 TurnManager 의 행동 정의
+    /// </summary>
+    public void RunTurnBehavior()
+    {
+        switch (turnState)
+        {
+            default: break;
+
+            case TurnState.Wait:
+                {
+
+                    break;
+                }
+            case TurnState.StartBattle:
+                {
+
+                    break;
+                }
+            case TurnState.PlayerTurnStart:
+                {
+
+                    break;
+                }
+            case TurnState.PlayerPlanning:
+                {
+
+                    break;
+                }
+            case TurnState.ExecuteSkills:
+                {
+
+                    break;
+                }
+            case TurnState.PlayerTurnEnd:
+                {
+
+                    break;
+                }
+            case TurnState.EnemyTurn:
+                {
+
+                    break;
+                }
+            case TurnState.EnemyTurnEnd:
+                {
+
+                    break;
+                }
+            case TurnState.EndBattle:
+                {
+
+                    break;
+                }
+        }
+
+    }
+
+    //===============================================================================================
+
+    /// <summary>
+    /// 전투가 지속 가능한 상황인지 체크
+    /// </summary>
+    public void CheckBattleState()
+    {
+
+    }
+
+    //===============================================================================================
+
 
 
 }
