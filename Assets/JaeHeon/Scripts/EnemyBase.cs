@@ -11,7 +11,7 @@ public class EnemyBase : MonoBehaviour
     //적들 필요한 필드 내용 : 몬스터타입, 체력, 방어력, 가중치, 현재 할 행동 내역, 
 
     [BoxGroup("적 초기스탯"), SerializeField]
-    private float maxHp;
+    private int maxHp;
     [BoxGroup("적 초기스탯"), SerializeField]
     private float attackPower;
     [BoxGroup("적 초기스탯"), SerializeField]
@@ -24,7 +24,7 @@ public class EnemyBase : MonoBehaviour
     private float buffWeight;
 
     [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
-    public float currentHp { get; private set; }
+    public int currentHp { get; private set; }
     [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
     public bool isDead { get; private set; } = false;
 
@@ -58,7 +58,7 @@ public class EnemyBase : MonoBehaviour
     }
 
     [Button]
-    public void TakeDamage(float amount)
+    public void TakeDamage(int amount)
     {
         currentHp  =  Math.Clamp(currentHp, 0, currentHp - amount);
 
