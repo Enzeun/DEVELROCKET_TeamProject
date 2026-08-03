@@ -17,6 +17,7 @@ public static class SkillData
             1,
             // 피해량
             100,
+            SkillPoseType.Horizontal,
             // 가능한 업그레이드
             new List<SkillUpgradeType> { 
                 SkillUpgradeType.Damage,
@@ -24,20 +25,22 @@ public static class SkillData
                 SkillUpgradeType.LifeStill  }
             ,
             // 타겟 지정 종류
-            SkillTargetType.Single 
+            SkillTargetType.Single
         ),
         [1001] = new SkillBaseStat(
             1001,
             "단일2",
             "설명2",
             2,      
-            200,     
+            200,
+            SkillPoseType.Instance,
             new List<SkillUpgradeType> {
                 SkillUpgradeType.Damage,
                 SkillUpgradeType.DownCost,
                 SkillUpgradeType.LifeStill  }
             ,                     
             SkillTargetType.Single
+            
         ),
         [1002] = new SkillBaseStat(
             1002,
@@ -45,6 +48,7 @@ public static class SkillData
             "설명3", 
             3, 
             150, 
+            SkillPoseType.Stomp,
             new List<SkillUpgradeType> {
                 SkillUpgradeType.Damage,
                 SkillUpgradeType.DownCost,

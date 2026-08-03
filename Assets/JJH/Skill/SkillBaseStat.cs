@@ -9,13 +9,14 @@ public class SkillBaseStat
     public string Description;
     private int Cost;
     private int Damage;
-    
+
+    public SkillPoseType Pose;
     public List<SkillUpgradeType> UpgradeAbleList;
     public List<SkillUpgradeType> NowUpgradeList;
     public SkillTargetType TargetType;
 
     public SkillBaseStat(int id, string name, string description, int cost, int damage, 
-        List<SkillUpgradeType> upgradeAbleList, SkillTargetType targetType)
+        SkillPoseType pose, List<SkillUpgradeType> upgradeAbleList, SkillTargetType targetType)
     {
         Id = id;
         Name = name;
@@ -25,6 +26,7 @@ public class SkillBaseStat
         UpgradeAbleList = upgradeAbleList;
         NowUpgradeList = new();
         TargetType = targetType;
+        Pose = pose;
     }
 
     public (int skillCost, int SkillId) UseSkillData()
