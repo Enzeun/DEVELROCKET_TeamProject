@@ -24,18 +24,18 @@ public class EnemyBase : MonoBehaviour
     private float buffWeight;
 
     [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
-    public float currentEnemyHp { get; private set; }
+    public float currentHp { get; private set; }
     [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
     public bool isDead { get; private set; } = false;
 
-    public event Action OnEnemyDie;
+    public event Action OnDie;
 
 
     private void Awake()
     {
-        currentEnemyHp = maxHp;
-        OnEnemyDie += EnemyDie;
-        Debug.Log($"현재 HP : {currentEnemyHp} / maxHP : {maxHp}  / attack : {attackPower} weight : {attackWeight} / defence : {defencePower}");
+        currentHp = maxHp;
+        OnDie += EnemyDie;
+        Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attackPower} weight : {attackWeight} / defence : {defencePower}");
     }
 
     public float GetAttackWeight()
@@ -60,11 +60,11 @@ public class EnemyBase : MonoBehaviour
     [Button]
     public void TakeDamage(float amount)
     {
-        currentEnemyHp  =  Math.Clamp(currentEnemyHp, 0, currentEnemyHp - amount);
+        currentHp  =  Math.Clamp(currentHp, 0, currentHp - amount);
 
-        if(currentEnemyHp == 0)
+        if(currentHp == 0)
         {
-            OnEnemyDie?.Invoke();
+            OnDie?.Invoke();
         }
     }
 }
