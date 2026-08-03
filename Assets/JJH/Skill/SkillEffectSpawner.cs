@@ -23,10 +23,12 @@ public class SkillEffectSpawner : MonoBehaviour
     }
 
     [SF] private Transform PlayerTransform;
-    [SF] private Transform PlayerStaffTransform;
+    [SF] private Transform PlayerStaffTransformByHorizontal;
+    [SF] private Transform PlayerStaffTransformByVertical;
     [SF] private EffectBase[] prefabs;
 
     private Dictionary<string, IObjectPool<GameObject>> effectPool;
+    private Coroutine hitTimer;
 
     private void Awake()
     {
@@ -50,6 +52,13 @@ public class SkillEffectSpawner : MonoBehaviour
 
     }
 
+    public IEnumerator HitTarget(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        // 호출 UI 및 히트 판정 호출
+    }
+
     public void SpawnEffect(string skillName, SkillPoseType pose, Transform targetTransform)
     {
         GameObject obj = GetObject(skillName);
@@ -57,33 +66,54 @@ public class SkillEffectSpawner : MonoBehaviour
         // 투사체인 경우 
         if (pose == SkillPoseType.Vertical || pose == SkillPoseType.Horizontal)
         {
-            obj.transform
-                .SetPositionAndRotation(PlayerStaffTransform.position, PlayerStaffTransform.rotation);
+            Vector3 startPostion = Vector3.zero;
+            if (pose == SkillPoseType.Horizontal)
+                obj.transform.position = PlayerStaffTransformByHorizontal.position;
+            else
+                obj.transform.position = PlayerStaffTransformByVertical.position;
+
             Vector3 direction = targetTransform.position - obj.transform.position;
+            Vector3 dir = direction.normalized;
 
-            if (direction != Vector3.zero)
-                obj.transform.rotation = Quaternion.LookRotation(direction);
-
+            if (dir != Vector3.zero)
+                obj.transform.forward = dir;
+            
+            obj.SetActive(true);
         }
         // 즉발 객체인 경우
         else
         {
-            obj.transform.parent = targetTransform;
+            obj.transform.position = targetTransform.position;
+            obj.SetActive(true);
+            float hitTime = 0;
 
+            Debug.Log("엥?");
+            foreach (var item in prefabs)
+            {
+                if (skillName == item.name) hitTime = item.hitTime;
+            }
+
+            if (hitTimer != null) StopCoroutine(hitTimer);
+
+            hitTimer = StartCoroutine(HitTarget(hitTime));
         }
 
-        DOVirtual.DelayedCall(5, () => ReleaseObject(skillName, obj));
+        DOVirtual.DelayedCall(4, () => ReleaseObject(skillName, obj));
     }
 
     public void SpawnEffect(Transform targetTransform)
     {
         GameObject obj = GetObject("단일1");
-        obj.transform.position = PlayerStaffTransform.position;
+
+        obj.transform
+                .SetPositionAndRotation(PlayerStaffTransformByHorizontal.position, 
+                PlayerStaffTransformByHorizontal.rotation);
+        obj.transform.LookAt(targetTransform);
+        obj.SetActive(true);
         Vector3 direction = targetTransform.position - obj.transform.position;
-        Debug.Log(direction);
+        
         if (direction != Vector3.zero)
             obj.transform.rotation = Quaternion.LookRotation(direction);
-        
 
         DOVirtual.DelayedCall(5, () => ReleaseObject("단일1", obj));
     }
@@ -91,9 +121,6 @@ public class SkillEffectSpawner : MonoBehaviour
     private GameObject GetObject(string skillName) {
         GameObject obj = effectPool[skillName].Get();
         obj.SetActive(false);
-
-        obj.transform.position = PlayerStaffTransform.position;
-        obj.SetActive(true);
         return obj;
     }
 
@@ -101,5 +128,4 @@ public class SkillEffectSpawner : MonoBehaviour
     {
         effectPool[skillName].Release(obj);
     }
-
 }

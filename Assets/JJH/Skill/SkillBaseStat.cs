@@ -10,7 +10,7 @@ public class SkillBaseStat
     private int Cost;
     private int Damage;
 
-    private SkillPoseType Pose;
+    public SkillPoseType Pose;
     public List<SkillUpgradeType> UpgradeAbleList;
     public List<SkillUpgradeType> NowUpgradeList;
     public SkillTargetType TargetType;
