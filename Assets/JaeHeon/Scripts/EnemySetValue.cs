@@ -29,14 +29,17 @@ public class EnemySetValue : MonoBehaviour
     /// </summary>
     private void SetValue_EnemyBehaviour()
     {
+        List<float> aw = enemyBase.GetAttackWeights();
+
         float sumAttackWeight = 0f;
 
-        for (int i = 0; i < enemyBase.GetAttackWeights().Count; i++)
+        for (int i = 0; i < aw.Count; i++)
         {
-            sumAttackWeight = enemyBase.GetAttackWeights()[i];
+            sumAttackWeight = aw[i];
         }
         SetWeight(Enemy_Behaviour.Attack, sumAttackWeight);
         SetWeight(Enemy_Behaviour.Buff, enemyBase.GetBuffWeight());
+
     }
 
 
@@ -60,7 +63,7 @@ public class EnemySetValue : MonoBehaviour
         Debug.Log($"랜덤 값 범위 : 1 ~ {sumWeight}");
         Debug.Log($"랜덤값? : {behaviourRange} / 공격 값 :  0 ~ {sumWeight} / 버프 값 : {sumWeight} ~ {behaviourRange}");
 
-        //case문으로 여기if문 내부에서 짜르거나 case문으로 통일
+        //case문으로 여기if문 내부에서 짜르거나 case문으로 통일 >> queue를 통해서 몇개 있는지 확ㄷ인 후에 그 만큼 뒤에서부터 (buff)부터 스킬 판정하기
         if(behaviourRange >= 1 && behaviourRange < buffValue)
         {
             finalValue = Enemy_Behaviour.Attack;
