@@ -16,7 +16,7 @@ public static class SkillData
             // 코스트
             1,
             // 피해량
-            10,
+            100,
             // 가능한 업그레이드
             new List<SkillUpgradeType> { 
                 SkillUpgradeType.Damage,
@@ -31,7 +31,7 @@ public static class SkillData
             "단일2",
             "설명2",
             2,      
-            20,     
+            200,     
             new List<SkillUpgradeType> {
                 SkillUpgradeType.Damage,
                 SkillUpgradeType.DownCost,
@@ -44,7 +44,7 @@ public static class SkillData
             "광역1", 
             "설명3", 
             3, 
-            15, 
+            150, 
             new List<SkillUpgradeType> {
                 SkillUpgradeType.Damage,
                 SkillUpgradeType.DownCost,

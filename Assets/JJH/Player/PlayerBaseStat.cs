@@ -16,7 +16,7 @@ public class PlayerBaseStat : MonoBehaviour
     public event Action<int> OnDamagedTaken;
     public event Action<int, int> OnHpChanged;
 
-    private PlayerBaseStat(string name, int maxHP, int nowHP, int maxCost, int nowCost,
+    public PlayerBaseStat(string name, int maxHP, int nowHP, int maxCost, int nowCost,
         int atkPoint, int defPoint,
         Dictionary<int, SkillBaseStat> skillData)
     {
