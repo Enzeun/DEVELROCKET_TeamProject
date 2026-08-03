@@ -1,16 +1,40 @@
+using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
+using Unity.UI;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class BattleUIManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField, Required, BoxGroup("**참조필요!**")]
+    private TextMeshProUGUI playerHpBarText;
+    [SerializeField, Required, BoxGroup("**참조필요!**")]
+    private Slider playerHpSlider;
+
+
+    private PlayerBaseStat playerStat;
+
+
+
+
+    [BoxGroup("UI Debug"), Button]
+    private void PlayerTakeDamageUI(int currentHp, int damage)
     {
-        
+        int max = 300;
+
+        float value = (float)currentHp / max;
+
+        playerHpBarText.text = $"{currentHp}/{max}";
+
+        PlayDamagedUIAnimation(damage, value);
     }
 
-    // Update is called once per frame
-    void Update()
+    [BoxGroup("UI Debug"), Button]
+    private void PlayDamagedUIAnimation(int damage, float endValue)
     {
-        
+        playerHpSlider.transform.DOShakePosition(0.2f, 10f, 90);
+        playerHpSlider.DOValue(endValue, 0.1f);
     }
+
 }
