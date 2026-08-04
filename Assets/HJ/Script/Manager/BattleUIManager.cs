@@ -1,12 +1,11 @@
 using DamageNumbersPro;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -27,8 +26,8 @@ public class BattleUIManager : MonoBehaviour
     private DamageNumber enemy_NumberPrefab;
     [SerializeField, Required, BoxGroup("**참조필요!**적")]
     private GameObject[] enemy_HpBarLocations;
-
-
+    [SerializeField, Required, BoxGroup("**참조필요!**적")]
+    private EnemyBase[] enemys;
 
 
     private PlayerBaseStat playerStat;
@@ -38,7 +37,12 @@ public class BattleUIManager : MonoBehaviour
         if (playerStat != null)
         {
             playerStat.OnHpChanged += PlayerHpChangedUI;
-            playerStat.OnDamagedTaken += TakeDamage_UI_NumberAnimation;
+            playerStat.OnDamagedTaken += TakeDamage_UI_NumberAnimation_Player;
+        }
+
+        foreach(var enemy in enemys)
+        {
+            
         }
     }
 
@@ -47,7 +51,7 @@ public class BattleUIManager : MonoBehaviour
         if (playerStat != null)
         {
             playerStat.OnHpChanged -= PlayerHpChangedUI;
-            playerStat.OnDamagedTaken -= TakeDamage_UI_NumberAnimation;
+            playerStat.OnDamagedTaken -= TakeDamage_UI_NumberAnimation_Player;
         }
     }
 
@@ -57,6 +61,7 @@ public class BattleUIManager : MonoBehaviour
 
         SetEnemyUILocation();
     }
+
 
     private void SetEnemyUILocation()
     {
@@ -88,22 +93,51 @@ public class BattleUIManager : MonoBehaviour
 
         playerHpBarText.text = $"{currentHp}/{maxHp}";
 
-        HP_Decrease_UIAnimation(endValue);
+        HP_Decrease_UIAnimation_Player(endValue);
 
     }
 
-    private void TakeDamage_UI_NumberAnimation(int damage)
+    private void TakeDamage_UI_NumberAnimation_Player(int damage)
     {
         DamageNumber damageNumber = player_NumberPrefab.SpawnGUI(playerHP_Number_Location, Vector2.zero, damage);
-
     }
 
     [BoxGroup("UI Debug"), Button]
-    private void HP_Decrease_UIAnimation(float endValue)
+    private void HP_Decrease_UIAnimation_Player(float endValue)
     {
-
+        Math.Clamp(endValue, 0, 1);
         playerHpSlider.transform.DOShakePosition(0.2f, 10f, 90);
         playerHpSlider.DOValue(endValue, 0.1f);
+    }
+
+    //==========================================================================================================================
+
+    [BoxGroup("UI Debug"), Button]
+    private void Enemy_TakeDamage(EnemyBase enemy)
+    {
+
+    }
+    [BoxGroup("UI Debug"), Button]
+    private void TakeDamage_UI_NumberAnimation_Enemy(int damage, int index)
+    {
+        if (index > enemy_HpBarControllers.Length)
+        {
+            Debug.Log("존재하지 않는 Index 입니다. 메서드 : TakeDamage_UI_NumberAnimation_Enemy");
+            return;
+        }
+        DamageNumber damageNumber = enemy_NumberPrefab.SpawnGUI(enemy_HpBarControllers[index].numberLocation, Vector2.zero, damage);
+    }
+    [BoxGroup("UI Debug"), Button]
+    private void HP_Decrease_UIAnimation_Enemy(float endValue, int index)
+    {
+        if (index > enemy_HpBarControllers.Length)
+        {
+            Debug.Log("존재하지 않는 Index 입니다. 메서드 : HP_Decrease_UIAnimation_Enemy");
+            return;
+        }
+        Math.Clamp(endValue, 0, 1);
+        enemy_HpBarControllers[index].transform.DOShakePosition(0.2f, 10f, 90);
+        enemy_HpBarControllers[index].hpSlider.DOValue(endValue, 0.1f);
     }
 
 }
