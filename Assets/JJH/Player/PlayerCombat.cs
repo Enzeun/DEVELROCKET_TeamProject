@@ -20,10 +20,9 @@ public class PlayerCombat : MonoBehaviour
     private Transform nowTarget;
     private SkillBaseStat nowSkillData;
 
-    private event Action OnPlayerSkillActived;
-
     private bool damagedTakenSub = false;
     private bool deadSub = false;
+    private bool effectFinSub = false;
 
     private void OnEnable()
     {
@@ -45,6 +44,7 @@ public class PlayerCombat : MonoBehaviour
 
         damagedTakenSub = false;
         deadSub = false;
+        effectFinSub = false;
     }
 
     private void Start()
@@ -186,7 +186,11 @@ public class PlayerCombat : MonoBehaviour
             player.OnDead += PlayerDeath;
             deadSub = true;
         }
-
-        spawner.OnEffectFinished += EffectEnd;
+        if (!effectFinSub)
+        {
+            spawner.OnEffectFinished += EffectEnd;
+            effectFinSub = true;
+        }
+        
     }
 }
