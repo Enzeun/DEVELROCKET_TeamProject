@@ -783,8 +783,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattleUIManager
   playerHpBarText: {fileID: 1746442193}
   playerHpSlider: {fileID: 1746442194}
-  numberPrefab: {fileID: 2571772178154599344, guid: 77f1a45dcf9815442a152b0df39bc93d, type: 3}
-  rectParent: {fileID: 1007829285}
+  player_NumberPrefab: {fileID: 2571772178154599344, guid: 77f1a45dcf9815442a152b0df39bc93d, type: 3}
+  PlayerHP_Number_Location: {fileID: 1007829285}
+  enemy_NumberPrefab: {fileID: 4973914337474189900, guid: 493b927d7e388dc498ff814af2a8be0c, type: 3}
 --- !u!4 &1096197460
 Transform:
   m_ObjectHideFlags: 0
