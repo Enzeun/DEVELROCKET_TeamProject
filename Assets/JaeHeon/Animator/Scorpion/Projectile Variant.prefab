@@ -55,5 +55,66 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7476638109709581568, guid: 675a9bbd65abd5c41b306a8052113976, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3322990695089825430}
+    - targetCorrespondingSourceObject: {fileID: 7476638109709581568, guid: 675a9bbd65abd5c41b306a8052113976, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2569443681864116542}
   m_SourcePrefab: {fileID: 100100000, guid: 675a9bbd65abd5c41b306a8052113976, type: 3}
+--- !u!1 &3105598186387114839 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7476638109709581568, guid: 675a9bbd65abd5c41b306a8052113976, type: 3}
+  m_PrefabInstance: {fileID: 5538046176463468119}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &-3322990695089825430
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3105598186387114839}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &2569443681864116542
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3105598186387114839}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.08815265
+  m_Height: 0.17146875
+  m_Direction: 1
+  m_Center: {x: 0.0006224215, y: 0.024276972, z: 0.052855376}

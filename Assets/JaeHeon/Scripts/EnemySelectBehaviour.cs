@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 enum Enemy_Behaviour
 {
+    None,
     Attack,
     Skill1,
     Skill2,
     Skill3,
+    Skill4,
     Buff
 }
 
@@ -40,7 +42,11 @@ public class EnemySelectBehaviour : MonoBehaviour
         {
             sumAttackWeight = aw[i];
         }
-        SetWeight(Enemy_Behaviour.Attack, sumAttackWeight);
+        SetWeight(Enemy_Behaviour.Attack, aw[0]);
+        SetWeight(Enemy_Behaviour.Skill1, aw[1]);
+        SetWeight(Enemy_Behaviour.Skill2, aw[2]);
+        SetWeight(Enemy_Behaviour.Skill3, aw[3]);
+        SetWeight(Enemy_Behaviour.Skill4, aw[4]);
         SetWeight(Enemy_Behaviour.Buff, enemyBase.GetBuffWeight());
 
     }
@@ -55,46 +61,46 @@ public class EnemySelectBehaviour : MonoBehaviour
     {
         float sumWeight = 0;
 
-        foreach(var weight in enemyBehaviourValue)
+        foreach (var weight in enemyBehaviourValue)
         {
             sumWeight += weight.Value;
         }
 
         float behaviourRange = Random.Range(1, sumWeight);
-        float buffValue = sumWeight - GetWeight(Enemy_Behaviour.Buff);
+        float buffValue = GetWeight(Enemy_Behaviour.Buff);
+
+        float remainValue = sumWeight - buffValue;
+        List<float> aw = enemyBase.GetAttackWeights();
 
         Debug.Log($"랜덤 값 범위 : 1 ~ {sumWeight}");
-        Debug.Log($"랜덤값? : {behaviourRange} / 공격 값 :  0 ~ {sumWeight} / 버프 값 : {sumWeight} ~ {behaviourRange}");
+        Debug.Log($"랜덤값? : {behaviourRange} / 공격 값 :  0 ~ {remainValue} / 버프 값 : {remainValue} ~ {sumWeight}");
 
 
-        if(behaviourRange > buffValue && behaviourRange <= sumWeight)
+
+
+
+        if (behaviourRange > remainValue && behaviourRange <= sumWeight)
         {
             finalValue = Enemy_Behaviour.Buff;
         }
         else
         {
-            float remainValue = sumWeight - buffValue;
-            List<float> aw = enemyBase.GetAttackWeights();
-            for (int i = 0 ; i < aw.Count; i--)
+            for (int i = 0; i < aw.Count; i++)
             {
-                if(behaviourRange > remainValue - aw[i] && behaviourRange <= remainValue)
+                if (aw[i] == 0)
                 {
-                    finalValue = Enemy_Behaviour.Attack;
+                    //Debug.Log($"attackWeight{i}의 가중치 0");
+                    //return Enemy_Behaviour.None;
+                }
+                else if (behaviourRange > remainValue - aw[i] && behaviourRange <= remainValue)
+                {
+                    int value = (int)Enemy_Behaviour.Attack + i;
+                    finalValue = (Enemy_Behaviour)value;
+                    Debug.Log($"계산한 행동 값 : {finalValue}");
+                    return finalValue;
                 }
                 remainValue -= aw[i];
             }
-        }
-                    //잘못됨
-        //return 할 때 i 값도 같이 넘겨서 attackweight의 i번째를 사용하겠다는 느낌?
-
-
-        if(behaviourRange >= 1 && behaviourRange < buffValue)
-        {
-            finalValue = Enemy_Behaviour.Attack;
-        }
-        else
-        {
-            finalValue = Enemy_Behaviour.Buff;
         }
         Debug.Log($"계산한 행동 값 : {finalValue}");
 
