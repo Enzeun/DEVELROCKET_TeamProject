@@ -11,6 +11,8 @@ using Unity.VisualScripting;
 public class BattleUIManager : MonoBehaviour
 {
     [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
+    private PlayerCombat playerCombat;
+    [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
     private TextMeshProUGUI playerHpBarText;
     [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
     private Slider playerHpSlider;
@@ -24,7 +26,7 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField, Required, BoxGroup("**참조필요!**적")]
     private DamageNumber enemy_NumberPrefab;
     [SerializeField, Required, BoxGroup("**참조필요!**적")]
-    private List<GameObject> enemy_HpBarLocations;
+    private GameObject[] enemy_HpBarLocations;
 
 
 
@@ -51,6 +53,8 @@ public class BattleUIManager : MonoBehaviour
 
     private void Start()
     {
+        playerStat = playerCombat.player;
+
         SetEnemyUILocation();
     }
 
@@ -64,11 +68,15 @@ public class BattleUIManager : MonoBehaviour
         //}
         //enemy_HpBarControllers[0].gameObject.SetActive(true);
 
-        Vector3 newPosition = Camera.main.WorldToScreenPoint(enemy_HpBarLocations[0].transform.position);
+        for (int i = 0; i < enemy_HpBarLocations.Length; i++)
+        {
+            Debug.Log(i + " 번째 실행 중");
+            Vector3 newPosition = Camera.main.WorldToScreenPoint(enemy_HpBarLocations[i].transform.position);
 
-        float movingPosition = enemy_HpBarControllers[0].GetComponent<RectTransform>().rect.width /4;
+            float movingPosition = enemy_HpBarControllers[i].GetComponent<RectTransform>().rect.width / 4;
 
-        enemy_HpBarControllers[0].gameObject.transform.position = newPosition - Vector3.right* movingPosition;
+            enemy_HpBarControllers[i].gameObject.transform.position = newPosition - Vector3.right * movingPosition;
+        }
     }
 
     //==========================================================================================================================
