@@ -65,6 +65,7 @@ MonoBehaviour:
   notDestroy: 1
   lifeTime: 5
   detachedLifeTime: 1
+  spawner: {fileID: 2377754123358636421, guid: 17ea3879c61671a42b0686e09f49b75d, type: 3}
 --- !u!108 &5358976921736162886
 Light:
   m_ObjectHideFlags: 0
