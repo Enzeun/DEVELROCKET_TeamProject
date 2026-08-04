@@ -52,7 +52,7 @@ public class EnemyBase : MonoBehaviour
 
     private void Start()
     {
-        playerTransform = FindFirstObjectByType<PlayerBaseStat>().transform;
+        playerTransform = FindFirstObjectByType<PlayerCombat>().transform;
     }
 
     public List<float> GetAttackWeights()
