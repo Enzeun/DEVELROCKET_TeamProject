@@ -26,9 +26,11 @@ public class SkillEffectSpawner : MonoBehaviour
     [SF] private Transform PlayerStaffTransformByHorizontal;
     [SF] private Transform PlayerStaffTransformByVertical;
     [SF] private EffectBase[] prefabs;
-
+    [SF] private PlayerCombat playerCombat;
     private Dictionary<string, IObjectPool<GameObject>> effectPool;
     private Coroutine hitTimer;
+
+    public event Action OnEffectFinished;
 
     private void Awake()
     {
@@ -55,8 +57,7 @@ public class SkillEffectSpawner : MonoBehaviour
     public IEnumerator HitTarget(float time)
     {
         yield return new WaitForSeconds(time);
-        Debug.Log("공격 히트");
-        // 호출 UI 및 히트 판정 호출
+        OnEffectFinished?.Invoke();
     }
 
     public void SpawnEffect(string skillName, SkillPoseType pose, Transform targetTransform)

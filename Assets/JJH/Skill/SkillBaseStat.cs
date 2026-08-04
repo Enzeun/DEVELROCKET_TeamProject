@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static SkillEnums;
@@ -11,12 +12,17 @@ public class SkillBaseStat
     public string Name;
     public string Description;
     private int Cost;
+    /// <summary>
+    /// Damage는 피해량 배율로 100%가 기준값, 공격력에 곱해져야함
+    /// </summary>
     private int Damage;
 
     public SkillPoseType Pose;
     public List<SkillUpgradeType> UpgradeAbleList;
     public List<SkillUpgradeType> NowUpgradeList;
     public SkillTargetType TargetType;
+
+    public event Action OnSkillEnded;
 
     public SkillBaseStat(int id, string name, string description, int cost, int damage, 
         SkillPoseType pose, List<SkillUpgradeType> upgradeAbleList, SkillTargetType targetType)

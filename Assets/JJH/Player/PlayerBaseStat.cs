@@ -51,7 +51,10 @@ public class PlayerBaseStat : MonoBehaviour
     public void TakeDamage(int damage)
     {
         NowHP = Mathf.Clamp(NowHP - damage, 0, MaxHP);
-        OnDamagedTaken.Invoke(damage);
+
+        if (NowHP <= 0) OnDead.Invoke();
+        else OnDamagedTaken.Invoke(damage);
+
         OnHpChanged?.Invoke(NowHP, MaxHP);
     }
 
