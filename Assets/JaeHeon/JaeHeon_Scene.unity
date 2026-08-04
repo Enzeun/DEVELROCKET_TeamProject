@@ -444,8 +444,40 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1354381945093947630, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
-      propertyPath: playerTransform
-      value: 
+      propertyPath: behaviourListData.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354381945093947630, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: behaviourListData.Array.data[0].Weight_
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354381945093947630, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: behaviourListData.Array.data[1].Weight_
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354381945093947630, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: behaviourListData.Array.data[2].Weight_
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354381945093947630, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: behaviourListData.Array.data[3].Weight_
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354381945093947630, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: behaviourListData.Array.data[0].BehaviorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354381945093947630, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: behaviourListData.Array.data[1].BehaviorType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354381945093947630, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: behaviourListData.Array.data[2].BehaviorType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1354381945093947630, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: behaviourListData.Array.data[3].BehaviorType
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2219866939652499699, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -490,6 +522,42 @@ PrefabInstance:
     - target: {fileID: 6675629720354093767, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
       propertyPath: m_Name
       value: Scorpion
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849269545696773658, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: m_listData.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849269545696773658, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: m_listData.Array.data[0].Weight_
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849269545696773658, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: m_listData.Array.data[1].Weight_
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849269545696773658, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: m_listData.Array.data[2].Weight_
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849269545696773658, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: m_listData.Array.data[3].Weight_
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849269545696773658, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: m_listData.Array.data[0].BehaviorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849269545696773658, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: m_listData.Array.data[1].BehaviorType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849269545696773658, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: m_listData.Array.data[2].BehaviorType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849269545696773658, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: m_listData.Array.data[3].BehaviorType
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9164061269032085072, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
       propertyPath: animator

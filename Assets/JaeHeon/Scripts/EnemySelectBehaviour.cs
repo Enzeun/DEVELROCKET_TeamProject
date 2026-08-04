@@ -1,15 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
-public enum Enemy_Behaviour
-{
-    None,
-    Attack,
-    Skill1,
-    Skill2,
-    Skill3,
-    Skill4,
-    Buff
-}
 
 public class EnemySelectBehaviour : MonoBehaviour
 {
@@ -20,11 +12,19 @@ public class EnemySelectBehaviour : MonoBehaviour
     [SerializeField] private Enemy_Behaviour finalValue;
     [SerializeField] private Enemy_Behaviour currentBehaviour;
 
+    private List<BehaviorData> enemyBehaviourListData;
 
+    float sumWeight = 0f;
 
     private void Awake()
     {
         enemyBase = GetComponent<EnemyBase>();
+        enemyBehaviourListData = enemyBase.GetListData();
+    }
+
+    private void Start()
+    {
+        
         SetValue_EnemyBehaviour();
     }
 
@@ -35,42 +35,34 @@ public class EnemySelectBehaviour : MonoBehaviour
     /// </summary>
     private void SetValue_EnemyBehaviour()
     {
-        List<float> aw = enemyBase.GetAttackWeights();
+        sumWeight = 0f;
 
-        float sumAttackWeight = 0f;
-
-        for (int i = 0; i < aw.Count; i++)
+        for (int i = 0; i < enemyBehaviourListData.Count; ++i)
         {
-            sumAttackWeight = aw[i];
+            var data = enemyBehaviourListData[i];
+            SetWeight(data.Type, data.Weight);
+            sumWeight += data.Weight;
         }
-        SetWeight(Enemy_Behaviour.Attack, aw[0]);
-        SetWeight(Enemy_Behaviour.Skill1, aw[1]);
-        SetWeight(Enemy_Behaviour.Skill2, aw[2]);
-        SetWeight(Enemy_Behaviour.Skill3, aw[3]);
-        SetWeight(Enemy_Behaviour.Skill4, aw[4]);
-        SetWeight(Enemy_Behaviour.Buff, enemyBase.GetBuffWeight());
-
     }
 
     /// <summary>
     /// Dictionary에 저장된 값을 불러와서 범위를 지정해 해당 범위 내 값을 토대로 enemy의 행동을 정해줍니다.
+    /// 범위를 역산했기 때문에 20~ buffWeight 까지 버프 20-buffWeight 부터 Attak 만큼 Attack 또 그에서 뺀 값에서 skill_1만큼 뺀 값이 skill_1입니다.
     /// </summary>
     /// <returns></returns>
     [ContextMenu("범위 측정 및 계산")]
     public Enemy_Behaviour Calc_Enemy_Behaviour()
     {
-        float sumWeight = 0;
-
-        foreach (var weight in enemyBehaviourValue)
-        {
-            sumWeight += weight.Value;
-        }
-
-        float behaviourRange = Random.Range(1, sumWeight);
+        float behaviourRange = UnityEngine.Random.Range(1, sumWeight);
         float buffValue = GetWeight(Enemy_Behaviour.Buff);
 
         float remainValue = sumWeight - buffValue;
-        List<float> aw = enemyBase.GetAttackWeights();
+        //List<float> aw = enemyBase.GetAttackWeights();
+        List<float> getAw = new List<float>();
+        foreach (var behaviorData in enemyBehaviourListData)
+        {
+            getAw.Add(behaviorData.Weight);
+        }
 
         Debug.Log($"랜덤 값 범위 : 1 ~ {sumWeight}");
         Debug.Log($"랜덤값? : {behaviourRange} / 공격 값 :  0 ~ {remainValue} / 버프 값 : {remainValue} ~ {sumWeight}");
@@ -85,21 +77,20 @@ public class EnemySelectBehaviour : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < aw.Count; i++)
+            for (int i = 0; i < getAw.Count; i++)
             {
-                if (aw[i] == 0)
+                if (getAw[i] == 0)
                 {
                     //Debug.Log($"attackWeight{i}의 가중치 0");
                     //return Enemy_Behaviour.None;
                 }
-                else if (behaviourRange > remainValue - aw[i] && behaviourRange <= remainValue)
+                else if (behaviourRange > remainValue - getAw[i] && behaviourRange <= remainValue)
                 {
-                    int value = (int)Enemy_Behaviour.Attack + i;
-                    finalValue = (Enemy_Behaviour)value;
+                    finalValue = enemyBehaviourListData[i].Type;
                     Debug.Log($"계산한 행동 값 : {finalValue}");
                     return finalValue;
                 }
-                remainValue -= aw[i];
+                remainValue -= getAw[i];
             }
         }
         Debug.Log($"계산한 행동 값 : {finalValue}");
@@ -116,13 +107,15 @@ public class EnemySelectBehaviour : MonoBehaviour
     //Dictionary에서 읽어오기 위한 함수
     private float GetWeight(Enemy_Behaviour behaviour)
     {
-        enemyBehaviourValue.TryGetValue(behaviour, out float value);
+        if (enemyBehaviourValue.TryGetValue(behaviour, out float value) == false)
+            return -1.0f;
+        
         return value;
     }
 
     private void StartEnemyTurn()
     {
-        Calc_Enemy_Behaviour();
+        //Calc_Enemy_Behaviour();
     }
 
     private void EndTurn()

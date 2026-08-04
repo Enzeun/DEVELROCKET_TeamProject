@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using System.Collections;
 
 public class EnemyAnimation : MonoBehaviour
 {
@@ -29,10 +30,13 @@ public class EnemyAnimation : MonoBehaviour
     private float projectileSpeed = 20f;
     [BoxGroup("조작가능한 필드"), SerializeField] 
     private float distanceOfPlayerAtNormalAttack = 2f;
+    [BoxGroup("조작가능한 필드"), SerializeField]
+    private float waitSec = 1f;
 
     //시작할 때 현재 상태 저장용 필드
     Transform currentTransform;
     Quaternion currentRotation;
+    WaitForSeconds ws;
 
     /// <summary>
     /// doRotation, doLookAt할 때 걸리는 시간은 임의적으로 집어넣었음
@@ -43,6 +47,7 @@ public class EnemyAnimation : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         enemyBase = GetComponent<EnemyBase>();
+        ws = new WaitForSeconds(waitSec);
     }
 
     private void Start()
@@ -99,12 +104,22 @@ public class EnemyAnimation : MonoBehaviour
 
         seq.AppendCallback(()=>
         {
-            animator.SetTrigger("StingAttack");
+            animator.SetTrigger("NormalAttack");
         });
-
+        seq.AppendCallback(() =>
+        {
+            StartCoroutine(ApplyDamageRoutine());
+        });
         seq.AppendInterval(1f);
         seq.Append(transform.DOMove(currentTransform.position, enemyMoveSpeed));
         seq.Append(transform.DORotate(currentRotation.eulerAngles, 0.4f));
+    }
+
+    private IEnumerator ApplyDamageRoutine()
+    {
+        Debug.Log("start routine");
+        yield return ws;
+        enemyBase.ApplyDamage();
     }
 
     [Button] //마법 공격
@@ -141,14 +156,7 @@ public class EnemyAnimation : MonoBehaviour
             GameObject buffEffect = GameObject.Instantiate(buffPrefab);
             buffEffect.transform.position = transform.position;
         });
-        
-    }
-
-
-    public void PlayerTakeDamage()
-    {
-        //player.TakeDamage(enemyBase.attackPower);
-        Debug.Log("PlayerTakeDamage");
+        //버프 할 사항 추가
     }
 
     public void EnemyTakeDamage()
