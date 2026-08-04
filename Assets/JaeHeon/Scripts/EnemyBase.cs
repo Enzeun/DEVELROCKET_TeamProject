@@ -19,9 +19,6 @@ public class EnemyBase : MonoBehaviour
     private float defencePower;
     [BoxGroup("적 초기스탯"), SerializeField]
     private List<float> attackWeights;
-    
-    [BoxGroup("적 초기스탯"), SerializeField]
-    private float attackWeight;
     [BoxGroup("적 초기스탯"), SerializeField]
     private float buffWeight;
 
@@ -30,6 +27,10 @@ public class EnemyBase : MonoBehaviour
     [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
     public bool isDead { get; private set; } = false;
 
+
+    /// <summary>
+    /// 
+    /// </summary>
     public event Action OnDie;
 
 
@@ -37,7 +38,7 @@ public class EnemyBase : MonoBehaviour
     {
         currentHp = maxHp;
         OnDie += EnemyDie;
-        Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attackPower} weight : {attackWeight} / defence : {defencePower}");
+        Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attackPower} / defence : {defencePower}");
     }
 
     public List<float> GetAttackWeights()
