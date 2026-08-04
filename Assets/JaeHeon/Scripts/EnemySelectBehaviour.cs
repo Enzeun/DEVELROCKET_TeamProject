@@ -2,11 +2,16 @@ using System.Collections.Generic;
 using UnityEngine;
 enum Enemy_Behaviour
 {
+    None,
     Attack,
+    Skill1,
+    Skill2,
+    Skill3,
+    Skill4,
     Buff
 }
 
-public class EnemySetValue : MonoBehaviour
+public class EnemySelectBehaviour : MonoBehaviour
 {
     [SerializeField] private EnemyBase enemyBase;
     //Enemy의 행동에 따른 가중치를 Dictionary로 저장
@@ -29,14 +34,21 @@ public class EnemySetValue : MonoBehaviour
     /// </summary>
     private void SetValue_EnemyBehaviour()
     {
+        List<float> aw = enemyBase.GetAttackWeights();
+
         float sumAttackWeight = 0f;
 
-        for (int i = 0; i < enemyBase.GetAttackWeights().Count; i++)
+        for (int i = 0; i < aw.Count; i++)
         {
-            sumAttackWeight = enemyBase.GetAttackWeights()[i];
+            sumAttackWeight = aw[i];
         }
-        SetWeight(Enemy_Behaviour.Attack, sumAttackWeight);
+        SetWeight(Enemy_Behaviour.Attack, aw[0]);
+        SetWeight(Enemy_Behaviour.Skill1, aw[1]);
+        SetWeight(Enemy_Behaviour.Skill2, aw[2]);
+        SetWeight(Enemy_Behaviour.Skill3, aw[3]);
+        SetWeight(Enemy_Behaviour.Skill4, aw[4]);
         SetWeight(Enemy_Behaviour.Buff, enemyBase.GetBuffWeight());
+
     }
 
 
@@ -49,25 +61,46 @@ public class EnemySetValue : MonoBehaviour
     {
         float sumWeight = 0;
 
-        foreach(var weight in enemyBehaviourValue)
+        foreach (var weight in enemyBehaviourValue)
         {
             sumWeight += weight.Value;
         }
 
         float behaviourRange = Random.Range(1, sumWeight);
-        float buffValue = sumWeight - GetWeight(Enemy_Behaviour.Buff);
+        float buffValue = GetWeight(Enemy_Behaviour.Buff);
+
+        float remainValue = sumWeight - buffValue;
+        List<float> aw = enemyBase.GetAttackWeights();
 
         Debug.Log($"랜덤 값 범위 : 1 ~ {sumWeight}");
-        Debug.Log($"랜덤값? : {behaviourRange} / 공격 값 :  0 ~ {sumWeight} / 버프 값 : {sumWeight} ~ {behaviourRange}");
+        Debug.Log($"랜덤값? : {behaviourRange} / 공격 값 :  0 ~ {remainValue} / 버프 값 : {remainValue} ~ {sumWeight}");
 
-        //case문으로 여기if문 내부에서 짜르거나 case문으로 통일
-        if(behaviourRange >= 1 && behaviourRange < buffValue)
+
+
+
+
+        if (behaviourRange > remainValue && behaviourRange <= sumWeight)
         {
-            finalValue = Enemy_Behaviour.Attack;
+            finalValue = Enemy_Behaviour.Buff;
         }
         else
         {
-            finalValue = Enemy_Behaviour.Buff;
+            for (int i = 0; i < aw.Count; i++)
+            {
+                if (aw[i] == 0)
+                {
+                    //Debug.Log($"attackWeight{i}의 가중치 0");
+                    //return Enemy_Behaviour.None;
+                }
+                else if (behaviourRange > remainValue - aw[i] && behaviourRange <= remainValue)
+                {
+                    int value = (int)Enemy_Behaviour.Attack + i;
+                    finalValue = (Enemy_Behaviour)value;
+                    Debug.Log($"계산한 행동 값 : {finalValue}");
+                    return finalValue;
+                }
+                remainValue -= aw[i];
+            }
         }
         Debug.Log($"계산한 행동 값 : {finalValue}");
 
