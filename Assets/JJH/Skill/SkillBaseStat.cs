@@ -22,8 +22,6 @@ public class SkillBaseStat
     public List<SkillUpgradeType> NowUpgradeList;
     public SkillTargetType TargetType;
 
-    public event Action OnSkillEnded;
-
     public SkillBaseStat(int id, string name, string description, int cost, int damage, 
         SkillPoseType pose, List<SkillUpgradeType> upgradeAbleList, SkillTargetType targetType)
     {
