@@ -1236,7 +1236,7 @@ MonoBehaviour:
   - 2
   - 3
   - 1
-  - 5
+  - 0
   - 0
   buffWeight: 1
 --- !u!114 &8849269545696773658
@@ -1266,15 +1266,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1907d8002404518489c2b4d92386909d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAniamationEvent
-  animator: {fileID: 1913175544594587217}
+  animator: {fileID: 0}
   enemyBase: {fileID: 0}
   targetTransform: {fileID: 0}
-  enemyMoveSpeed: 1
   projectilePrefab: {fileID: 5932506449497926068, guid: 6c63fbbd5082ae249aba411955ecc076, type: 3}
   EmissionTransform: {fileID: 5241930021367751706}
-  projectileSpeed: 20.57
   spellPrefab: {fileID: 800211394734574691, guid: 28cd63c762984524d9d305769033b4e7, type: 3}
   buffPrefab: {fileID: 8988883506428694636, guid: 8ac386f5433ba784eac1a6834024068c, type: 3}
+  enemyMagicSpeed: 0.4
+  enemyMoveSpeed: 1
+  projectileSpeed: 20
+  distanceOfPlayerAtNormalAttack: 2
 --- !u!65 &886420324542358980
 BoxCollider:
   m_ObjectHideFlags: 0
