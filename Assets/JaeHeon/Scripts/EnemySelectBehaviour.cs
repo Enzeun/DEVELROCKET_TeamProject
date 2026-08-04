@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-enum Enemy_Behaviour
+public enum Enemy_Behaviour
 {
     None,
     Attack,
@@ -18,6 +18,7 @@ public class EnemySelectBehaviour : MonoBehaviour
     private Dictionary<Enemy_Behaviour, float> enemyBehaviourValue = new Dictionary<Enemy_Behaviour, float>();
     //가중치 범위 계산 후 결과값 저장
     [SerializeField] private Enemy_Behaviour finalValue;
+    [SerializeField] private Enemy_Behaviour currentBehaviour;
 
 
 
@@ -51,13 +52,12 @@ public class EnemySelectBehaviour : MonoBehaviour
 
     }
 
-
     /// <summary>
     /// Dictionary에 저장된 값을 불러와서 범위를 지정해 해당 범위 내 값을 토대로 enemy의 행동을 정해줍니다.
     /// </summary>
     /// <returns></returns>
     [ContextMenu("범위 측정 및 계산")]
-    private Enemy_Behaviour Calc_Enemy_Behaviour()
+    public Enemy_Behaviour Calc_Enemy_Behaviour()
     {
         float sumWeight = 0;
 

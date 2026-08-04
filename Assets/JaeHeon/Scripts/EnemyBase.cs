@@ -10,6 +10,9 @@ public class EnemyBase : MonoBehaviour
     //적 타입 enum
     //가중치는 적에게 개별 적용
     //적들 필요한 필드 내용 : 몬스터타입, 체력, 방어력, 가중치, 현재 할 행동 내역, 
+    [SerializeField] EnemyAnimation ani;
+    [SerializeField] EnemySelectBehaviour behaviour;
+    [SerializeField] Transform playerTransform;
 
     [BoxGroup("적 초기스탯"), SerializeField]
     private int maxHp;
@@ -26,6 +29,7 @@ public class EnemyBase : MonoBehaviour
     public int currentHp { get; private set; }
     [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
     public bool isDead { get; private set; } = false;
+    private Enemy_Behaviour currentBehaviour;
 
 
     /// <summary>
@@ -37,7 +41,7 @@ public class EnemyBase : MonoBehaviour
     private void Awake()
     {
         currentHp = maxHp;
-        OnDie += EnemyDie;
+        OnDie += Die;
         Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attackPower} / defence : {defencePower}");
     }
 
@@ -50,8 +54,74 @@ public class EnemyBase : MonoBehaviour
         return buffWeight;
     }
 
+
+    private void EnemyTurn()
+    {
+        currentBehaviour = behaviour.Calc_Enemy_Behaviour();
+
+        if(currentBehaviour == Enemy_Behaviour.Attack)
+        {
+            NormalAttack();
+        }
+        else if(currentBehaviour == Enemy_Behaviour.Skill1)
+        {
+            Skill1();
+        }
+        else if(currentBehaviour == Enemy_Behaviour.Skill2)
+        {
+            Skill2();
+        }
+        else if(currentBehaviour == Enemy_Behaviour.Skill3)
+        {
+            Skill3();
+        }
+        else if(currentBehaviour == Enemy_Behaviour.Skill4)
+        {
+            Skill4();
+        }
+        else if(currentBehaviour == Enemy_Behaviour.Buff)
+        {
+            Buff();
+        }
+        else
+        {
+            None();
+        }
+    }
+
+
+
+    private void NormalAttack()
+    {
+        ani.EnemyAttack();
+    }
+    private void Skill1()
+    {
+        ani.EnemyEmissionProjectile(playerTransform);
+    }
+    private void Skill2()
+    {
+        ani.EnemyEmissionProjectile(playerTransform);
+    }
+    private void Skill3()
+    {
+        ani.EnemyEmissionProjectile(playerTransform);
+    }
+    private void Skill4()
+    {
+        ani.EnemyEmissionProjectile(playerTransform);
+    }
+    private void Buff()
+    {
+        ani.EnemyEmissionProjectile(playerTransform);
+    }
+    private void None()
+    {
+        //ani.EnemyEmissionProjectile(playerTransform);
+    }
+
     [Button]
-    private void EnemyDie() 
+    private void Die() 
     {
         Debug.Log($"{gameObject.name} >> EnemyDie");
     }
@@ -59,8 +129,10 @@ public class EnemyBase : MonoBehaviour
     [Button]
     public void TakeDamage(int amount)
     {
-        currentHp  =  Math.Clamp(currentHp, 0, currentHp - amount);
-
+        if (amount > 0)
+        {
+            currentHp = Math.Clamp(currentHp, 0, currentHp - amount);
+        }
         if(currentHp == 0)
         {
             OnDie?.Invoke();
