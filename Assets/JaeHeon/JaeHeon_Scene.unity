@@ -1113,9 +1113,10 @@ MonoBehaviour:
   maxHp: 0
   attackPower: 5
   defencePower: 4
-  attackWeight: 6
-  defenceWeight: 5
-  buffWeight: 4
+  attackWeights:
+  - 2
+  - 3
+  buffWeight: 1
 --- !u!4 &1636009399
 Transform:
   m_ObjectHideFlags: 0

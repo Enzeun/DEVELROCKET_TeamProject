@@ -3,10 +3,13 @@ using UnityEngine;
 enum Enemy_Behaviour
 {
     Attack,
+    Skill1,
+    Skill2,
+    Skill3,
     Buff
 }
 
-public class EnemySetValue : MonoBehaviour
+public class EnemySelectBehaviour : MonoBehaviour
 {
     [SerializeField] private EnemyBase enemyBase;
     //Enemy의 행동에 따른 가중치를 Dictionary로 저장
@@ -63,7 +66,28 @@ public class EnemySetValue : MonoBehaviour
         Debug.Log($"랜덤 값 범위 : 1 ~ {sumWeight}");
         Debug.Log($"랜덤값? : {behaviourRange} / 공격 값 :  0 ~ {sumWeight} / 버프 값 : {sumWeight} ~ {behaviourRange}");
 
-        //case문으로 여기if문 내부에서 짜르거나 case문으로 통일 >> queue를 통해서 몇개 있는지 확ㄷ인 후에 그 만큼 뒤에서부터 (buff)부터 스킬 판정하기
+
+        if(behaviourRange > buffValue && behaviourRange <= sumWeight)
+        {
+            finalValue = Enemy_Behaviour.Buff;
+        }
+        else
+        {
+            float remainValue = sumWeight - buffValue;
+            List<float> aw = enemyBase.GetAttackWeights();
+            for (int i = 0 ; i < aw.Count; i--)
+            {
+                if(behaviourRange > remainValue - aw[i] && behaviourRange <= remainValue)
+                {
+                    finalValue = Enemy_Behaviour.Attack;
+                }
+                remainValue -= aw[i];
+            }
+        }
+                    //잘못됨
+        //return 할 때 i 값도 같이 넘겨서 attackweight의 i번째를 사용하겠다는 느낌?
+
+
         if(behaviourRange >= 1 && behaviourRange < buffValue)
         {
             finalValue = Enemy_Behaviour.Attack;
