@@ -443,6 +443,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1354381945093947630, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 1624654825}
     - target: {fileID: 2219866939652499699, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.3398294
@@ -487,10 +491,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Scorpion
       objectReference: {fileID: 0}
-    - target: {fileID: 9164061269032085072, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1624654821}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1170,8 +1170,9 @@ GameObject:
   - component: {fileID: 1624654824}
   - component: {fileID: 1624654823}
   - component: {fileID: 1624654822}
+  - component: {fileID: 1624654826}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1273,6 +1274,18 @@ Transform:
   - {fileID: 363569212}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1624654826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624654821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a24b258b26cd040a40fd1bb5fa8644, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerBaseStat
 --- !u!1001 &1686103893
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1579,6 +1592,6 @@ SceneRoots:
   - {fileID: 1542031499}
   - {fileID: 1054200621}
   - {fileID: 1707092582}
-  - {fileID: 1624654825}
   - {fileID: 624761038}
   - {fileID: 748085718081435363}
+  - {fileID: 1624654825}

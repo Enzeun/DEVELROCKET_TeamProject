@@ -1229,7 +1229,7 @@ MonoBehaviour:
   ani: {fileID: 0}
   behaviour: {fileID: 0}
   playerTransform: {fileID: 0}
-  maxHp: 100
+  _maxHp: 100
   attackPower: 5
   defencePower: 4
   attackWeights:
@@ -1267,7 +1267,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAniamationEvent
   animator: {fileID: 1913175544594587217}
-  player: {fileID: 0}
+  enemyBase: {fileID: 0}
+  targetTransform: {fileID: 0}
+  enemyMoveSpeed: 1
   projectilePrefab: {fileID: 5932506449497926068, guid: 6c63fbbd5082ae249aba411955ecc076, type: 3}
   EmissionTransform: {fileID: 5241930021367751706}
   projectileSpeed: 20.57
