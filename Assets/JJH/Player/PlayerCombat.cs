@@ -1,6 +1,5 @@
-using System;
-using System.Runtime.InteropServices;
 using UnityEngine;
+using static SkillEnums;
 using SF = UnityEngine.SerializeField;
 public class PlayerCombat : MonoBehaviour
 {
@@ -17,12 +16,14 @@ public class PlayerCombat : MonoBehaviour
     // 플레이어 기본 스탯은 임시로 상수
     [HideInInspector]public PlayerBaseStat player;
 
-    private Transform nowTarget;
+    private Transform[] nowTarget;
     private SkillBaseStat nowSkillData;
 
     private bool damagedTakenSub = false;
     private bool deadSub = false;
     private bool effectFinSub = false;
+
+    private bool isEndSet = false;
 
     private void OnEnable()
     {
@@ -73,9 +74,8 @@ public class PlayerCombat : MonoBehaviour
     /// </summary>
     /// <param name="data"></param>
     /// <param name="target"></param>
-    public void SetNowSkillAndTarget(SkillBaseStat data, Transform target)
+    public void SetNowSkillAndTarget(SkillBaseStat data, Transform[] target)
     {
-        // 원랜 아래를 호출해야함
         nowSkillData = data;
         nowTarget = target;
     }
@@ -141,6 +141,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if(nowSkillData != null)
         playerAnimator.Play(nowSkillData.Pose.ToString());
+        isEndSet = false;
     }
 
     /// <summary>
@@ -150,21 +151,46 @@ public class PlayerCombat : MonoBehaviour
     public void EffectActiveTest(int id)
     {
         nowSkillData = SkillData.BaseSkillData[id];
-        nowTarget = DummyTarget;
+        nowTarget = new Transform[1] { DummyTarget };
         playerAnimator.Play(nowSkillData.Pose.ToString());
     }
 
     public void EffectActive()
     {
-        nowTarget = DummyTarget;
-        
         if (nowSkillData != null && nowTarget != null)
             spawner.SpawnEffect(nowSkillData.Name, nowSkillData.Pose, nowTarget);
     }
 
     public void EffectEnd()
     {
-        
+        if(nowSkillData.TargetType == SkillTargetType.Single && !isEndSet)
+        {
+            isEndSet = true;
+
+            SkillBaseStat skill = nowSkillData;
+
+            if (nowTarget != null && nowTarget[0].TryGetComponent(out EnemyBase stat))
+            {
+                int damage = (player.AtkPoint * skill.SkillDamageCalcByUpgrade() + 50) / 100;
+
+                stat.TakeDamage(damage);
+            }
+        }
+        else if (nowSkillData.TargetType == SkillTargetType.Area && !isEndSet)
+        {
+            isEndSet = true;
+
+            SkillBaseStat skill = nowSkillData;
+
+            foreach (Transform t in nowTarget)
+            {
+                if (t != null && t.TryGetComponent(out EnemyBase stat))
+                {
+                    int damage = (player.AtkPoint * skill.SkillDamageCalcByUpgrade() + 50) / 100;
+                    stat.TakeDamage(damage);
+                }
+            }
+        }
     }
 
     /// <summary>

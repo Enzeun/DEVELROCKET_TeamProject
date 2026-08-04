@@ -60,47 +60,50 @@ public class SkillEffectSpawner : MonoBehaviour
         OnEffectFinished?.Invoke();
     }
 
-    public void SpawnEffect(string skillName, SkillPoseType pose, Transform targetTransform)
+    public void SpawnEffect(string skillName, SkillPoseType pose, Transform[] targetTransform)
     {
-        GameObject obj = GetObject(skillName);
-
-        // 투사체인 경우 
-        if (pose == SkillPoseType.Vertical || pose == SkillPoseType.Horizontal)
+        foreach (var item in targetTransform)
         {
-            Vector3 startPostion = Vector3.zero;
-            if (pose == SkillPoseType.Horizontal)
-                obj.transform.position = PlayerStaffTransformByHorizontal.position;
-            else
-                obj.transform.position = PlayerStaffTransformByVertical.position;
+            GameObject obj = GetObject(skillName);
 
-            Collider collider = targetTransform.GetComponent<Collider>();
-            Vector3 colliderCenter = targetTransform.TransformPoint(collider.bounds.center);
-            Vector3 direction = new Vector3(targetTransform.position.x, colliderCenter.y, targetTransform.position.z) - obj.transform.position;
-            Vector3 dir = direction.normalized;
-
-            if (dir != Vector3.zero)
-                obj.transform.forward = dir;
-            
-            obj.SetActive(true);
-        }
-        // 즉발 객체인 경우
-        else
-        {
-            obj.transform.position = targetTransform.position;
-            obj.SetActive(true);
-            float hitTime = 0;
-
-            foreach (var item in prefabs)
+            // 투사체인 경우 
+            if (pose == SkillPoseType.Vertical || pose == SkillPoseType.Horizontal)
             {
-                if (skillName == item.name) hitTime = item.hitTime;
+                Vector3 startPostion = Vector3.zero;
+                if (pose == SkillPoseType.Horizontal)
+                    obj.transform.position = PlayerStaffTransformByHorizontal.position;
+                else
+                    obj.transform.position = PlayerStaffTransformByVertical.position;
+
+                Collider collider = item.GetComponent<Collider>();
+                Vector3 colliderCenter = item.TransformPoint(collider.bounds.center);
+                Vector3 direction = new Vector3(item.position.x, colliderCenter.y, item.position.z) - obj.transform.position;
+                Vector3 dir = direction.normalized;
+
+                if (dir != Vector3.zero)
+                    obj.transform.forward = dir;
+
+                obj.SetActive(true);
+            }
+            // 즉발 객체인 경우
+            else
+            {
+                obj.transform.position = item.position;
+                obj.SetActive(true);
+                float hitTime = 0;
+
+                foreach (var prefab in prefabs)
+                {
+                    if (skillName == prefab.name) hitTime = prefab.hitTime;
+                }
+
+                if (hitTimer != null) StopCoroutine(hitTimer);
+
+                hitTimer = StartCoroutine(HitTarget(hitTime));
             }
 
-            if (hitTimer != null) StopCoroutine(hitTimer);
-
-            hitTimer = StartCoroutine(HitTarget(hitTime));
+            DOVirtual.DelayedCall(3, () => ReleaseObject(skillName, obj));
         }
-
-        DOVirtual.DelayedCall(4, () => ReleaseObject(skillName, obj));
     }
 
     public void SpawnEffect(Transform targetTransform)
