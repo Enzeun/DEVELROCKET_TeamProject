@@ -5,6 +5,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 using static UnityEngine.Rendering.DebugUI;
 
 public class BattleUIManager : MonoBehaviour
@@ -40,9 +41,10 @@ public class BattleUIManager : MonoBehaviour
             playerStat.OnDamagedTaken += TakeDamage_UI_NumberAnimation_Player;
         }
 
-        foreach(var enemy in enemys)
+        foreach (var enemy in enemys)
         {
-            
+            enemy.OnTakeDamage += Enemy_TakeDamage;
+
         }
     }
 
@@ -52,6 +54,10 @@ public class BattleUIManager : MonoBehaviour
         {
             playerStat.OnHpChanged -= PlayerHpChangedUI;
             playerStat.OnDamagedTaken -= TakeDamage_UI_NumberAnimation_Player;
+        }
+        foreach (var enemy in enemys)
+        {
+            enemy.OnTakeDamage -= Enemy_TakeDamage;
         }
     }
 
@@ -86,7 +92,14 @@ public class BattleUIManager : MonoBehaviour
 
     //==========================================================================================================================
 
-    [BoxGroup("UI Debug"), Button]
+    [BoxGroup("UI Debug_Player"), Button]
+    private void InitializePlayerHpBar()
+    {
+
+    }
+
+
+    [BoxGroup("UI Debug_Player"), Button]
     private void PlayerHpChangedUI(int currentHp, int maxHp)
     {
         float endValue = (float)currentHp / maxHp;
@@ -102,7 +115,7 @@ public class BattleUIManager : MonoBehaviour
         DamageNumber damageNumber = player_NumberPrefab.SpawnGUI(playerHP_Number_Location, Vector2.zero, damage);
     }
 
-    [BoxGroup("UI Debug"), Button]
+    [BoxGroup("UI Debug_Player"), Button]
     private void HP_Decrease_UIAnimation_Player(float endValue)
     {
         Math.Clamp(endValue, 0, 1);
@@ -112,12 +125,33 @@ public class BattleUIManager : MonoBehaviour
 
     //==========================================================================================================================
 
-    [BoxGroup("UI Debug"), Button]
-    private void Enemy_TakeDamage(EnemyBase enemy)
+    [BoxGroup("UI Debug_Enemy"), Button]
+    private void Enemy_TakeDamage(EnemyBase enemy, int currentHp, int damage)
     {
+        for (int i = 0; i < enemys.Length; i++)
+        {
+            if (enemy == enemys[i])
+            {
+                TakeDamage_UI_NumberAnimation_Enemy(damage, i);
 
+                enemy_HpBarControllers[i].hpText.text = $"{currentHp}/{enemy.maxHp}";
+
+                float endValue = (float)currentHp / enemy.maxHp;
+
+                //Debug.Log(currentHp + "1");
+                //Debug.Log(endValue + "2");
+
+                Math.Clamp(endValue, 0, 1);
+
+                HP_Decrease_UIAnimation_Enemy(endValue, i);
+
+                return;
+            }
+        }
     }
-    [BoxGroup("UI Debug"), Button]
+
+
+    [BoxGroup("UI Debug_Enemy"), Button]
     private void TakeDamage_UI_NumberAnimation_Enemy(int damage, int index)
     {
         if (index > enemy_HpBarControllers.Length)
@@ -127,7 +161,7 @@ public class BattleUIManager : MonoBehaviour
         }
         DamageNumber damageNumber = enemy_NumberPrefab.SpawnGUI(enemy_HpBarControllers[index].numberLocation, Vector2.zero, damage);
     }
-    [BoxGroup("UI Debug"), Button]
+    [BoxGroup("UI Debug_Enemy"), Button]
     private void HP_Decrease_UIAnimation_Enemy(float endValue, int index)
     {
         if (index > enemy_HpBarControllers.Length)
