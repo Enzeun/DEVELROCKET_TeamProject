@@ -171,8 +171,7 @@ public class PlayerCombat : MonoBehaviour
 
             if (nowTarget != null && nowTarget[0].TryGetComponent(out EnemyBase stat))
             {
-                int damage = Mathf.RoundToInt((float)player.AtkPoint *
-                    skill.SkillDamageCalcByUpgrade() / 100f);
+                int damage = (player.AtkPoint * skill.SkillDamageCalcByUpgrade() + 50) / 100;
 
                 stat.TakeDamage(damage);
             }
@@ -187,9 +186,7 @@ public class PlayerCombat : MonoBehaviour
             {
                 if (t != null && t.TryGetComponent(out EnemyBase stat))
                 {
-                    int damage = Mathf.RoundToInt((float)player.AtkPoint * 
-                        skill.SkillDamageCalcByUpgrade() / 100f);
-
+                    int damage = (player.AtkPoint * skill.SkillDamageCalcByUpgrade() + 50) / 100;
                     stat.TakeDamage(damage);
                 }
             }
