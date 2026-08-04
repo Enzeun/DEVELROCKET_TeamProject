@@ -2,10 +2,11 @@ using DamageNumbersPro;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using TMPro;
-using Unity.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -16,10 +17,15 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
     private DamageNumber player_NumberPrefab;
     [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
-    private RectTransform PlayerHP_Number_Location;
+    private RectTransform playerHP_Number_Location;
 
     [SerializeField, Required, BoxGroup("**참조필요!**적")]
+    private NumberLoacationContriller[] enemy_HpBarControllers;
+    [SerializeField, Required, BoxGroup("**참조필요!**적")]
     private DamageNumber enemy_NumberPrefab;
+    [SerializeField, Required, BoxGroup("**참조필요!**적")]
+    private List<GameObject> enemy_HpBarLocations;
+
 
 
 
@@ -27,15 +33,45 @@ public class BattleUIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        playerStat.OnHpChanged += PlayerHpChangedUI;
-        playerStat.OnDamagedTaken += TakeDamage_UI_NumberAnimation;
+        if (playerStat != null)
+        {
+            playerStat.OnHpChanged += PlayerHpChangedUI;
+            playerStat.OnDamagedTaken += TakeDamage_UI_NumberAnimation;
+        }
     }
 
     private void OnDisable()
     {
-        playerStat.OnHpChanged -= PlayerHpChangedUI;
-        playerStat.OnDamagedTaken -= TakeDamage_UI_NumberAnimation;
+        if (playerStat != null)
+        {
+            playerStat.OnHpChanged -= PlayerHpChangedUI;
+            playerStat.OnDamagedTaken -= TakeDamage_UI_NumberAnimation;
+        }
     }
+
+    private void Start()
+    {
+        SetEnemyUILocation();
+    }
+
+    private void SetEnemyUILocation()
+    {
+        // 카메라 뒤쪽으로 넘어갔을때의 코드, 지금은 필요없음
+        //if (newPosition.z < 0)
+        //{           
+        //    enemy_HpBarControllers[0].gameObject.SetActive(false);
+        //    return;
+        //}
+        //enemy_HpBarControllers[0].gameObject.SetActive(true);
+
+        Vector3 newPosition = Camera.main.WorldToScreenPoint(enemy_HpBarLocations[0].transform.position);
+
+        float movingPosition = enemy_HpBarControllers[0].GetComponent<RectTransform>().rect.width /4;
+
+        enemy_HpBarControllers[0].gameObject.transform.position = newPosition - Vector3.right* movingPosition;
+    }
+
+    //==========================================================================================================================
 
     [BoxGroup("UI Debug"), Button]
     private void PlayerHpChangedUI(int currentHp, int maxHp)
@@ -50,7 +86,7 @@ public class BattleUIManager : MonoBehaviour
 
     private void TakeDamage_UI_NumberAnimation(int damage)
     {
-        DamageNumber damageNumber = player_NumberPrefab.SpawnGUI(PlayerHP_Number_Location, Vector2.zero, damage);
+        DamageNumber damageNumber = player_NumberPrefab.SpawnGUI(playerHP_Number_Location, Vector2.zero, damage);
 
     }
 
