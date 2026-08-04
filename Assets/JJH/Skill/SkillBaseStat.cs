@@ -50,7 +50,7 @@ public class SkillBaseStat
         {
             NowUpgradeList.ForEach(damageUp => { 
                 if(damageUp == SkillUpgradeType.Damage)
-                    nowDamage = nowDamage * 150 / 100;
+                    nowDamage = (nowDamage * 150 + 50) / 100;
             });
         }
 
