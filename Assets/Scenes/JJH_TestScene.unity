@@ -322,11 +322,11 @@ MonoBehaviour:
       - m_Target: {fileID: 3562701517636250562}
         m_TargetAssemblyTypeName: PlayerCombat, Assembly-CSharp
         m_MethodName: EffectActiveTest
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1000
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1109,6 +1109,10 @@ PrefabInstance:
       value: SkillEffectSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 2377754123358636421, guid: 17ea3879c61671a42b0686e09f49b75d, type: 3}
+      propertyPath: playerCombat
+      value: 
+      objectReference: {fileID: 3562701517636250562}
+    - target: {fileID: 2377754123358636421, guid: 17ea3879c61671a42b0686e09f49b75d, type: 3}
       propertyPath: PlayerTransform
       value: 
       objectReference: {fileID: 536159019}
@@ -1224,7 +1228,7 @@ PrefabInstance:
     - target: {fileID: 6192482900391146668, guid: 17e1966291942254fbe1361ac4e7055a, type: 3}
       propertyPath: DummyTarget
       value: 
-      objectReference: {fileID: 90735161}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
