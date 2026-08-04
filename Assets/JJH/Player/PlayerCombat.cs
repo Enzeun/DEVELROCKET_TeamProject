@@ -4,12 +4,12 @@ using UnityEngine;
 using SF = UnityEngine.SerializeField;
 public class PlayerCombat : MonoBehaviour
 {
-    private static readonly int IsDeathHash = Animator.StringToHash("IsDeath");
     private static readonly int IsSkillSelectHash = Animator.StringToHash("IsSkillSelect");
+    private static readonly int IsRunHash = Animator.StringToHash("IsRun");
+    private static readonly int IsDeathHash = Animator.StringToHash("IsDeath");
     private static readonly int IsWeakHash = Animator.StringToHash("IsWeak");
     private static readonly int IsStrongHash = Animator.StringToHash("IsStrong");
-    private static readonly int IsRunHash = Animator.StringToHash("IsRun");
-    
+
 
     [SF] private SkillEffectSpawner spawner;
     [SF] private Transform DummyTarget;
