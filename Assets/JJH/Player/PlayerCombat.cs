@@ -1,20 +1,34 @@
+using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static SkillEnums;
 using SF = UnityEngine.SerializeField;
 public class PlayerCombat : MonoBehaviour
 {
+    #region 애니메이션 클립 해시
     private static readonly int IsSkillSelectHash = Animator.StringToHash("IsSkillSelect");
     private static readonly int IsRunHash = Animator.StringToHash("IsRun");
     private static readonly int IsDeathHash = Animator.StringToHash("IsDeath");
     private static readonly int IsWeakHash = Animator.StringToHash("IsWeak");
     private static readonly int IsStrongHash = Animator.StringToHash("IsStrong");
+    #endregion
 
-
+    #region 직렬화 변수
+    [Header("스크립트")]
     [SF] private SkillEffectSpawner spawner;
+
+    [Header("기타")]
     [SF] private Transform DummyTarget;
     [SF] private Animator playerAnimator;
+
+    #endregion
+
+    #region 지역 변수
     // 플레이어 기본 스탯은 임시로 상수
-    [HideInInspector]public PlayerBaseStat player;
+    public PlayerBaseStat player;
+
+    private Tween moveTween;
 
     private Transform[] nowTarget;
     private SkillBaseStat nowSkillData;
@@ -24,6 +38,7 @@ public class PlayerCombat : MonoBehaviour
     private bool effectFinSub = false;
 
     private bool isEndSet = false;
+    #endregion
 
     private void OnEnable()
     {
@@ -69,6 +84,25 @@ public class PlayerCombat : MonoBehaviour
         SubEvent();
     }
 
+    
+
+    public void PlayerMove(Transform to)
+    {
+        moveTween?.Kill();
+
+        PlayerActiveRun();
+        float distance = Vector3.Distance(transform.position, to.position);
+        
+        Vector3 direction = to.position - transform.position;
+        direction.y = 0f;
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        transform.rotation = targetRotation;
+
+        moveTween = transform
+            .DOMove(to.position, distance / 4f)
+            .SetEase(Ease.Linear)
+            .OnComplete(() => { PlayerActiveIdle(); moveTween = null; });
+    }
     /// <summary>
     /// 현재 사용할 스킬과 타겟 데이터 지정
     /// </summary>
@@ -161,6 +195,9 @@ public class PlayerCombat : MonoBehaviour
             spawner.SpawnEffect(nowSkillData.Name, nowSkillData.Pose, nowTarget);
     }
 
+    /// <summary>
+    /// 스킬이 적에게 적중했거나 적중시간이 되었을 경우 이벤트를 통해 호출되는 함수
+    /// </summary>
     public void EffectEnd()
     {
         if(nowSkillData.TargetType == SkillTargetType.Single && !isEndSet)
