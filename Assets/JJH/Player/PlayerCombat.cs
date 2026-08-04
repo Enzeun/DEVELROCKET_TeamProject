@@ -20,8 +20,6 @@ public class PlayerCombat : MonoBehaviour
     private Transform nowTarget;
     private SkillBaseStat nowSkillData;
 
-    private event Action OnPlayerSkillActived;
-
     private bool damagedTakenSub = false;
     private bool deadSub = false;
 
