@@ -1162,6 +1162,7 @@ GameObject:
   - component: {fileID: 1354381945093947630}
   - component: {fileID: 8849269545696773658}
   - component: {fileID: 9164061269032085072}
+  - component: {fileID: 886420324542358980}
   m_Layer: 0
   m_Name: Scorpion
   m_TagString: Untagged
@@ -1178,7 +1179,7 @@ Transform:
   m_GameObject: {fileID: 6675629720354093767}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.659, y: -0.13, z: 2.35661}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1225,6 +1226,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933a5412bb7fe8b46824de0f283f049e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
+  ani: {fileID: 0}
+  behaviour: {fileID: 0}
+  playerTransform: {fileID: 0}
   maxHp: 100
   attackPower: 5
   defencePower: 4
@@ -1249,6 +1253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemySelectBehaviour
   enemyBase: {fileID: 1354381945093947630}
   finalValue: 0
+  currentBehaviour: 0
 --- !u!114 &9164061269032085072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1263,10 +1268,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAniamationEvent
   animator: {fileID: 1913175544594587217}
   player: {fileID: 0}
-  enemyBase: {fileID: 1354381945093947630}
-  projectilePrefab: {fileID: 3105598186387114839, guid: 2264edea95cd69d449154127e9bffa6a, type: 3}
+  projectilePrefab: {fileID: 5932506449497926068, guid: 6c63fbbd5082ae249aba411955ecc076, type: 3}
   EmissionTransform: {fileID: 5241930021367751706}
   projectileSpeed: 20.57
+  spellPrefab: {fileID: 800211394734574691, guid: 28cd63c762984524d9d305769033b4e7, type: 3}
+  buffPrefab: {fileID: 8988883506428694636, guid: 8ac386f5433ba784eac1a6834024068c, type: 3}
+--- !u!65 &886420324542358980
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6675629720354093767}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &6869920660760612235
 GameObject:
   m_ObjectHideFlags: 0
