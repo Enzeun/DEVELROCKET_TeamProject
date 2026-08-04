@@ -13,11 +13,12 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] EnemyAnimation ani;
     [SerializeField] EnemySelectBehaviour behaviour;
 
-    [BoxGroup("스타트에서 Transform 참조됩니다.")]
-    [SerializeField] Transform playerTransform;
+    [BoxGroup("스타트에서 Transform 참조됩니다")]
+    public Transform playerTransform;
 
-    [BoxGroup("적 초기스탯")]
-    public int maxHp { get; private set; }
+    [BoxGroup("적 초기스탯"), SerializeField]
+    private int _maxHp;
+    public int maxHp { get => _maxHp; }
     [BoxGroup("적 초기스탯"), SerializeField]
     private float attackPower;
     [BoxGroup("적 초기스탯"), SerializeField]
@@ -33,12 +34,11 @@ public class EnemyBase : MonoBehaviour
     public bool isDead { get; private set; } = false;
     private Enemy_Behaviour currentBehaviour;
 
-
     /// <summary>
     /// 
     /// </summary>
     public event Action OnDie;
-    public Action<int, int> OnTakeDamage;
+    public Action<EnemyBase, int, int> OnTakeDamage;
 
 
     private void Awake()
@@ -46,6 +46,8 @@ public class EnemyBase : MonoBehaviour
         currentHp = maxHp;
         OnDie += Die;
         Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attackPower} / defence : {defencePower}");
+        ani = GetComponent<EnemyAnimation>();
+        behaviour = GetComponent<EnemySelectBehaviour>();
     }
 
     private void Start()
@@ -62,38 +64,38 @@ public class EnemyBase : MonoBehaviour
         return buffWeight;
     }
 
+
+    //추후에 턴 넘어왔을 때 currentBehaviour = behaviour.Calc_Enemy_Behaviour(); 해주시면 어떤 행동 할 지 가져오게 됩니다.
+    // 이후 아래 if문처럼 스킬, 공격, 버프 불러주시면 됩니다.
     public void SelectBehaviour()
     {
         currentBehaviour = behaviour.Calc_Enemy_Behaviour();
     }
-
-    //추후에 턴 넘어왔을 때 currentBehaviour = behaviour.Calc_Enemy_Behaviour(); 해주시면 어떤 행동 할 지 가져오게 됩니다.
-    // 이후 아래 if문처럼 스킬, 공격, 버프 불러주시면 됩니다.
     private void StartBehaviour()
     {
         //currentBehaviour = behaviour.Calc_Enemy_Behaviour();
 
-        if(currentBehaviour == Enemy_Behaviour.Attack)
+        if (currentBehaviour == Enemy_Behaviour.Attack)
         {
             NormalAttack();
         }
-        else if(currentBehaviour == Enemy_Behaviour.Skill1)
+        else if (currentBehaviour == Enemy_Behaviour.Skill1)
         {
             Skill1();
         }
-        else if(currentBehaviour == Enemy_Behaviour.Skill2)
+        else if (currentBehaviour == Enemy_Behaviour.Skill2)
         {
             Skill2();
         }
-        else if(currentBehaviour == Enemy_Behaviour.Skill3)
+        else if (currentBehaviour == Enemy_Behaviour.Skill3)
         {
             Skill3();
         }
-        else if(currentBehaviour == Enemy_Behaviour.Skill4)
+        else if (currentBehaviour == Enemy_Behaviour.Skill4)
         {
             Skill4();
         }
-        else if(currentBehaviour == Enemy_Behaviour.Buff)
+        else if (currentBehaviour == Enemy_Behaviour.Buff)
         {
             Buff();
         }
@@ -107,7 +109,7 @@ public class EnemyBase : MonoBehaviour
 
     private void NormalAttack()
     {
-        ani.EnemyAttack();
+        ani.EnemyNormalAttack(playerTransform);
     }
     //
     private void Skill1()
@@ -136,7 +138,7 @@ public class EnemyBase : MonoBehaviour
     }
 
     [Button]
-    private void Die() 
+    private void Die()
     {
         Debug.Log($"{gameObject.name} >> EnemyDie");
         ani.EnemyDie();
@@ -147,10 +149,11 @@ public class EnemyBase : MonoBehaviour
     {
         if (amount > 0)
         {
+            ani.EnemyTakeDamage();
             currentHp = Math.Clamp(currentHp, 0, currentHp - amount);
-            OnTakeDamage?.Invoke(currentHp, amount);
+            OnTakeDamage?.Invoke(this, currentHp, amount);
         }
-        if(currentHp == 0)
+        if (currentHp == 0)
         {
             OnDie?.Invoke();
         }
