@@ -73,7 +73,9 @@ public class SkillEffectSpawner : MonoBehaviour
             else
                 obj.transform.position = PlayerStaffTransformByVertical.position;
 
-            Vector3 direction = targetTransform.position - obj.transform.position;
+            Collider collider = targetTransform.GetComponent<Collider>();
+            Vector3 colliderCenter = targetTransform.TransformPoint(collider.bounds.center);
+            Vector3 direction = new Vector3(targetTransform.position.x, colliderCenter.y, targetTransform.position.z) - obj.transform.position;
             Vector3 dir = direction.normalized;
 
             if (dir != Vector3.zero)
