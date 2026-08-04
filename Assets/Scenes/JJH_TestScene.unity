@@ -809,10 +809,10 @@ MonoBehaviour:
     hitTime: 0
     prefab: {fileID: 1294834399362254, guid: 9226726c851a790469d64d3093814ad4, type: 3}
   - name: "\uB2E8\uC77C2"
-    hitTime: 0.93
+    hitTime: 0.43
     prefab: {fileID: 1839445213900760, guid: a91a44d8fe830874cb776823c2ba3e9f, type: 3}
   - name: "\uAD11\uC5ED1"
-    hitTime: 0.43
+    hitTime: 0.93
     prefab: {fileID: 1008656586100278, guid: 70df949521e109c4f9143f20e87054aa, type: 3}
 --- !u!1 &1708547694
 GameObject:

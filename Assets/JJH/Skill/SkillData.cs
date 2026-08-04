@@ -14,7 +14,7 @@ public static class SkillData
             // 스킬 설명
             "설명1",
             // 코스트
-            1,
+            2,
             // 피해량
             100,
             SkillPoseType.Horizontal,
@@ -31,7 +31,7 @@ public static class SkillData
             1001,
             "단일2",
             "설명2",
-            2,      
+            3,      
             200,
             SkillPoseType.Instance,
             new List<SkillUpgradeType> {
@@ -46,7 +46,7 @@ public static class SkillData
             1002,
             "광역1", 
             "설명3", 
-            3, 
+            4, 
             150, 
             SkillPoseType.Stomp,
             new List<SkillUpgradeType> {
