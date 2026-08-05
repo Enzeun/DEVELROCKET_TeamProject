@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 1984793985321458613}
   - component: {fileID: 2468490877763626703}
   - component: {fileID: 3176026547851969045}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Fire
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49,9 +49,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 605a456cfc02f6b499a64717539a27e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 12
-  hitOffset: 0
-  UseFirePointRotation: 0
+  speed: 15
+  hitOffset: 0.2
+  UseFirePointRotation: 1
   rotationOffset: {x: 0, y: 0, z: 0}
   hit: {fileID: 2636360934328048228}
   hitPS: {fileID: 2761633468776195632}
@@ -63,7 +63,7 @@ MonoBehaviour:
   col: {fileID: 2468490877763626703}
   lightSourse: {fileID: 5358976921736162886}
   notDestroy: 1
-  lifeTime: 3
+  lifeTime: 4
   detachedLifeTime: 1
   spawner: {fileID: 2377754123358636421, guid: 17ea3879c61671a42b0686e09f49b75d, type: 3}
 --- !u!108 &5358976921736162886
@@ -150,7 +150,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
@@ -171,7 +171,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -217,9 +217,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3465534895179832412}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Visuals
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -250,9 +250,65 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3465534895179832412}
     m_Modifications:
+    - target: {fileID: 1188430696624562, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188430696624562, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
+      propertyPath: m_TagString
+      value: Projectile
+      objectReference: {fileID: 0}
     - target: {fileID: 1220213892471706, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
       propertyPath: m_Name
       value: Hit 3 black fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 1220213892471706, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1220213892471706, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
+      propertyPath: m_TagString
+      value: Projectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 1428030676702202, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1428030676702202, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
+      propertyPath: m_TagString
+      value: Projectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 1500060728430398, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1500060728430398, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
+      propertyPath: m_TagString
+      value: Projectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 1666447430290226, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1666447430290226, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
+      propertyPath: m_TagString
+      value: Projectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 1822706356427538, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1822706356427538, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
+      propertyPath: m_TagString
+      value: Projectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 1953543915485948, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1953543915485948, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
+      propertyPath: m_TagString
+      value: Projectile
       objectReference: {fileID: 0}
     - target: {fileID: 4444151239728830, guid: 800cddb992d3f5e4eb2348b90447f4a7, type: 3}
       propertyPath: m_RootOrder
@@ -390,6 +446,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Projectile 3 black fire
       objectReference: {fileID: 0}
+    - target: {fileID: 1291810969498484694, guid: 5fd6eee2d94bc4c45a7ea4b8d0119c37, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291810969498484694, guid: 5fd6eee2d94bc4c45a7ea4b8d0119c37, type: 3}
+      propertyPath: m_TagString
+      value: Projectile
+      objectReference: {fileID: 0}
     - target: {fileID: 2142364773969547295, guid: 5fd6eee2d94bc4c45a7ea4b8d0119c37, type: 3}
       propertyPath: looping
       value: 0
@@ -413,6 +477,30 @@ PrefabInstance:
     - target: {fileID: 2145612127869753049, guid: 5fd6eee2d94bc4c45a7ea4b8d0119c37, type: 3}
       propertyPath: playOnAwake
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2268845549193947783, guid: 5fd6eee2d94bc4c45a7ea4b8d0119c37, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2268845549193947783, guid: 5fd6eee2d94bc4c45a7ea4b8d0119c37, type: 3}
+      propertyPath: m_TagString
+      value: Projectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269192152867846767, guid: 5fd6eee2d94bc4c45a7ea4b8d0119c37, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269192152867846767, guid: 5fd6eee2d94bc4c45a7ea4b8d0119c37, type: 3}
+      propertyPath: m_TagString
+      value: Projectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269664353423264187, guid: 5fd6eee2d94bc4c45a7ea4b8d0119c37, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269664353423264187, guid: 5fd6eee2d94bc4c45a7ea4b8d0119c37, type: 3}
+      propertyPath: m_TagString
+      value: Projectile
       objectReference: {fileID: 0}
     - target: {fileID: 6681199989450634396, guid: 5fd6eee2d94bc4c45a7ea4b8d0119c37, type: 3}
       propertyPath: m_LocalPosition.x
@@ -486,9 +574,33 @@ PrefabInstance:
       propertyPath: parentObject
       value: 
       objectReference: {fileID: 3465534895179832412}
+    - target: {fileID: 1433177547856322, guid: f82a1a892a042c1438f8f4704a37e11b, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1433177547856322, guid: f82a1a892a042c1438f8f4704a37e11b, type: 3}
+      propertyPath: m_TagString
+      value: Projectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 1684872380598846, guid: f82a1a892a042c1438f8f4704a37e11b, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1684872380598846, guid: f82a1a892a042c1438f8f4704a37e11b, type: 3}
+      propertyPath: m_TagString
+      value: Projectile
+      objectReference: {fileID: 0}
     - target: {fileID: 1766868900565162, guid: f82a1a892a042c1438f8f4704a37e11b, type: 3}
       propertyPath: m_Name
       value: Flash 3 black fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 1766868900565162, guid: f82a1a892a042c1438f8f4704a37e11b, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1766868900565162, guid: f82a1a892a042c1438f8f4704a37e11b, type: 3}
+      propertyPath: m_TagString
+      value: Projectile
       objectReference: {fileID: 0}
     - target: {fileID: 4276011579606848, guid: f82a1a892a042c1438f8f4704a37e11b, type: 3}
       propertyPath: m_RootOrder

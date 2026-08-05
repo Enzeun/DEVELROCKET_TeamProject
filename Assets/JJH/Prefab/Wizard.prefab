@@ -1436,9 +1436,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   spawner: {fileID: 0}
-  DummyTarget: {fileID: 0}
+  DummyTarget:
+  - {fileID: 0}
   playerAnimator: {fileID: 7145218879692989631}
-  player: {fileID: 0}
 --- !u!114 &3667668145378953889
 MonoBehaviour:
   m_ObjectHideFlags: 0

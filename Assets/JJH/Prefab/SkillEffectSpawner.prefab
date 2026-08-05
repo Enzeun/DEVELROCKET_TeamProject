@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &522602127626905266
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4666044393590269549}
+  m_Layer: 0
+  m_Name: AreaEffectTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4666044393590269549
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522602127626905266}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6279414222076372786}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1748554185861373193
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,7 +60,8 @@ Transform:
   m_LocalPosition: {x: -0.89, y: 0.77, z: -3.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4666044393590269549}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2377754123358636421
@@ -44,7 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcd8121c8e674004d91fd56a4f4da1f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkillEffectSpawner
-  PlayerTransform: {fileID: 982604367651097029, guid: 17e1966291942254fbe1361ac4e7055a, type: 3}
+  PlayerTransform: {fileID: 0}
   PlayerStaffTransformByHorizontal: {fileID: 0}
   PlayerStaffTransformByVertical: {fileID: 0}
   prefabs:
@@ -57,4 +89,6 @@ MonoBehaviour:
   - name: "\uAD11\uC5ED1"
     hitTime: 0.93
     prefab: {fileID: 7700718497256769321, guid: 4ba24b88a40d89747b92dba1a95aa12f, type: 3}
-  playerCombat: {fileID: 6192482900391146668, guid: 17e1966291942254fbe1361ac4e7055a, type: 3}
+  playerCombat: {fileID: 0}
+  areaEffectTransform: {fileID: 4666044393590269549}
+  ProjectileHit: 1
