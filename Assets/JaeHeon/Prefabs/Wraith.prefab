@@ -163,6 +163,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2722478530292901457}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2233721283874811836
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6930319287714565770}
+  m_Layer: 0
+  m_Name: HpBarLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6930319287714565770
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2233721283874811836}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.428, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2722478530292901457}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2251700300990704347
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,6 +747,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2722478530292901457}
   - component: {fileID: 3733727104549148934}
+  - component: {fileID: 156498241468483948}
+  - component: {fileID: 3524389769169750130}
+  - component: {fileID: 5263475148059320058}
+  - component: {fileID: 223573917149607559}
   m_Layer: 0
   m_Name: Wraith
   m_TagString: Untagged
@@ -732,13 +767,14 @@ Transform:
   m_GameObject: {fileID: 5579563553420432645}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.55, y: 0, z: 2.05}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4818314640351578263}
   - {fileID: 7694381364584607274}
   - {fileID: 3256917838854108845}
+  - {fileID: 6930319287714565770}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &3733727104549148934
@@ -763,6 +799,79 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &156498241468483948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5579563553420432645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933a5412bb7fe8b46824de0f283f049e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
+  _maxHp: 400
+  attackPoint: 22
+  defencePoint: 8
+  behaviourListData: []
+  playerTransform: {fileID: 0}
+  hpBarLocation: {fileID: 6930319287714565770}
+--- !u!114 &3524389769169750130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5579563553420432645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47d43e8fc98caa64497aaca5e3f9266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySelectBehaviour
+  finalValue: 0
+  currentBehaviour: 0
+--- !u!114 &5263475148059320058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5579563553420432645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1907d8002404518489c2b4d92386909d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimation
+  animator: {fileID: 0}
+  enemyBase: {fileID: 0}
+  targetTransform: {fileID: 0}
+  projectilePrefab: {fileID: 0}
+  projectileEffectPrefab: {fileID: 0}
+  EmissionTransform: {fileID: 0}
+  spellPrefab: {fileID: 0}
+  buffPrefab: {fileID: 0}
+  enemyMagicSpeed: 0.4
+  enemyMoveSpeed: 1
+  projectileSpeed: 20
+  distanceOfPlayerAtNormalAttack: 2
+  rotateInterval: 0.4
+  waitInterval: 0.4
+  animatingInterval: 1
+  destroyEffectInterval: 2
+  applyDamageInterval: 1
+--- !u!114 &223573917149607559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5579563553420432645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3604ceba36d11340a35b28604f4c1e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrawCircleWhenMouseOver
 --- !u!1 &5881574729786581358
 GameObject:
   m_ObjectHideFlags: 0

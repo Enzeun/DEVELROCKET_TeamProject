@@ -176,63 +176,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17e1966291942254fbe1361ac4e7055a, type: 3}
---- !u!1001 &368162418
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1647411943599806171, guid: ae02c37f544fcc34eb52b40b38b7f710, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -5.5425982
-      objectReference: {fileID: 0}
-    - target: {fileID: 1647411943599806171, guid: ae02c37f544fcc34eb52b40b38b7f710, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0000016273939
-      objectReference: {fileID: 0}
-    - target: {fileID: 1647411943599806171, guid: ae02c37f544fcc34eb52b40b38b7f710, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2.8419693
-      objectReference: {fileID: 0}
-    - target: {fileID: 1647411943599806171, guid: ae02c37f544fcc34eb52b40b38b7f710, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1647411943599806171, guid: ae02c37f544fcc34eb52b40b38b7f710, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1647411943599806171, guid: ae02c37f544fcc34eb52b40b38b7f710, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1647411943599806171, guid: ae02c37f544fcc34eb52b40b38b7f710, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1647411943599806171, guid: ae02c37f544fcc34eb52b40b38b7f710, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1647411943599806171, guid: ae02c37f544fcc34eb52b40b38b7f710, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1647411943599806171, guid: ae02c37f544fcc34eb52b40b38b7f710, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6104308837829870831, guid: ae02c37f544fcc34eb52b40b38b7f710, type: 3}
-      propertyPath: m_Name
-      value: Scorpion Variant
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ae02c37f544fcc34eb52b40b38b7f710, type: 3}
 --- !u!1001 &609487632
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1687,5 +1630,4 @@ SceneRoots:
   - {fileID: 609487632}
   - {fileID: 6283400644335302660}
   - {fileID: 8657551939324220962}
-  - {fileID: 368162418}
   - {fileID: 138855054}

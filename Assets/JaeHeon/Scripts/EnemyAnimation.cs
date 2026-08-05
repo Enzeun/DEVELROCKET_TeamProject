@@ -76,11 +76,19 @@ public class EnemyAnimation : MonoBehaviour
     private void Start()
     {
         //targetTransform을 enemyBase에서  가져옴
-        targetTransform = enemyBase.playerTransform;
+        InitPlayerTransform();
 
         //시작할 때 현재 상태 저장
         currentTransform = transform;
         currentRotation = transform.rotation;
+    }
+
+    private void InitPlayerTransform()
+    {
+        if (targetTransform == null)
+        {
+            targetTransform = FindFirstObjectByType<PlayerCombat>().transform;
+        }
     }
 
  
