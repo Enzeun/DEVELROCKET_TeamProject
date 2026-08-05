@@ -1329,9 +1329,17 @@ PrefabInstance:
       propertyPath: PlayerStaffTransformByHorizontal
       value: 
       objectReference: {fileID: 546324161}
+    - target: {fileID: 4666044393590269549, guid: 17ea3879c61671a42b0686e09f49b75d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 4666044393590269549, guid: 17ea3879c61671a42b0686e09f49b75d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -17.23
+      objectReference: {fileID: 0}
     - target: {fileID: 6279414222076372786, guid: 17ea3879c61671a42b0686e09f49b75d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.48404
+      value: 0.66
       objectReference: {fileID: 0}
     - target: {fileID: 6279414222076372786, guid: 17ea3879c61671a42b0686e09f49b75d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1339,7 +1347,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6279414222076372786, guid: 17ea3879c61671a42b0686e09f49b75d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.06477
+      value: 17.28
       objectReference: {fileID: 0}
     - target: {fileID: 6279414222076372786, guid: 17ea3879c61671a42b0686e09f49b75d, type: 3}
       propertyPath: m_LocalRotation.w

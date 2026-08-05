@@ -184,8 +184,10 @@ public class SkillEffectSpawner : MonoBehaviour
     /// <param name="obj">풀에 반환할 오브젝트</param>
     private void ReleaseObject(string skillName, GameObject obj)
     {
+        obj.transform.position = transform.position;
         effectPool[skillName].Release(obj);
         if(!ProjectileHit) OnEffectFinished?.Invoke();
+
         ProjectileHit = false;
     }
 }
