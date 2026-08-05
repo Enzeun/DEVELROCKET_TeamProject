@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using static UnityEngine.Rendering.DebugUI;
-using DG.Tweening.Plugins.Options;
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -76,9 +75,13 @@ public class BattleUIManager : MonoBehaviour
     {
         playerStat = playerCombat.player;
 
+        InitializeAllHpBar();
+
         SetEnemyUILocation();
     }
 
+
+    //======================= 초기화, 초기상태 설정 메서드 ====================================================
 
     private void SetEnemyUILocation()
     {
@@ -101,6 +104,29 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
+
+    [BoxGroup("UI Debug_Player"), Button]
+    private void InitializeAllHpBar()
+    {
+        int playerMaxHp = playerStat.MaxHP;
+
+        playerHpBarText.text = $"{playerMaxHp}/{playerMaxHp}";
+        playerHpSlider.value = 1;
+
+        for (int i = 0; i < enemys.Length; i++)
+        {
+            NumberLoacationContriller enemyHpbar;
+
+            int maxHp = enemys[i].maxHp;
+
+            enemyHpbar = enemy_HpBarControllers[i];
+
+            enemyHpbar.hpSlider.value = 1;
+
+            enemyHpbar.hpText = $"{maxHp}/{maxHp}";
+        }
+    }
+
     //======================= Enemy 목록 받아오기. TurnManager 에서 넣어줌 ====================================================
     public void SetEnemyList(List<EnemyBase> list)
     {
@@ -112,15 +138,7 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-
     //====================== Player 데미지 받을 때 메서드 ====================================================================================================
-
-    [BoxGroup("UI Debug_Player"), Button]
-    private void InitializePlayerHpBar()
-    {
-
-    }
-
 
     [BoxGroup("UI Debug_Player"), Button]
     private void PlayerHpChangedUI(int currentHp, int maxHp)
