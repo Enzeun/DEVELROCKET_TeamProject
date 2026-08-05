@@ -24,7 +24,6 @@ public class EnemySelectBehaviour : MonoBehaviour
 
     private void Start()
     {
-        
         SetValue_EnemyBehaviour();
     }
 
@@ -57,7 +56,7 @@ public class EnemySelectBehaviour : MonoBehaviour
         float buffValue = GetWeight(Enemy_Behaviour.Buff);
 
         float remainValue = sumWeight - buffValue;
-        //List<float> aw = enemyBase.GetAttackWeights();
+
         List<float> getAw = new List<float>();
         foreach (var behaviorData in enemyBehaviourListData)
         {
@@ -81,7 +80,7 @@ public class EnemySelectBehaviour : MonoBehaviour
             {
                 if (getAw[i] == 0)
                 {
-                    //Debug.Log($"attackWeight{i}의 가중치 0");
+                    Debug.Log($"attackWeight{i}의 가중치 0");
                     //return Enemy_Behaviour.None;
                 }
                 else if (behaviourRange > remainValue - getAw[i] && behaviourRange <= remainValue)
@@ -111,15 +110,5 @@ public class EnemySelectBehaviour : MonoBehaviour
             return -1.0f;
         
         return value;
-    }
-
-    private void StartEnemyTurn()
-    {
-        //Calc_Enemy_Behaviour();
-    }
-
-    private void EndTurn()
-    {
-
     }
 }
