@@ -40,10 +40,11 @@ public class EnemyBase : MonoBehaviour
     private int _maxHp;
     public int maxHp { get => _maxHp; }
     [BoxGroup("적 초기스탯"), SerializeField]
-    private int attackPower;
-
-    private int defencePower;
+    private int attakPoint;
     [BoxGroup("적 초기스탯"), SerializeField]
+    private int defencePoint;
+
+    [BoxGroup("적 스킬 가중치"), SerializeField]
     private List<BehaviorData> behaviourListData;
 
     [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
@@ -57,7 +58,8 @@ public class EnemyBase : MonoBehaviour
     [BoxGroup("추적이 필요한 필드"), ShowInInspector, ReadOnly]
     private PlayerCombat playerCombat;
     [BoxGroup("추적이 필요한 필드"), ShowInInspector, ReadOnly]
-    private Enemy_Behaviour currentBehaviour;
+    private Enemy_Behaviour _currentBehaviour;
+    public Enemy_Behaviour currentBehaviour { get => _currentBehaviour; }
 
     [SerializeField]
     Transform hpBarLocation;
@@ -70,7 +72,7 @@ public class EnemyBase : MonoBehaviour
     private void Awake()
     {
         currentHp = maxHp;
-        Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attackPower} / defence : {defencePower}");
+        Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attakPoint} / defence : {defencePoint}");
         ani = GetComponent<EnemyAnimation>();
         behaviour = GetComponent<EnemySelectBehaviour>();
     }
@@ -101,7 +103,7 @@ public class EnemyBase : MonoBehaviour
     {
         if (!isDead)
         {
-            currentBehaviour = behaviour.Calc_Enemy_Behaviour();
+            _currentBehaviour = behaviour.Calc_Enemy_Behaviour();
         }
     }
     private void StartBehaviour()
@@ -109,27 +111,27 @@ public class EnemyBase : MonoBehaviour
         if (isDead)
             return;
 
-        if (currentBehaviour == Enemy_Behaviour.Attack)
+        if (_currentBehaviour == Enemy_Behaviour.Attack)
         {
             NormalAttack();
         }
-        else if (currentBehaviour == Enemy_Behaviour.Skill1)
+        else if (_currentBehaviour == Enemy_Behaviour.Skill1)
         {
             Skill1();
         }
-        else if (currentBehaviour == Enemy_Behaviour.Skill2)
+        else if (_currentBehaviour == Enemy_Behaviour.Skill2)
         {
             Skill2();
         }
-        else if (currentBehaviour == Enemy_Behaviour.Skill3)
+        else if (_currentBehaviour == Enemy_Behaviour.Skill3)
         {
             Skill3();
         }
-        else if (currentBehaviour == Enemy_Behaviour.Skill4)
+        else if (_currentBehaviour == Enemy_Behaviour.Skill4)
         {
             Skill4();
         }
-        else if (currentBehaviour == Enemy_Behaviour.Buff)
+        else if (_currentBehaviour == Enemy_Behaviour.Buff)
         {
             Buff();
         }
@@ -186,7 +188,7 @@ public class EnemyBase : MonoBehaviour
         if (amount > 0)
         {
             ani.EnemyTakeDamage();
-            amount = Math.Max(0, amount - defencePower);
+            amount = Math.Max(0, amount - defencePoint);
             currentHp = Math.Clamp(currentHp, 0, currentHp - (amount));
             OnTakeDamage?.Invoke(this, currentHp, amount);
         }
@@ -198,6 +200,6 @@ public class EnemyBase : MonoBehaviour
 
     public void ApplyDamage()
     {
-        playerStat.TakeDamage(attackPower);
+        playerStat.TakeDamage(attakPoint);
     }
 }

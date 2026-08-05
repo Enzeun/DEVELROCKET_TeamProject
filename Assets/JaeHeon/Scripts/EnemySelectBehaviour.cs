@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EnemySelectBehaviour : MonoBehaviour
 {
-    [SerializeField] private EnemyBase enemyBase;
+    private EnemyBase enemyBase;
     //Enemy의 행동에 따른 가중치를 Dictionary로 저장
     private Dictionary<Enemy_Behaviour, float> enemyBehaviourValue = new Dictionary<Enemy_Behaviour, float>();
     //가중치 범위 계산 후 결과값 저장

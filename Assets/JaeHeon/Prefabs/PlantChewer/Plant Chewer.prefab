@@ -336,6 +336,7 @@ GameObject:
   - component: {fileID: -6820356033228986475}
   - component: {fileID: 4725451496344289923}
   - component: {fileID: -2455953845461549653}
+  - component: {fileID: 7907714145648030578}
   m_Layer: 0
   m_Name: Plant Chewer
   m_TagString: Untagged
@@ -397,12 +398,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933a5412bb7fe8b46824de0f283f049e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
-  ani: {fileID: 0}
-  behaviour: {fileID: 0}
-  playerTransform: {fileID: 0}
   _maxHp: 0
   attackPower: 0
   behaviourListData: []
+  playerTransform: {fileID: 0}
+  hpBarLocation: {fileID: 0}
 --- !u!114 &-6820356033228986475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,6 +434,7 @@ MonoBehaviour:
   enemyBase: {fileID: 0}
   targetTransform: {fileID: 0}
   projectilePrefab: {fileID: 0}
+  projectileEffectPrefab: {fileID: 0}
   EmissionTransform: {fileID: 0}
   spellPrefab: {fileID: 0}
   buffPrefab: {fileID: 0}
@@ -441,7 +442,11 @@ MonoBehaviour:
   enemyMoveSpeed: 1
   projectileSpeed: 20
   distanceOfPlayerAtNormalAttack: 2
-  waitSec: 1
+  rotateInterval: 0.4
+  waitInterval: 0.4
+  animatingInterval: 1
+  destroyEffectInterval: 2
+  applyDamageInterval: 1
 --- !u!65 &-2455953845461549653
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -463,6 +468,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.4, y: 1.8, z: 1.2}
   m_Center: {x: 0.05, y: 0.9, z: -0.1}
+--- !u!114 &7907714145648030578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4145791839865359330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3604ceba36d11340a35b28604f4c1e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrawCircleWhenMouseOver
 --- !u!1 &5551549313384924501
 GameObject:
   m_ObjectHideFlags: 0
