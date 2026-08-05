@@ -25,7 +25,8 @@ public static class SkillData
                 SkillUpgradeType.LifeStill  }
             ,
             // 타겟 지정 종류
-            SkillTargetType.Single
+            SkillTargetType.Single,
+            SkillTargetSubType.Multi
         ),
         [1001] = new SkillBaseStat(
             1001,
@@ -39,8 +40,9 @@ public static class SkillData
                 SkillUpgradeType.DownCost,
                 SkillUpgradeType.LifeStill  }
             ,                     
-            SkillTargetType.Single
-            
+            SkillTargetType.Single,
+            SkillTargetSubType.Multi
+
         ),
         [1002] = new SkillBaseStat(
             1002,
@@ -54,7 +56,8 @@ public static class SkillData
                 SkillUpgradeType.DownCost,
                 SkillUpgradeType.LifeStill  }
             ,                   
-            SkillTargetType.Area
+            SkillTargetType.Area,
+            SkillTargetSubType.Single
         ),
     };
 }

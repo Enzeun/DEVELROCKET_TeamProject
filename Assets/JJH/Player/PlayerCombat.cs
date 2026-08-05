@@ -19,7 +19,7 @@ public class PlayerCombat : MonoBehaviour
     [SF] private SkillEffectSpawner spawner;
 
     [Header("기타")]
-    [SF] private Transform DummyTarget;
+    [SF] private Transform[] DummyTarget;
     [SF] private Animator playerAnimator;
 
     #endregion
@@ -37,7 +37,7 @@ public class PlayerCombat : MonoBehaviour
     private bool deadSub = false;
     private bool effectFinSub = false;
 
-    private bool isEndSet = false;
+    private bool isEndSet = true;
     #endregion
 
     private void OnEnable()
@@ -185,14 +185,15 @@ public class PlayerCombat : MonoBehaviour
     public void EffectActiveTest(int id)
     {
         nowSkillData = SkillData.BaseSkillData[id];
-        nowTarget = new Transform[1] { DummyTarget };
+        nowTarget = DummyTarget;
         playerAnimator.Play(nowSkillData.Pose.ToString());
+        isEndSet = false;
     }
 
     public void EffectActive()
     {
         if (nowSkillData != null && nowTarget != null)
-            spawner.SpawnEffect(nowSkillData.Name, nowSkillData.Pose, nowTarget);
+            spawner.SpawnEffect(nowSkillData.Name, nowSkillData, nowTarget);
     }
 
     /// <summary>
