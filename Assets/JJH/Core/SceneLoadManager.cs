@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 using SF = UnityEngine.SerializeField;
 public class SceneLoadManager : MonoBehaviour
 {
@@ -25,13 +26,10 @@ public class SceneLoadManager : MonoBehaviour
 
     public void SetColorByProgress(float progress)
     {
-        // progress 값을 0과 1 사이로 안전하게 제한 (오버플로우 방지)
         progress = Mathf.Clamp01(progress);
 
-        // startColor에서 endColor까지 progress(0~1) 비율로 보간
         Color blendedColor = Color.Lerp(startColor, endColor, progress);
 
-        // 대상 컴포넌트에 색상 적용
         if (loadingBar != null)
         {
             loadingBar.color = blendedColor;
@@ -50,23 +48,32 @@ public class SceneLoadManager : MonoBehaviour
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(GameStateManager.Instance.LoadSceneName);
         asyncLoad.allowSceneActivation = false;
 
+        float targetProgress = 0;
+        float currentDisplayProgress = 0;
         float elapsed = 0f;
-        while (asyncLoad.progress < 0.9f)
+
+        while (asyncLoad.progress < 0.9f || elapsed < minLoadingTime)
         {
             yield return null;
             elapsed += Time.deltaTime;
+
+            float realProgress = asyncLoad.progress >= 0.9f ? 1f : asyncLoad.progress;
+            float timeProgress = Mathf.Clamp01(elapsed / minLoadingTime);
+
+            targetProgress = Mathf.Min(realProgress, timeProgress);
+            currentDisplayProgress = 
+                Mathf.MoveTowards(currentDisplayProgress,targetProgress, Time.deltaTime * 2f);
+
             if (loadingBar != null)
             {
-                Debug.Log(asyncLoad.progress);
-                float value = Mathf.Clamp(asyncLoad.progress, 0 , 0.9f);
-                SetColorByProgress(value);
-                loadingValueText.text = Mathf.Round(value * 100) + "%";
-                loadingBar.fillAmount = value;
-                loadingBar2.fillAmount = value;
+                SetColorByProgress(targetProgress);
+                loadingValueText.text = $"{Mathf.Round(targetProgress * 100)}%";
+                loadingBar.fillAmount = targetProgress;
+                loadingBar2.fillAmount = targetProgress;
             }
         }
 
-        // 씬이 준비된 후에도 진행 바가 멈추지 않도록 보완
+        /*// 씬이 준비된 후에도 진행 바가 멈추지 않도록 보완
         while (elapsed < minLoadingTime)
         {
             yield return null;
@@ -80,10 +87,17 @@ public class SceneLoadManager : MonoBehaviour
                 loadingBar.fillAmount = Mathf.Lerp(loadingBar.fillAmount, 1f, elapsed / minLoadingTime);
                 loadingBar2.fillAmount = Mathf.Lerp(loadingBar2.fillAmount, 1f, elapsed / minLoadingTime);
             }
-        }
+        }*/
 
         // 로딩바 100% 채우기
-        if (loadingBar != null) loadingBar.fillAmount = 1;
+        if (loadingBar != null)
+        {
+            SetColorByProgress(1);
+            loadingValueText.text = "100%";
+            loadingBar.fillAmount = 1;
+            loadingBar2.fillAmount = 1;
+        }
+
 
         // 로딩 완료 후 페이드 아웃 (투명 → 검정)
         fade.gameObject.SetActive(true);
