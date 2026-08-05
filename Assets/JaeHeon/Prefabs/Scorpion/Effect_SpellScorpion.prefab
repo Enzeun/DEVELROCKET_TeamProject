@@ -4918,7 +4918,7 @@ GameObject:
   - component: {fileID: 9181197459893837096}
   - component: {fileID: 4514630224270994881}
   m_Layer: 0
-  m_Name: Effect_Spell
+  m_Name: Effect_SpellScorpion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
