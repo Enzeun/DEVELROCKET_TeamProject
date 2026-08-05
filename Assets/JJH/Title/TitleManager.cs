@@ -65,20 +65,26 @@ public class TitleManager : MonoBehaviour
         yield return null;
         btnGroup.enabled = false;
 
+        Vector2 titleVertorSize = titleImage.rectTransform.sizeDelta;
+        Vector2 titleBackgroundVertorSize = titleImageBackground.rectTransform.anchoredPosition;
+        titleImage.rectTransform.sizeDelta = new(0, 2);
+
         Vector2 startVectorSave = startBtnRect.anchoredPosition;
         Vector2 exitVectorSave = exitBtnRect.anchoredPosition;
-        Vector2 sideBarSzie = sideBar.rectTransform.sizeDelta;
+        Vector2 sideBarSize = sideBar.rectTransform.sizeDelta;
         
-        sideBar.rectTransform.sizeDelta = new(sideBarSzie.x, 0);
+        sideBar.rectTransform.sizeDelta = new(sideBarSize.x, 0);
         startBtnRect.anchoredPosition = new(startVectorSave.x + 400, startVectorSave.y);
         exitBtnRect.anchoredPosition = new(exitVectorSave.x + 400, exitVectorSave.y);
 
         startBtntext.maxVisibleCharacters = 0;
         exitBtntext.maxVisibleCharacters = 0;
+        titleText.maxVisibleCharacters = 0;
 
         float duration = 0.025f;
         float startTextDuration = duration * startBtntext.textInfo.characterCount;
-        float exitTextduration = duration * exitBtntext.textInfo.characterCount;
+        float exitTextDuration = duration * exitBtntext.textInfo.characterCount;
+        float titleTextDuration = duration * titleText.textInfo.characterCount;
 
         float btnAnimationTime = 0.27f;
         float btnDelayTime = 0.08f;
@@ -88,13 +94,20 @@ public class TitleManager : MonoBehaviour
 
         var title = DOTween.Sequence();
 
+        title.Join(titleImage.rectTransform.DOSizeDelta(new(titleVertorSize.x, 5), 0.2f));
+        title.Append(titleImage.rectTransform.DOSizeDelta(titleVertorSize, 0.25f));
+        title.Append(DOTween.To(
+            () => titleText.maxVisibleCharacters,
+            x => titleText.maxVisibleCharacters = x,
+            titleText.textInfo.characterCount,
+            titleTextDuration
+        ).SetEase(Ease.Linear));
 
-
-        yield return title;
+        yield return title.WaitForCompletion();
 
         var seq = DOTween.Sequence();
 
-        seq.Join(sideBar.rectTransform.DOSizeDelta(sideBarSzie, sideBarTime).SetEase(barEase));
+        seq.Join(sideBar.rectTransform.DOSizeDelta(sideBarSize, sideBarTime).SetEase(barEase));
         seq.Join(sideBarCanvasGroup.DOFade(1, sideBarTime).SetEase(barEase));
 
         float startBtnStartTime = 0f;
@@ -113,8 +126,8 @@ public class TitleManager : MonoBehaviour
         seq.Insert(btnAnimationTime + exitBtnStartTime, DOTween.To(
             () => exitBtntext.maxVisibleCharacters,
             x => exitBtntext.maxVisibleCharacters = x,
-            exitBtntext.textInfo.characterCount, 
-            exitTextduration)
+            exitBtntext.textInfo.characterCount,
+            exitTextDuration)
             .SetEase(Ease.Linear));
 
         seq.OnComplete(() => { btnGroup.enabled = true; });
