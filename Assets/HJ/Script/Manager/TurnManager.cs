@@ -122,8 +122,6 @@ public class TurnManager : MonoBehaviour
         // 초기화 완료 후 1초 뒤 게임시작버튼 활성화
 
         StartCoroutine(GoToStepWithWait(TurnState.StartBattle, 1.0f));
-
-        //GoToStep(TurnState.StartBattle);
     }
 
     /// <summary>
@@ -395,4 +393,13 @@ public class TurnManager : MonoBehaviour
             con.enabled = false;
         }
     }
+
+    //================== 디버깅용 임시 메서드 =============================================================================
+
+    [Button,BoxGroup("디버깅용 임시 메서드")]
+    public void DealDamage(EnemyBase enemy, int damage)
+    {
+        enemy.TakeDamage(damage);
+    }
+
 }

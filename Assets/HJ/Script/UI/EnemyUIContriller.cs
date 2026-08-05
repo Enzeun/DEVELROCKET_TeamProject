@@ -11,6 +11,7 @@ public class EnemyUIContriller : MonoBehaviour
 
     public Sprite attackicon;
     public Sprite bufficon;
+    public Sprite warnningicon;
 
     private void Start()
     {

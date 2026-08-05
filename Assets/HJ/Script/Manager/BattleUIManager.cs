@@ -25,10 +25,10 @@ public class BattleUIManager : MonoBehaviour
     private EnemyUIContriller[] enemy_UIControllers;
     [SerializeField, Required, BoxGroup("**참조필요!**적")]
     private DamageNumber enemy_NumberPrefab;
-    [SerializeField, Required, BoxGroup("**참조필요!**적")]
-    private GameObject[] enemy_HpBarLocations;
-    [SerializeField, Required, BoxGroup("**참조필요!**적")]
-    private EnemyBase[] enemys;
+    //[SerializeField, Required, BoxGroup("**참조필요!**적")]
+    //private GameObject[] enemy_HpBarLocations;
+    //[SerializeField, Required, BoxGroup("**참조필요!**적")]
+    //private EnemyBase[] enemys;
 
     // UI 컴포넌트 참조
     [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
@@ -51,7 +51,7 @@ public class BattleUIManager : MonoBehaviour
             playerStat.OnHpChanged -= PlayerHpChangedUI;
             playerStat.OnDamagedTaken -= TakeDamage_UI_NumberAnimation_Player;
         }
-        foreach (var enemy in enemys)
+        foreach (var enemy in enemyList)
         {
             enemy.OnTakeDamage -= Enemy_TakeDamage;
             enemy.OnDie += OnEnemyDie;
@@ -65,22 +65,23 @@ public class BattleUIManager : MonoBehaviour
 
     public void SetEnemyUILocation()
     {
-        // 카메라 뒤쪽으로 넘어갔을때의 코드, 지금은 필요없음
-        //if (newPosition.z < 0)
-        //{           
-        //    enemy_HpBarControllers[0].gameObject.SetActive(false);
-        //    return;
-        //}
-        //enemy_HpBarControllers[0].gameObject.SetActive(true);
-
-        for (int i = 0; i < enemyList.Count; i++)
+        foreach (var enemy in enemyList)
         {
-            Debug.Log(i + " 번째 실행 중");
-            Vector3 newPosition = Camera.main.WorldToScreenPoint(enemy_HpBarLocations[i].transform.position);
+            EnemyUIContriller enemyUIController;
 
-            float movingPosition = enemy_UIControllers[i].GetComponent<RectTransform>().rect.width / 4;
+            UI_Dictionary.TryGetValue(enemy, out enemyUIController);
 
-            enemy_UIControllers[i].gameObject.transform.position = newPosition - Vector3.right * movingPosition;
+            if (enemyUIController == null)
+            {
+                Debug.Log("해당 enemy 에 대응하는 ui 가 없음.");
+                return;
+            }
+
+            Vector3 newPosition = Camera.main.WorldToScreenPoint(enemy.transform.position);
+
+            float movingPosition = enemyUIController.GetComponent<RectTransform>().rect.width / 4;
+
+            enemyUIController.gameObject.transform.position = newPosition - Vector3.right * movingPosition;
         }
     }
 
@@ -93,13 +94,19 @@ public class BattleUIManager : MonoBehaviour
         playerHpBarText.text = $"{playerMaxHp}/{playerMaxHp}";
         playerHpSlider.value = 1;
 
-        for (int i = 0; i < enemys.Length; i++)
+        foreach (var enemy in enemyList)
         {
             EnemyUIContriller enemyHpbar;
 
-            int maxHp = enemys[i].maxHp;
+            int maxHp = enemy.maxHp;
 
-            enemyHpbar = enemy_UIControllers[i];
+            UI_Dictionary.TryGetValue(enemy, out enemyHpbar);
+
+            if (enemyHpbar == null)
+            {
+                Debug.Log("해당 Enemy 에 해당하는 hpBar 가 없습니다. 확인하세요");
+                return;
+            }
 
             enemyHpbar.hpSlider.value = 1;
 
@@ -178,53 +185,43 @@ public class BattleUIManager : MonoBehaviour
 
     //==================== Enemy 데미지 받을 때 메서드 ======================================================================================================
 
-    [BoxGroup("UI Debug_Enemy"), Button]
     private void Enemy_TakeDamage(EnemyBase enemy, int currentHp, int damage)
     {
-        for (int i = 0; i < enemys.Length; i++)
+        EnemyUIContriller uiController;
+
+        UI_Dictionary.TryGetValue(enemy, out uiController);
+
+        if (uiController == null)
         {
-            if (enemy == enemys[i])
-            {
-                TakeDamage_UI_NumberAnimation_Enemy(damage, i);
-
-                enemy_UIControllers[i].hpText.text = $"{currentHp}/{enemy.maxHp}";
-
-                float endValue = (float)currentHp / enemy.maxHp;
-
-                //Debug.Log(currentHp + "1");
-                //Debug.Log(endValue + "2");
-
-                Math.Clamp(endValue, 0, 1);
-
-                HP_Decrease_UIAnimation_Enemy(endValue, i);
-
-                return;
-            }
-        }
-    }
-
-
-    [BoxGroup("UI Debug_Enemy"), Button]
-    private void TakeDamage_UI_NumberAnimation_Enemy(int damage, int index)
-    {
-        if (index > enemy_UIControllers.Length)
-        {
-            Debug.Log("존재하지 않는 Index 입니다. 메서드 : TakeDamage_UI_NumberAnimation_Enemy");
+            Debug.Log("해당 Enemy 에 해당하는 uiController 가 없습니다. 확인하세요");
             return;
         }
-        DamageNumber damageNumber = enemy_NumberPrefab.SpawnGUI(enemy_UIControllers[index].numberLocation, Vector2.zero, damage);
-    }
-    [BoxGroup("UI Debug_Enemy"), Button]
-    private void HP_Decrease_UIAnimation_Enemy(float endValue, int index)
-    {
-        if (index > enemy_UIControllers.Length)
-        {
-            Debug.Log("존재하지 않는 Index 입니다. 메서드 : HP_Decrease_UIAnimation_Enemy");
-            return;
-        }
+
+        uiController.hpText.text = $"{currentHp}/{enemy.maxHp}";
+
+        float endValue = (float)currentHp / enemy.maxHp;              
+
         Math.Clamp(endValue, 0, 1);
-        enemy_UIControllers[index].transform.DOShakePosition(0.2f, 10f, 90);
-        enemy_UIControllers[index].hpSlider.DOValue(endValue, 0.1f);
+
+        TakeDamage_UI_NumberAnimation_Enemy(damage, uiController);
+
+        HP_Decrease_UIAnimation_Enemy(endValue, uiController);
+
+        return;
+
+    }
+
+
+    private void TakeDamage_UI_NumberAnimation_Enemy(int damage, EnemyUIContriller uiController)
+    {        
+        DamageNumber damageNumber = enemy_NumberPrefab.SpawnGUI(uiController.numberLocation, Vector2.zero, damage);
+    }
+
+
+    private void HP_Decrease_UIAnimation_Enemy(float endValue, EnemyUIContriller uiController)
+    {        
+        uiController.transform.DOShakePosition(0.2f, 10f, 90);
+        uiController.hpSlider.DOValue(endValue, 0.1f);
     }
 
     private void OnEnemyDie(EnemyBase enemy)
