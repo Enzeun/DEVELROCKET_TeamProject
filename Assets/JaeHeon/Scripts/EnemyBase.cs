@@ -3,6 +3,27 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Enemy_Behaviour
+{
+    None,
+    Attack,
+    Skill1,
+    Skill2,
+    Skill3,
+    Skill4,
+    Buff
+}
+
+[Serializable]
+public class BehaviorData
+{
+    [SerializeField] private Enemy_Behaviour BehaviorType;
+    public Enemy_Behaviour Type => BehaviorType;
+
+    [SerializeField] float Weight_;
+    public float Weight => Weight_;
+}
+
 public class EnemyBase : MonoBehaviour
 {
     //가중치를 통한 행동 변경 
@@ -15,18 +36,17 @@ public class EnemyBase : MonoBehaviour
 
     [BoxGroup("스타트에서 Transform 참조됩니다")]
     public Transform playerTransform;
+    private PlayerCombat player;
 
     [BoxGroup("적 초기스탯"), SerializeField]
     private int _maxHp;
     public int maxHp { get => _maxHp; }
     [BoxGroup("적 초기스탯"), SerializeField]
-    private float attackPower;
+    private int attackPower;
+    
+    private int defencePower;
     [BoxGroup("적 초기스탯"), SerializeField]
-    private float defencePower;
-    [BoxGroup("적 초기스탯"), SerializeField]
-    private List<float> attackWeights;
-    [BoxGroup("적 초기스탯"), SerializeField]
-    private float buffWeight;
+    private List<BehaviorData> behaviourListData;
 
     [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
     public int currentHp { get; private set; }
@@ -34,17 +54,14 @@ public class EnemyBase : MonoBehaviour
     public bool isDead { get; private set; } = false;
     private Enemy_Behaviour currentBehaviour;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public event Action OnDie;
+    public event Action<EnemyBase> OnDie;
     public Action<EnemyBase, int, int> OnTakeDamage;
+    private PlayerBaseStat playerStat;
 
 
     private void Awake()
     {
         currentHp = maxHp;
-        OnDie += Die;
         Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attackPower} / defence : {defencePower}");
         ani = GetComponent<EnemyAnimation>();
         behaviour = GetComponent<EnemySelectBehaviour>();
@@ -52,18 +69,15 @@ public class EnemyBase : MonoBehaviour
 
     private void Start()
     {
-        playerTransform = FindFirstObjectByType<PlayerCombat>().transform;
+        player = FindFirstObjectByType<PlayerCombat>();
+        playerTransform = player.transform;
+        playerStat = player.GetComponent<PlayerBaseStat>();
     }
 
-    public List<float> GetAttackWeights()
+    public List<BehaviorData> GetListData()
     {
-        return attackWeights;
+        return behaviourListData;
     }
-    public float GetBuffWeight()
-    {
-        return buffWeight;
-    }
-
 
     //추후에 턴 넘어왔을 때 currentBehaviour = behaviour.Calc_Enemy_Behaviour(); 해주시면 어떤 행동 할 지 가져오게 됩니다.
     // 이후 아래 if문처럼 스킬, 공격, 버프 불러주시면 됩니다.
@@ -73,8 +87,6 @@ public class EnemyBase : MonoBehaviour
     }
     private void StartBehaviour()
     {
-        //currentBehaviour = behaviour.Calc_Enemy_Behaviour();
-
         if (currentBehaviour == Enemy_Behaviour.Attack)
         {
             NormalAttack();
@@ -140,22 +152,31 @@ public class EnemyBase : MonoBehaviour
     [Button]
     private void Die()
     {
+        isDead = true;
         Debug.Log($"{gameObject.name} >> EnemyDie");
         ani.EnemyDie();
+        OnDie?.Invoke(this);
     }
 
-    [Button]
+    //들어오는 방어력이 공격 피해량보다 높은지 확인 작업 필요
+    [Button] // 방어력 만큼 현재 피해에서 감쇠 한 다음 hp 계산
     public void TakeDamage(int amount)
     {
         if (amount > 0)
         {
             ani.EnemyTakeDamage();
-            currentHp = Math.Clamp(currentHp, 0, currentHp - amount);
+            amount = Math.Max(0, amount - defencePower);
+            currentHp = Math.Clamp(currentHp, 0, currentHp - (amount));
             OnTakeDamage?.Invoke(this, currentHp, amount);
         }
-        if (currentHp == 0)
+        if (currentHp <= 0)
         {
-            OnDie?.Invoke();
+            Die();
         }
+    }
+
+    public void ApplyDamage()
+    {
+        playerStat.TakeDamage(attackPower);
     }
 }
