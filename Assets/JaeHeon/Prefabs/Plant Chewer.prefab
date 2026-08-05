@@ -402,7 +402,11 @@ MonoBehaviour:
   _maxHp: 25
   attackPoint: 5
   defencePoint: 0
-  behaviourListData: []
+  behaviourListData:
+  - BehaviorType: 1
+    Weight_: 70
+  - BehaviorType: 6
+    Weight_: 30
   playerTransform: {fileID: 0}
   hpBarLocation: {fileID: 4949351138638937323}
 --- !u!114 &-6820356033228986475

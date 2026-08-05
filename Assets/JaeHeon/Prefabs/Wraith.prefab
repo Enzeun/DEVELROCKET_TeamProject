@@ -814,7 +814,15 @@ MonoBehaviour:
   _maxHp: 400
   attackPoint: 22
   defencePoint: 8
-  behaviourListData: []
+  behaviourListData:
+  - BehaviorType: 1
+    Weight_: 20
+  - BehaviorType: 2
+    Weight_: 10
+  - BehaviorType: 3
+    Weight_: 40
+  - BehaviorType: 6
+    Weight_: 30
   playerTransform: {fileID: 0}
   hpBarLocation: {fileID: 6930319287714565770}
 --- !u!114 &3524389769169750130

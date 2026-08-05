@@ -512,7 +512,13 @@ MonoBehaviour:
   _maxHp: 100
   attackPoint: 8
   defencePoint: 10
-  behaviourListData: []
+  behaviourListData:
+  - BehaviorType: 1
+    Weight_: 50
+  - BehaviorType: 3
+    Weight_: 20
+  - BehaviorType: 6
+    Weight_: 30
   playerTransform: {fileID: 0}
   hpBarLocation: {fileID: 2348417866517095436}
 --- !u!114 &-1590017183247390402
@@ -558,7 +564,6 @@ MonoBehaviour:
   animatingInterval: 1
   destroyEffectInterval: 2
   applyDamageInterval: 1
-  playerYPositionOffset: {x: 0, y: 1.156157, z: 0}
 --- !u!114 &-4331148247909423649
 MonoBehaviour:
   m_ObjectHideFlags: 0

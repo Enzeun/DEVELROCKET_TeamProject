@@ -7,9 +7,9 @@ using UnityEngine;
 public enum Enemy_Behaviour
 {
     None,
-    Attack,
-    Skill1,
-    Skill2,
+    NormalAttack,
+    Shoot,//Skill1
+    Spell,//Skill2
     Skill3,
     Skill4,
     Buff
@@ -70,7 +70,7 @@ public class EnemyBase : MonoBehaviour
 
     private void Awake()
     {
-        InitStat();
+        //InitStat();
         Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attackPoint} / defence : {defencePoint}");
         ani = GetComponent<EnemyAnimation>();
         behaviour = GetComponent<EnemySelectBehaviour>();
@@ -81,10 +81,10 @@ public class EnemyBase : MonoBehaviour
         SetTarget();
     }
 
-    private void InitStat()
-    {
-        currentHp = maxHp;
-    }
+    //private void InitStat()
+    //{
+    //    currentHp = maxHp;
+    //}
 
     private void SetTarget()
     {
@@ -115,15 +115,15 @@ public class EnemyBase : MonoBehaviour
         if (isDead)
             return;
 
-        if (_currentBehaviour == Enemy_Behaviour.Attack)
+        if (_currentBehaviour == Enemy_Behaviour.NormalAttack)
         {
             NormalAttack();
         }
-        else if (_currentBehaviour == Enemy_Behaviour.Skill1)
+        else if (_currentBehaviour == Enemy_Behaviour.Shoot)
         {
             Skill1();
         }
-        else if (_currentBehaviour == Enemy_Behaviour.Skill2)
+        else if (_currentBehaviour == Enemy_Behaviour.Spell)
         {
             Skill2();
         }

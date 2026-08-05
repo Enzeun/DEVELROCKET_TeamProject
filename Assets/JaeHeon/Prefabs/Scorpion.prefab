@@ -723,7 +723,7 @@ Transform:
   m_GameObject: {fileID: 4530326432623240180}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0.0000000050089}
+  m_LocalPosition: {x: -0, y: 2.3, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -975,8 +975,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5449155293744048805}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.65952474, y: -0.019667411, z: 0.7510917, w: 0.022395365}
-  m_LocalPosition: {x: -0.0000000027843516, y: -1.4308423, z: -0.06369941}
+  m_LocalRotation: {x: -0.7067926, y: -0.02107547, z: 0.70679265, w: 0.021075608}
+  m_LocalPosition: {x: -0.000000002784351, y: 0.2942179, z: -0.063699275}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -987,7 +987,7 @@ Transform:
   - {fileID: 1423462908403561976}
   - {fileID: 1971698819763503728}
   m_Father: {fileID: 2219866939652499699}
-  m_LocalEulerAnglesHint: {x: -0.05387518, y: -84.50341, z: 176.1556}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5552908986585295456
 GameObject:
   m_ObjectHideFlags: 0
@@ -1264,13 +1264,13 @@ MonoBehaviour:
   defencePoint: 3
   behaviourListData:
   - BehaviorType: 1
-    Weight_: 10
+    Weight_: 40
   - BehaviorType: 2
-    Weight_: 5
+    Weight_: 30
   - BehaviorType: 3
-    Weight_: 3
+    Weight_: 10
   - BehaviorType: 6
-    Weight_: 2
+    Weight_: 20
   playerTransform: {fileID: 0}
   hpBarLocation: {fileID: 3411338925293372594}
 --- !u!114 &8849269545696773658
