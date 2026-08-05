@@ -1,6 +1,7 @@
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum Enemy_Behaviour
@@ -31,19 +32,16 @@ public class EnemyBase : MonoBehaviour
     //적 타입 enum
     //가중치는 적에게 개별 적용
     //적들 필요한 필드 내용 : 몬스터타입, 체력, 방어력, 가중치, 현재 할 행동 내역, 
-    [SerializeField] EnemyAnimation ani;
-    [SerializeField] EnemySelectBehaviour behaviour;
+    EnemyAnimation ani;
+    EnemySelectBehaviour behaviour;
 
-    [BoxGroup("스타트에서 Transform 참조됩니다")]
-    public Transform playerTransform;
-    private PlayerCombat player;
 
     [BoxGroup("적 초기스탯"), SerializeField]
     private int _maxHp;
     public int maxHp { get => _maxHp; }
     [BoxGroup("적 초기스탯"), SerializeField]
     private int attackPower;
-    
+
     private int defencePower;
     [BoxGroup("적 초기스탯"), SerializeField]
     private List<BehaviorData> behaviourListData;
@@ -52,7 +50,17 @@ public class EnemyBase : MonoBehaviour
     public int currentHp { get; private set; }
     [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
     public bool isDead { get; private set; } = false;
+
+
+    [BoxGroup("추적이 필요한 필드"), ShowInInspector, ReadOnly]
+    public Transform playerTransform;
+    [BoxGroup("추적이 필요한 필드"), ShowInInspector, ReadOnly]
+    private PlayerCombat playerCombat;
+    [BoxGroup("추적이 필요한 필드"), ShowInInspector, ReadOnly]
     private Enemy_Behaviour currentBehaviour;
+
+    [SerializeField]
+    Transform hpBarLocation;
 
     public event Action<EnemyBase> OnDie;
     public Action<EnemyBase, int, int> OnTakeDamage;
@@ -69,9 +77,17 @@ public class EnemyBase : MonoBehaviour
 
     private void Start()
     {
-        player = FindFirstObjectByType<PlayerCombat>();
-        playerTransform = player.transform;
-        playerStat = player.GetComponent<PlayerBaseStat>();
+        SetTarget();
+    }
+
+    private void SetTarget()
+    {
+        if (playerCombat == null)
+        {
+            playerCombat = FindFirstObjectByType<PlayerCombat>();
+            playerTransform = playerCombat.transform;
+            playerStat = playerCombat.player;
+        }
     }
 
     public List<BehaviorData> GetListData()

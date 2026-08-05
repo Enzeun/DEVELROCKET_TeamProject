@@ -8,6 +8,11 @@ public class DrawCircleWhenMouseOver : MonoBehaviour
     private void Start()
     {
         enemyMarker = FindAnyObjectByType<EnemyMarkerCircle>();
+        if (enemyMarker == null)
+        {
+            enabled = false;
+            return;
+        }
         originalPosition = enemyMarker.transform.position;
     }
     private void OnMouseEnter()

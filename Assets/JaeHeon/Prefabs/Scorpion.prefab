@@ -221,6 +221,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2219866939652499699}
   m_LocalEulerAnglesHint: {x: 0, y: -95.66627, z: -90}
+--- !u!1 &1252024159936162623
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3411338925293372594}
+  m_Layer: 0
+  m_Name: HpBarLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3411338925293372594
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252024159936162623}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2219866939652499699}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1368351733776786476
 GameObject:
   m_ObjectHideFlags: 0
@@ -1163,6 +1194,7 @@ GameObject:
   - component: {fileID: 8849269545696773658}
   - component: {fileID: 9164061269032085072}
   - component: {fileID: 886420324542358980}
+  - component: {fileID: 3143633011460584127}
   m_Layer: 0
   m_Name: Scorpion
   m_TagString: Untagged
@@ -1190,6 +1222,7 @@ Transform:
   - {fileID: 5426601360848285736}
   - {fileID: 8719617815149601548}
   - {fileID: 3353693588040716498}
+  - {fileID: 3411338925293372594}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1913175544594587217
@@ -1240,6 +1273,7 @@ MonoBehaviour:
     Weight_: 3
   - BehaviorType: 6
     Weight_: 2
+  hpBarLocation: {fileID: 3411338925293372594}
 --- !u!114 &8849269545696773658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1275,7 +1309,7 @@ MonoBehaviour:
   EmissionTransform: {fileID: 5241930021367751706}
   spellPrefab: {fileID: 800211394734574691, guid: 28cd63c762984524d9d305769033b4e7, type: 3}
   buffPrefab: {fileID: 6063512644559778907, guid: 335a0ca20feb1d34ca5d94a5b5a6bd09, type: 3}
-  enemyMagicSpeed: 0.4
+  enemyMagicSpeed: 0.7
   enemyMoveSpeed: 1
   projectileSpeed: 20
   distanceOfPlayerAtNormalAttack: 2
@@ -1283,7 +1317,7 @@ MonoBehaviour:
   waitInterval: 0.4
   animatingInterval: 1
   destroyEffectInterval: 2
-  applyDamageInterval: 1
+  applyDamageInterval: 0.1
 --- !u!65 &886420324542358980
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1305,6 +1339,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &3143633011460584127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6675629720354093767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3604ceba36d11340a35b28604f4c1e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrawCircleWhenMouseOver
 --- !u!1 &6869920660760612235
 GameObject:
   m_ObjectHideFlags: 0
