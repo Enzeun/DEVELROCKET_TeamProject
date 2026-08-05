@@ -58,16 +58,33 @@ public class TurnManager : MonoBehaviour
 
 
     // 추적하며 디버깅 할 필드
-    [ShowInInspector, BoxGroup("필드 값 추적"), ReadOnly]
-    private TurnState currentState = TurnState.Initialize; // 초기상태로 시작
-    [ShowInInspector, BoxGroup("필드 값 추적"), ReadOnly]
+    [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
+    private TurnState _currentState = TurnState.Initialize; // 초기상태로 시작
+    public TurnState currentState { get => _currentState; }
+    [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
     private List<EnemyBase> enemyList = new();
     [ShowInInspector, BoxGroup("필드 값 추적"), ReadOnly]
     private int playerQueueCount { get => playerQueue.Count; }
     [ShowInInspector, BoxGroup("필드 값 추적"), ReadOnly]
     private int enemyQueueCount { get => enemyQueue.Count; }
-    [ShowInInspector, BoxGroup("필드 값 추적"), ReadOnly]
+    [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
     private bool isGameOver = false;
+    [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
+    private int currentSelectedSkillId = -1;
+    [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
+    private EnemyBase currentTargetEnemy = null;
+    [ShowInInspector, BoxGroup("필드 값 추적"), ReadOnly]
+    private int nowCost
+    {
+        get
+        {
+            if (player == null)
+            {
+                return -1;
+            }
+            return player.NowCost;
+        }
+    }
 
 
     // 플레이어와 적의 행동은 큐로 관리
@@ -125,6 +142,8 @@ public class TurnManager : MonoBehaviour
         GetAllEnemies();
 
         InitUIManager();
+
+
 
         // 초기화 완료 후 1초 뒤 게임시작버튼 활성화
 
@@ -192,11 +211,11 @@ public class TurnManager : MonoBehaviour
     [Button, BoxGroup("디버깅")]
     private void GoToStep(TurnState state)
     {
-        if (state == currentState) return;
+        if (state == _currentState) return;
 
-        Debug.Log($"** Turn State 변경!! : {currentState} -> {state} **");
+        Debug.Log($"** Turn State 변경!! : {_currentState} -> {state} **");
 
-        currentState = state;
+        _currentState = state;
 
         RunTurnBehavior();
     }
@@ -204,11 +223,11 @@ public class TurnManager : MonoBehaviour
     // 지정된 state 로 넘어가기 + 일정 시간 뒤에 넘어가기
     private IEnumerator GoToStepWithWait(TurnState state, float sec)
     {
-        if (state == currentState) yield break;
+        if (state == _currentState) yield break;
 
         yield return new WaitForSeconds(sec);
 
-        currentState = state;
+        _currentState = state;
 
         RunTurnBehavior();
     }
@@ -218,7 +237,7 @@ public class TurnManager : MonoBehaviour
     /// </summary>
     private void RunTurnBehavior()
     {
-        switch (currentState)
+        switch (_currentState)
         {
             default: break;
 
@@ -249,12 +268,12 @@ public class TurnManager : MonoBehaviour
                 }
             case TurnState.PlayerPlanning:
                 {
-
+                    PlayerPlanning();
                     break;
                 }
             case TurnState.ExecuteSkills:
                 {
-
+                    ExecuteSkill();
                     break;
                 }
             case TurnState.PlayerTurnEnd:
@@ -292,7 +311,7 @@ public class TurnManager : MonoBehaviour
     /// 전투가 지속 가능한 상황인지 체크 (아직 적이 남아있는지)
     /// </summary>
     private bool CheckBattleState()
-    {       
+    {
         if (enemyList.Count == 0)
         {
             return true;
@@ -354,6 +373,7 @@ public class TurnManager : MonoBehaviour
         uIManager.InitUIDictinary();
         uIManager.InitializeAllHpBar();
         uIManager.SetEnemyUILocation();
+        uIManager.InitSkillButtons();
     }
 
     //================== Start Battle 구간 =============================================================================
@@ -375,8 +395,6 @@ public class TurnManager : MonoBehaviour
         uIManager.ShowReadyBattleUI(false);
 
         GoToStep(TurnState.StartNewRound);
-
-
     }
 
     //================ Start New Round 구간 ===============================================================================
@@ -412,26 +430,123 @@ public class TurnManager : MonoBehaviour
 
     private void PlayerTurnStart()
     {
+        // 버튼에 이벤트 구독을 한다
+        SubscribeSkillBtnClicked();
+        // 적 클릭에 이벤트 구독을 한다
+        SubscribeEnemyClicked();
+        // 
+        // 다음 단계로 이동
+        GoToStep(TurnState.PlayerPlanning);
+    }
+
+
+    //================== Player Planning 구간 =============================================================
+
+    private void PlayerPlanning()
+    {
+        if (!CheckRemainCost())
+        {
+            EndPlayerPlanning();
+            return;
+        }
+
         uIManager.ShowSkillMenu(true);
 
+    }
+    private void OnSkillBtnClicked(int id)
+    {
+        currentSelectedSkillId = id;
+        // 스킬버튼을 누르면 스킬메뉴를 숨김.
+        uIManager.ShowSkillMenu(false);
 
+        // 광역 공격 판정 여기서 해야함 ******************************************미완성
+
+        // 적을 선택 가능하게 한다.
+        EnableSelectTarget(true);
+    }
+     
+
+    private void OnEnemyClicked(EnemyBase enemy)
+    {
+        // 적을 클릭하면
+        currentTargetEnemy = enemy;
+        // 해당 스킬을 큐에 저장한다
+        RegisterSkill(MakePlayerTurnData());
+        // 스킬 id 를 초기화 한다
+        currentSelectedSkillId = -1;
+        // 선택이 불가능하게 한다
+        EnableSelectTarget(false);
+
+        // 남은 스킬 코스트를 확인하고
+        if (CheckRemainCost())
+        {
+            // 코스트가 남아있으면 스킬메뉴를 다시 보여준다
+            uIManager.ShowSkillMenu(true);
+            return;
+        }
+
+        // 코스트가 없으면 멈춘다.
+        // 임시로 턴을 종료하게 만듦
+        EndPlayerPlanning();
+    }
+
+    private bool CheckRemainCost()
+    {
+        if (nowCost <= 0)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private PlayerTurnData MakePlayerTurnData()
+    {
+        PlayerTurnData turnData;
+
+        if (player.SkillData.TryGetValue(currentSelectedSkillId, out SkillBaseStat skill))
+        {
+            turnData = new PlayerTurnData(skill, new EnemyBase[] { currentTargetEnemy });
+            return turnData;
+        }
+        else
+        {
+            return null;
+        }
+
+    }
+
+
+    private void OnEndTurnBtnClicked()
+    {
+        EndPlayerPlanning();
+    }
+
+    private void EndPlayerPlanning()
+    {
+        GoToStep(TurnState.ExecuteSkills);
+    }
+
+    //==================== Execute Skills 구간 ===========================================================
+
+    private void ExecuteSkill()
+    {
 
     }
 
 
 
-
-
-
     //===============================================================================================
-
+    //===============================================================================================
+    //===============================================================================================
+    //===============================================================================================
+    //===============================================================================================
     //===============================================================================================
     [Button, BoxGroup("디버깅")]
-    private void PlayerSelectTarget()
+    private void EnableSelectTarget(bool enable)
     {
         foreach (var con in circleController)
         {
-            con.enabled = true;
+            con.enabled = enable;
 
             if (con.enabled)
             {
@@ -439,8 +554,8 @@ public class TurnManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("활성화 실패했습니다");
-
+                con.InitCircleLocation();
+                Debug.Log("비활성화 되었습니다");
             }
         }
     }
@@ -466,6 +581,37 @@ public class TurnManager : MonoBehaviour
             con.enabled = false;
         }
     }
+
+    //================== 이벤트 구독 메서드 =============================================================================
+
+    private void SubscribeSkillBtnClicked()
+    {
+        uIManager.OnSkillBtnClicked += OnSkillBtnClicked;
+        uIManager.OnEndTurnBtnClicked += OnEndTurnBtnClicked;
+    }
+    private void UnSubscribeSkillBtnClicked()
+    {
+        uIManager.OnSkillBtnClicked -= OnSkillBtnClicked;
+        uIManager.OnEndTurnBtnClicked -= OnEndTurnBtnClicked;
+    }
+
+    private void SubscribeEnemyClicked()
+    {
+        foreach (var con in circleController)
+        {
+            con.OnEnemyClicked += OnEnemyClicked;
+        }
+    }
+    private void UnSubscribeEnemyClicked()
+    {
+        foreach (var con in circleController)
+        {
+            con.OnEnemyClicked -= OnEnemyClicked;
+        }
+    }
+
+
+
 
     //================== 디버깅용 임시 메서드 =============================================================================
 
