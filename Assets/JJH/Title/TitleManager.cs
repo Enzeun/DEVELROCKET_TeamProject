@@ -10,6 +10,7 @@ using SF = UnityEngine.SerializeField;
 public class TitleManager : MonoBehaviour
 {
     [Header("타이틀")]
+    [SF] private CanvasGroup titleGroup;
     [SF] private Image titleImage;
     [SF] private Image titleImageBackground;
     [SF] private TextMeshProUGUI titleText;
@@ -40,37 +41,39 @@ public class TitleManager : MonoBehaviour
         StartCoroutine(nameof(StartEvent));
     }
 
-    /*    public void Update()
-        {
-            if(Input.GetKeyDown(KeyCode.I)) StartCoroutine(nameof(StartEvent));
-        }*/
-
     public IEnumerator StartEvent()
     {
         startBtn.interactable = false;
         exitBtn.interactable = false;
 
         // 상태 초기화
+        titleGroup.gameObject.SetActive(false);
         startBtnCanvasGroup.gameObject.SetActive(false);
         exitBtnCanvasGroup.gameObject.SetActive(false);
         btnGroup.gameObject.SetActive(false);
         sideBar.gameObject.SetActive(false);
 
         // 초기 설정
+        
         startBtnCanvasGroup.gameObject.SetActive(true);
         exitBtnCanvasGroup.gameObject.SetActive(true);
         sideBar.gameObject.SetActive(true);
+        titleGroup.gameObject.SetActive(true);
         sideBarCanvasGroup.alpha = 0;
         startBtnCanvasGroup.alpha = 0;
         exitBtnCanvasGroup.alpha = 0;
+        titleGroup.alpha = 0;
         btnGroup.gameObject.SetActive(true);
 
         yield return null;
+        
         btnGroup.enabled = false;
 
         Vector2 titleVertorSize = titleImage.rectTransform.sizeDelta;
-        Vector2 titleBackgroundVertorSize = titleImageBackground.rectTransform.anchoredPosition;
+        Vector2 titleBackgroundVertorSize = titleImageBackground.rectTransform.sizeDelta;
         titleImage.rectTransform.sizeDelta = new(0, 2);
+        titleImageBackground.rectTransform.sizeDelta = new(0, 2);
+        titleGroup.alpha = 1;
 
         Vector2 startVectorSave = startBtnRect.anchoredPosition;
         Vector2 exitVectorSave = exitBtnRect.anchoredPosition;
@@ -97,9 +100,16 @@ public class TitleManager : MonoBehaviour
 
         var title = DOTween.Sequence();
 
-        title.Join(titleImage.rectTransform.DOSizeDelta(new(titleVertorSize.x, 5), 0.2f));
-        title.Append(titleImage.rectTransform.DOSizeDelta(titleVertorSize, 0.25f));
-        title.Append(DOTween.To(
+        float horizontalTime = 0.2f;
+        float verticalTime = 0.25f;
+
+        title.Join(titleImage.rectTransform.DOSizeDelta(new(titleVertorSize.x, 2), horizontalTime));
+        title.Join(titleImageBackground.rectTransform.DOSizeDelta(new(titleBackgroundVertorSize.x, 2), horizontalTime));
+
+        title.Insert(horizontalTime, titleImageBackground.rectTransform.DOSizeDelta(titleBackgroundVertorSize, verticalTime));
+        title.Insert(horizontalTime, titleImage.rectTransform.DOSizeDelta(titleVertorSize, verticalTime));
+
+        title.Insert(horizontalTime + verticalTime, DOTween.To(
             () => titleText.maxVisibleCharacters,
             x => titleText.maxVisibleCharacters = x,
             titleText.textInfo.characterCount,

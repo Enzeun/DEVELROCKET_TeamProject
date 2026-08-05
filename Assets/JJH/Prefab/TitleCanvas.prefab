@@ -766,6 +766,7 @@ GameObject:
   - component: {fileID: 7651951967450090035}
   - component: {fileID: 4129096958769601095}
   - component: {fileID: 9027235966541890945}
+  - component: {fileID: 4526998804721975322}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -788,9 +789,9 @@ RectTransform:
   - {fileID: 6183188201148940253}
   m_Father: {fileID: 6057021704805739843}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 116, y: 903}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 100, y: -170}
   m_SizeDelta: {x: 700, y: 120}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &7651951967450090035
@@ -846,6 +847,18 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 20.5, y: -19}
   m_UseGraphicAlpha: 1
+--- !u!225 &4526998804721975322
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3269641990902139249}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3348545773844798045
 GameObject:
   m_ObjectHideFlags: 0
@@ -1158,7 +1171,7 @@ GameObject:
   - component: {fileID: 8654378089098690993}
   - component: {fileID: 4459766716324977709}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: TitleCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1206,7 +1219,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -1224,10 +1237,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -2178,6 +2191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db806776c378bf94297d6073e229ebbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TitleManager
+  titleGroup: {fileID: 4526998804721975322}
   titleImage: {fileID: 315775338280283193}
   titleImageBackground: {fileID: 4129096958769601095}
   titleText: {fileID: 138681623253963763}
@@ -2311,7 +2325,6 @@ GameObject:
   - component: {fileID: 8779089835257387798}
   - component: {fileID: 3416974238631972631}
   - component: {fileID: 138681623253963763}
-  - component: {fileID: 7622953037224044607}
   m_Layer: 5
   m_Name: Text (TMP)Title
   m_TagString: Untagged
@@ -2438,23 +2451,3 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &7622953037224044607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9140911462731023361}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
-  m_FlexibleWidth: 1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1

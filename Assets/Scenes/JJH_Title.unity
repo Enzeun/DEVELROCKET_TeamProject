@@ -462,7 +462,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &6994397534654343525
+--- !u!1001 &1336858863
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -472,7 +472,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5836530760786218783, guid: d34eec30dbb40f94ab9728918fd40720, type: 3}
       propertyPath: m_Name
-      value: Canvas
+      value: TitleCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 6057021704805739843, guid: d34eec30dbb40f94ab9728918fd40720, type: 3}
       propertyPath: m_Pivot.x
@@ -565,5 +565,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 1163500150}
   - {fileID: 583716053}
-  - {fileID: 6994397534654343525}
+  - {fileID: 1336858863}
   - {fileID: 1329039442}
