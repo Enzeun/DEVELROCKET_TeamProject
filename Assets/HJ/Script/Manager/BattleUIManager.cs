@@ -78,11 +78,9 @@ public class BattleUIManager : MonoBehaviour
                 return;
             }
 
-            Vector3 newPosition = Camera.main.WorldToScreenPoint(enemy.transform.position);
+            Vector3 newPosition = Camera.main.WorldToScreenPoint(enemy.hpBarLocation.position);
 
-            float movingPosition = enemyUIController.GetComponent<RectTransform>().rect.width / 4;
-
-            enemyUIController.gameObject.transform.position = newPosition - Vector3.right * movingPosition;
+            enemyUIController.gameObject.transform.position = newPosition;
         }
     }
 
