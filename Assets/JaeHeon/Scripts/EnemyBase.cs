@@ -57,7 +57,8 @@ public class EnemyBase : MonoBehaviour
     [BoxGroup("추적이 필요한 필드"), ShowInInspector, ReadOnly]
     private PlayerCombat playerCombat;
     [BoxGroup("추적이 필요한 필드"), ShowInInspector, ReadOnly]
-    private Enemy_Behaviour currentBehaviour;
+    private Enemy_Behaviour _currentBehaviour;
+    public Enemy_Behaviour currentBehaviour { get => _currentBehaviour; }
 
     [SerializeField]
     Transform hpBarLocation;
@@ -101,7 +102,7 @@ public class EnemyBase : MonoBehaviour
     {
         if (!isDead)
         {
-            currentBehaviour = behaviour.Calc_Enemy_Behaviour();
+            _currentBehaviour = behaviour.Calc_Enemy_Behaviour();
         }
     }
     private void StartBehaviour()
@@ -109,27 +110,27 @@ public class EnemyBase : MonoBehaviour
         if (isDead)
             return;
 
-        if (currentBehaviour == Enemy_Behaviour.Attack)
+        if (_currentBehaviour == Enemy_Behaviour.Attack)
         {
             NormalAttack();
         }
-        else if (currentBehaviour == Enemy_Behaviour.Skill1)
+        else if (_currentBehaviour == Enemy_Behaviour.Skill1)
         {
             Skill1();
         }
-        else if (currentBehaviour == Enemy_Behaviour.Skill2)
+        else if (_currentBehaviour == Enemy_Behaviour.Skill2)
         {
             Skill2();
         }
-        else if (currentBehaviour == Enemy_Behaviour.Skill3)
+        else if (_currentBehaviour == Enemy_Behaviour.Skill3)
         {
             Skill3();
         }
-        else if (currentBehaviour == Enemy_Behaviour.Skill4)
+        else if (_currentBehaviour == Enemy_Behaviour.Skill4)
         {
             Skill4();
         }
-        else if (currentBehaviour == Enemy_Behaviour.Buff)
+        else if (_currentBehaviour == Enemy_Behaviour.Buff)
         {
             Buff();
         }
