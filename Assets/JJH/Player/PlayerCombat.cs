@@ -203,7 +203,6 @@ public class PlayerCombat : MonoBehaviour
     {
         if(nowSkillData.TargetType == SkillTargetType.Single && !isEndSet)
         {
-            Debug.Log("헉");
             isEndSet = true;
 
             SkillBaseStat skill = nowSkillData;
