@@ -28,6 +28,13 @@ public class PlayerBaseStat
     /// <para>int : 현재 체력, int : 최대 체력</para>
     /// </summary>
     public event Action<int, int> OnHpChanged;
+
+    /// <summary>
+    /// 코스트 변동 시 작동
+    /// <para>int : 현재 코스트, int : 최대 코스트 </para>
+    /// </summary>
+    public event Action<int, int> OnCostChanged;
+
     /// <summary>
     /// 캐릭터가 사망할 경우 작동
     /// </summary>
@@ -72,6 +79,7 @@ public class PlayerBaseStat
         else
         {
             NowCost -= cost;
+            OnCostChanged?.Invoke(NowCost, MaxCost);
             return true;
         }
     }
@@ -82,6 +90,7 @@ public class PlayerBaseStat
     public void ResetCost()
     {
         NowCost = MaxCost;
+        OnCostChanged?.Invoke(NowCost, MaxCost);
     }
 
 }
