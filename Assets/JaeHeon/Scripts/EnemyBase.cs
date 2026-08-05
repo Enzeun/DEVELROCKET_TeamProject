@@ -40,10 +40,11 @@ public class EnemyBase : MonoBehaviour
     private int _maxHp;
     public int maxHp { get => _maxHp; }
     [BoxGroup("적 초기스탯"), SerializeField]
-    private int attackPower;
-
-    private int defencePower;
+    private int attakPoint;
     [BoxGroup("적 초기스탯"), SerializeField]
+    private int defencePoint;
+
+    [BoxGroup("적 스킬 가중치"), SerializeField]
     private List<BehaviorData> behaviourListData;
 
     [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
@@ -71,7 +72,7 @@ public class EnemyBase : MonoBehaviour
     private void Awake()
     {
         currentHp = maxHp;
-        Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attackPower} / defence : {defencePower}");
+        Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attakPoint} / defence : {defencePoint}");
         ani = GetComponent<EnemyAnimation>();
         behaviour = GetComponent<EnemySelectBehaviour>();
     }
@@ -187,7 +188,7 @@ public class EnemyBase : MonoBehaviour
         if (amount > 0)
         {
             ani.EnemyTakeDamage();
-            amount = Math.Max(0, amount - defencePower);
+            amount = Math.Max(0, amount - defencePoint);
             currentHp = Math.Clamp(currentHp, 0, currentHp - (amount));
             OnTakeDamage?.Invoke(this, currentHp, amount);
         }
@@ -199,6 +200,6 @@ public class EnemyBase : MonoBehaviour
 
     public void ApplyDamage()
     {
-        playerStat.TakeDamage(attackPower);
+        playerStat.TakeDamage(attakPoint);
     }
 }
