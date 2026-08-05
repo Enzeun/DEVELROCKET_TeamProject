@@ -40,13 +40,16 @@ public class TitleManager : MonoBehaviour
         StartCoroutine(nameof(StartEvent));
     }
 
-    public void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.I)) StartCoroutine(nameof(StartEvent));
-    }
+    /*    public void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.I)) StartCoroutine(nameof(StartEvent));
+        }*/
 
     public IEnumerator StartEvent()
     {
+        startBtn.interactable = false;
+        exitBtn.interactable = false;
+
         // 상태 초기화
         startBtnCanvasGroup.gameObject.SetActive(false);
         exitBtnCanvasGroup.gameObject.SetActive(false);
@@ -61,7 +64,7 @@ public class TitleManager : MonoBehaviour
         startBtnCanvasGroup.alpha = 0;
         exitBtnCanvasGroup.alpha = 0;
         btnGroup.gameObject.SetActive(true);
-        
+
         yield return null;
         btnGroup.enabled = false;
 
@@ -72,7 +75,7 @@ public class TitleManager : MonoBehaviour
         Vector2 startVectorSave = startBtnRect.anchoredPosition;
         Vector2 exitVectorSave = exitBtnRect.anchoredPosition;
         Vector2 sideBarSize = sideBar.rectTransform.sizeDelta;
-        
+
         sideBar.rectTransform.sizeDelta = new(sideBarSize.x, 0);
         startBtnRect.anchoredPosition = new(startVectorSave.x + 400, startVectorSave.y);
         exitBtnRect.anchoredPosition = new(exitVectorSave.x + 400, exitVectorSave.y);
@@ -130,13 +133,22 @@ public class TitleManager : MonoBehaviour
             exitTextDuration)
             .SetEase(Ease.Linear));
 
-        seq.OnComplete(() => { btnGroup.enabled = true; });
+        seq.OnComplete(() => { 
+            btnGroup.enabled = true;
+            startBtn.interactable = true;
+            exitBtn.interactable = true;
+        });
+
+
+
+
 
     }
 
     public void StartGame()
     {
-        SceneManager.LoadScene("FirstScene");
+        GameStateManager.Instance.LoadSceneName = "JJH_TestScene";
+        SceneManager.LoadScene("JJH_LoadingScene");
     }
 
     public void ExitGame()
