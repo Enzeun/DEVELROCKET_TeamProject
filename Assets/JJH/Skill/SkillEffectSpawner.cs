@@ -30,6 +30,9 @@ public class SkillEffectSpawner : MonoBehaviour
     private Dictionary<string, IObjectPool<GameObject>> effectPool;
     private Coroutine hitTimer;
 
+    /// <summary>
+    /// 스킬 사용 후, 적이 피격해 이펙트가 끝날 경우 작동
+    /// </summary>
     public event Action OnEffectFinished;
 
     private void Awake()
@@ -65,6 +68,7 @@ public class SkillEffectSpawner : MonoBehaviour
         foreach (var item in targetTransform)
         {
             GameObject obj = GetObject(skillName);
+            Collider collider = item.GetComponent<Collider>();
 
             // 투사체인 경우 
             if (pose == SkillPoseType.Vertical || pose == SkillPoseType.Horizontal)
@@ -75,8 +79,8 @@ public class SkillEffectSpawner : MonoBehaviour
                 else
                     obj.transform.position = PlayerStaffTransformByVertical.position;
 
-                Collider collider = item.GetComponent<Collider>();
-                Vector3 colliderCenter = item.TransformPoint(collider.bounds.center);
+                Vector3 colliderCenter = collider.bounds.center;
+
                 Vector3 direction = new Vector3(item.position.x, colliderCenter.y, item.position.z) - obj.transform.position;
                 Vector3 dir = direction.normalized;
 
@@ -88,7 +92,10 @@ public class SkillEffectSpawner : MonoBehaviour
             // 즉발 객체인 경우
             else
             {
-                obj.transform.position = item.position;
+                Vector3 colliderCenter = collider.bounds.center;
+                float sizeY = collider.bounds.size.y / 2;
+                obj.transform.position = 
+                    new Vector3(item.position.x, colliderCenter.y - sizeY, item.position.z);
                 obj.SetActive(true);
                 float hitTime = 0;
 

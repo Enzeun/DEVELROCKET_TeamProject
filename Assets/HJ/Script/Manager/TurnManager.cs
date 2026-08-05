@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -31,6 +32,8 @@ public class TurnManager : MonoBehaviour
 
         StartNewRound, // 라운드 시작 (라운드 : 플레이어 턴, 적 턴 <- 하나의 라운드)
 
+        EnemyReadySkill, // 플레이어 턴 전에, 적들의 스킬이 선택됨
+
         PlayerTurnStart, // 플레이어 턴 시작
         PlayerPlanning, // 스킬 등록을 여기서 함.
         ExecuteSkills, // 등록된 스킬 사용
@@ -57,14 +60,21 @@ public class TurnManager : MonoBehaviour
 
 
 
+    // 추가적으로 관리 할 필드
+    [ReadOnly,ShowInInspector]
+    private DrawCircleWhenMouseOver[] circleController; // Initial 에서 초기화
+
+
+
     //===============================================================================================
 
+    [Button, BoxGroup("디버깅")]
     /// <summary>
     /// 전투매니저 초기화 (배틀 시작 시 호출)
     /// </summary>
     private void InitializeBattle()
     {
-        if (currentState != TurnState.Initialize) return;
+        //if (currentState != TurnState.Initialize) return;
 
         if (skillQueue.Count > 0)
         {
@@ -73,6 +83,8 @@ public class TurnManager : MonoBehaviour
 
         isBattleStarted = false;
         currentRound = 0;
+
+        GetAllEnemyCircleController();
 
         GoToStep(TurnState.StartBattle);
     }
@@ -152,6 +164,11 @@ public class TurnManager : MonoBehaviour
             case TurnState.StartNewRound:
                 {
                     StartNewRound();
+                    break;
+                }
+            case TurnState.EnemyReadySkill:
+                {
+                    EnemyReady();
                     break;
                 }
             case TurnState.PlayerTurnStart:
@@ -241,5 +258,47 @@ public class TurnManager : MonoBehaviour
     {
         ReadyForNewRound();
 
+    }
+
+    //===============================================================================================
+    private void EnemyReady()
+    {
+
+    }
+
+    //===============================================================================================
+
+    //===============================================================================================
+    [Button, BoxGroup("디버깅")]
+    private void PlayerSelectTarget()
+    {
+        foreach (var con in circleController)
+        {
+            con.enabled = true;
+
+            if (con.enabled)
+            {
+                Debug.Log("활성화 되었습니다");
+            }
+            else
+            {
+                Debug.Log("활성화 실패했습니다");
+
+            }
+        }
+    }
+    //===============================================================================================
+
+    //===============================================================================================
+
+    //===============================================================================================
+    private void GetAllEnemyCircleController()
+    {
+        circleController = FindObjectsByType<DrawCircleWhenMouseOver>(FindObjectsInactive.Include,FindObjectsSortMode.None);
+ 
+        foreach (var con in circleController)
+        {
+            con.enabled = false;
+        }
     }
 }

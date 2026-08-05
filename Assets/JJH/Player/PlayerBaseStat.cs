@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBaseStat : MonoBehaviour
+public class PlayerBaseStat
 {
     public string Name {  get; private set; }
     public int NowHP {  get; set; }
@@ -28,6 +28,9 @@ public class PlayerBaseStat : MonoBehaviour
     /// <para>int : 현재 체력, int : 최대 체력</para>
     /// </summary>
     public event Action<int, int> OnHpChanged;
+    /// <summary>
+    /// 캐릭터가 사망할 경우 작동
+    /// </summary>
     public event Action OnDead;
 
     public PlayerBaseStat(string name, int maxHP, int nowHP, int maxCost, int nowCost,
