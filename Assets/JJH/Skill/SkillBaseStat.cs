@@ -21,9 +21,11 @@ public class SkillBaseStat
     public List<SkillUpgradeType> UpgradeAbleList;
     public List<SkillUpgradeType> NowUpgradeList;
     public SkillTargetType TargetType;
+    public SkillTargetSubType TargetSubType;
 
     public SkillBaseStat(int id, string name, string description, int cost, int damage, 
-        SkillPoseType pose, List<SkillUpgradeType> upgradeAbleList, SkillTargetType targetType)
+        SkillPoseType pose, List<SkillUpgradeType> upgradeAbleList,
+        SkillTargetType targetType, SkillTargetSubType targetSubType)
     {
         Id = id;
         Name = name;
@@ -34,6 +36,7 @@ public class SkillBaseStat
         NowUpgradeList = new();
         TargetType = targetType;
         Pose = pose;
+        TargetSubType = targetSubType;
     }
 
     /// <summary>
