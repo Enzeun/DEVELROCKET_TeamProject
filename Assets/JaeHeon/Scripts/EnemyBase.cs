@@ -40,7 +40,7 @@ public class EnemyBase : MonoBehaviour
     private int _maxHp;
     public int maxHp { get => _maxHp; }
     [BoxGroup("적 초기스탯"), SerializeField]
-    private int attakPoint;
+    private int attackPoint;
     [BoxGroup("적 초기스탯"), SerializeField]
     private int defencePoint;
 
@@ -61,8 +61,7 @@ public class EnemyBase : MonoBehaviour
     private Enemy_Behaviour _currentBehaviour;
     public Enemy_Behaviour currentBehaviour { get => _currentBehaviour; }
 
-    [SerializeField]
-    Transform hpBarLocation;
+    public Transform hpBarLocation;
 
     public event Action<EnemyBase> OnDie;
     public Action<EnemyBase, int, int> OnTakeDamage;
@@ -71,8 +70,8 @@ public class EnemyBase : MonoBehaviour
 
     private void Awake()
     {
-        currentHp = maxHp;
-        Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attakPoint} / defence : {defencePoint}");
+        InitStat();
+        Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attackPoint} / defence : {defencePoint}");
         ani = GetComponent<EnemyAnimation>();
         behaviour = GetComponent<EnemySelectBehaviour>();
     }
@@ -80,6 +79,11 @@ public class EnemyBase : MonoBehaviour
     private void Start()
     {
         SetTarget();
+    }
+
+    private void InitStat()
+    {
+        currentHp = maxHp;
     }
 
     private void SetTarget()
@@ -200,6 +204,6 @@ public class EnemyBase : MonoBehaviour
 
     public void ApplyDamage()
     {
-        playerStat.TakeDamage(attakPoint);
+        playerStat.TakeDamage(attackPoint);
     }
 }
