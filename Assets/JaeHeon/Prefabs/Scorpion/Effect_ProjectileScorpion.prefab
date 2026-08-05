@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7921263477482513594}
   - component: {fileID: 1147460747285569150}
   m_Layer: 0
-  m_Name: Effect_Projectile
+  m_Name: Effect_ProjectileScorpion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

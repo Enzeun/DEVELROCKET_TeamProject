@@ -4,6 +4,19 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using System.Collections;
 
+/// <summary>
+/// 
+/// ==Animation Parameter==
+/// 
+/// NormalAttack
+/// CastSpell
+/// Die
+/// Buff
+/// TakeDamage
+/// ProjectileAttack
+/// 
+/// </summary>
+
 public class EnemyAnimation : MonoBehaviour
 {
     [BoxGroup("받아올 컴포넌트"), SerializeField]
@@ -134,6 +147,7 @@ public class EnemyAnimation : MonoBehaviour
         {
             GameObject spell = GameObject.Instantiate(spellPrefab);
             spell.transform.position = targetTransform.position;
+            EffectDestroy(spell, 2f);
         });
         seq.Append(transform.DORotate(currentRotation.eulerAngles, 0.4f));
     }
@@ -141,7 +155,7 @@ public class EnemyAnimation : MonoBehaviour
     //Event >> 해당 위치에서 플레이어 damage 받는 함수 제작
     public void EventEnemyCastSpell()
     {
-        //player.TakeDamage(enemyBase.attackPower);
+        StartCoroutine(ApplyDamageRoutine());
     }
 
 
@@ -155,8 +169,15 @@ public class EnemyAnimation : MonoBehaviour
         {
             GameObject buffEffect = GameObject.Instantiate(buffPrefab);
             buffEffect.transform.position = transform.position;
+
+            EffectDestroy(buffEffect, 2f);
         });
         //버프 할 사항 추가
+    }
+
+    private void EffectDestroy(GameObject effect, float destroyTime)
+    {
+        Destroy(effect, destroyTime);
     }
 
     public void EnemyTakeDamage()
@@ -164,6 +185,7 @@ public class EnemyAnimation : MonoBehaviour
         animator.SetTrigger("TakeDamage");
     }
 
+    [Button]
     public void EnemyDie()
     {
         animator.SetTrigger("Die");
