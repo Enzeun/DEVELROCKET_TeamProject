@@ -14,9 +14,10 @@ public class SceneLoadManager : MonoBehaviour
     [SF] private TextMeshProUGUI loadingValueText;
     [SF] private CanvasGroup fade;
     [SF] private Color startColor;
+    [SF] private Color middleColor;
     [SF] private Color endColor;
 
-    private readonly float fadeDuration = 1.5f; // 페이드 인/아웃 시간
+    private readonly float fadeDuration = 1f; // 페이드 인/아웃 시간
     private readonly float minLoadingTime = 2.0f; // 최소 로딩 시간 보장
 
     void Start()
@@ -27,8 +28,11 @@ public class SceneLoadManager : MonoBehaviour
     public void SetColorByProgress(float progress)
     {
         progress = Mathf.Clamp01(progress);
-
-        Color blendedColor = Color.Lerp(startColor, endColor, progress);
+        Color blendedColor = Color.white;
+        if (progress < 0.5f)
+            blendedColor = Color.Lerp(startColor, middleColor, progress * 2);
+        else
+            blendedColor = Color.Lerp(middleColor, endColor, Mathf.Max(progress - 0.5f, 0) * 2);
 
         if (loadingBar != null)
         {
@@ -72,22 +76,6 @@ public class SceneLoadManager : MonoBehaviour
                 loadingBar2.fillAmount = targetProgress;
             }
         }
-
-        /*// 씬이 준비된 후에도 진행 바가 멈추지 않도록 보완
-        while (elapsed < minLoadingTime)
-        {
-            yield return null;
-            elapsed += Time.deltaTime;
-            if (loadingBar != null)
-            {
-                Debug.Log(elapsed);
-                float value = Mathf.Lerp(loadingBar.fillAmount, 1f, elapsed / minLoadingTime);
-                SetColorByProgress(value);
-                loadingValueText.text = Mathf.Round(value * 100) + "%";
-                loadingBar.fillAmount = Mathf.Lerp(loadingBar.fillAmount, 1f, elapsed / minLoadingTime);
-                loadingBar2.fillAmount = Mathf.Lerp(loadingBar2.fillAmount, 1f, elapsed / minLoadingTime);
-            }
-        }*/
 
         // 로딩바 100% 채우기
         if (loadingBar != null)
