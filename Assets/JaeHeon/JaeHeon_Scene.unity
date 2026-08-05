@@ -202,6 +202,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plant Chewer (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4725451496344289923, guid: 122a64133cf1039488b17168497ec1ee, type: 3}
+      propertyPath: buffPrefab
+      value: 
+      objectReference: {fileID: 682793325478354899, guid: a524cabda7098b84ea974d021b75b373, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

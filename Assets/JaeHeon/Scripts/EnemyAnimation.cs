@@ -102,6 +102,7 @@ public class EnemyAnimation : MonoBehaviour
     }
 
     // Event >> target 위치로 발사체 발사 (발사체 방향도 target 방향으로)
+    // projectile 말고도 EffectProjectile 넣어주면 좋음
     public void EventEnemyEmissionProjectile()
     {
         GameObject projectile = GameObject.Instantiate(projectilePrefab);
@@ -110,12 +111,14 @@ public class EnemyAnimation : MonoBehaviour
         projectile.transform.forward = direction;
         EffectDestroy(projectile, destroyEffectInterval);
 
-        GameObject effectProjectile = GameObject.Instantiate(projectileEffectPrefab);
-        effectProjectile.transform.position = transform.position;
-        Vector3 effectDirection = (targetTransform.position - transform.position).normalized;
-        effectProjectile.transform.forward = effectDirection;
-        EffectDestroy(effectProjectile, destroyEffectInterval);
-
+        if (projectileEffectPrefab != null)
+        {
+            GameObject effectProjectile = GameObject.Instantiate(projectileEffectPrefab);
+            effectProjectile.transform.position = transform.position;
+            Vector3 effectDirection = (targetTransform.position - transform.position).normalized;
+            effectProjectile.transform.forward = effectDirection;
+            EffectDestroy(effectProjectile, destroyEffectInterval);
+        }
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
         rb.AddForce(direction * projectileSpeed, ForceMode.Impulse);
     }

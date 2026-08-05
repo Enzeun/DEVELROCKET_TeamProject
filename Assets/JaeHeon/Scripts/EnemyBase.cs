@@ -83,10 +83,16 @@ public class EnemyBase : MonoBehaviour
     // 이후 아래 if문처럼 스킬, 공격, 버프 불러주시면 됩니다.
     public void SelectBehaviour()
     {
-        currentBehaviour = behaviour.Calc_Enemy_Behaviour();
+        if (!isDead)
+        {
+            currentBehaviour = behaviour.Calc_Enemy_Behaviour();
+        }
     }
     private void StartBehaviour()
     {
+        if (isDead)
+            return;
+
         if (currentBehaviour == Enemy_Behaviour.Attack)
         {
             NormalAttack();
@@ -116,7 +122,6 @@ public class EnemyBase : MonoBehaviour
             None();
         }
     }
-
 
 
     private void NormalAttack()
