@@ -1271,6 +1271,7 @@ MonoBehaviour:
   enemyBase: {fileID: 0}
   targetTransform: {fileID: 0}
   projectilePrefab: {fileID: 5932506449497926068, guid: 6c63fbbd5082ae249aba411955ecc076, type: 3}
+  projectileEffectPrefab: {fileID: 308036575490490930, guid: d55bdb4d20e1f024188219eace825da7, type: 3}
   EmissionTransform: {fileID: 5241930021367751706}
   spellPrefab: {fileID: 800211394734574691, guid: 28cd63c762984524d9d305769033b4e7, type: 3}
   buffPrefab: {fileID: 6063512644559778907, guid: 335a0ca20feb1d34ca5d94a5b5a6bd09, type: 3}
@@ -1278,7 +1279,11 @@ MonoBehaviour:
   enemyMoveSpeed: 1
   projectileSpeed: 20
   distanceOfPlayerAtNormalAttack: 2
-  waitSec: 1
+  rotateInterval: 0.4
+  waitInterval: 0.4
+  animatingInterval: 1
+  destroyEffectInterval: 2
+  applyDamageInterval: 1
 --- !u!65 &886420324542358980
 BoxCollider:
   m_ObjectHideFlags: 0
