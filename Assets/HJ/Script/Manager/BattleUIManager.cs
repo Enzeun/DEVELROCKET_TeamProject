@@ -35,6 +35,9 @@ public class BattleUIManager : MonoBehaviour
     private Canvas ReadyBattleCanvas;
     [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
     private Canvas BattleUICanvas;
+    [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
+    private Canvas skillCanvas;
+
 
     // 참조해야하는 필드들
     private PlayerCombat playerCombat;
@@ -44,6 +47,11 @@ public class BattleUIManager : MonoBehaviour
     private Dictionary<EnemyBase, EnemyUIContriller> UI_Dictionary = new();
 
 
+    // 자체적으로 시작할 때 숨길 것 숨기기 위해서 start 사용
+    private void Start()
+    {
+        skillCanvas.enabled = false;
+    }
 
     private void OnDisable()
     {
@@ -117,13 +125,14 @@ public class BattleUIManager : MonoBehaviour
     {
         playerCombat = _playerCombat;
         playerStat = playerCombat.player;
-        RegisterPlayerEvent();
+        SubscribePlayerEvent();
     }
 
-    private void RegisterPlayerEvent()
+    private void SubscribePlayerEvent()
     {
         playerStat.OnHpChanged += PlayerHpChangedUI;
         playerStat.OnDamagedTaken += TakeDamage_UI_NumberAnimation_Player;
+        playerStat.OnCostChanged += OnPlayerUseCost;
     }
 
     public void SetEnemyList(List<EnemyBase> list)
@@ -142,12 +151,12 @@ public class BattleUIManager : MonoBehaviour
             Debug.Log($"{index} 번 째 실행 중 (UI Dictionary)");
             EnemyUIContriller ui = enemy_UIControllers[index];
             UI_Dictionary.Add(enemy, ui);
-            RegisterEnemyEvent(enemy, ui);
+            SubscribeEnemyEvent(enemy, ui);
             index++;
         }
     }
 
-    private void RegisterEnemyEvent(EnemyBase enemy, EnemyUIContriller uIContriller)
+    private void SubscribeEnemyEvent(EnemyBase enemy, EnemyUIContriller uIContriller)
     {
         enemy.OnTakeDamage += Enemy_TakeDamage;
         enemy.OnDie += OnEnemyDie;
@@ -230,6 +239,14 @@ public class BattleUIManager : MonoBehaviour
         enemy.OnDie -= OnEnemyDie;
 
     }
+    //====================== Player 코스트 사용할 때 메서드 ====================================================================================================
+
+    private void OnPlayerUseCost(int current, int max)
+    {
+
+    }
+
+
 
     // ============= UI Show / Hide 관련 ===========================================================================
 
@@ -389,6 +406,18 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
+
+    public void ShowSkillMenu(bool show)
+    {
+        if (show)
+        {
+            OpenPopup(skillCanvas);
+        }
+        else
+        {
+            ClosePopup(skillCanvas);
+        }
+    }
 
     // ============= UI 콜백 이벤트 =================================================================================
 

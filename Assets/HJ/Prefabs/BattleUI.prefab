@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 5298886945043953776}
   - component: {fileID: 8741048799414284341}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: PlayerSkillCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -580,6 +580,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2825506824010205208, guid: 3bf51bb1da2412449a5f60127e27b50b, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3230934900628656970, guid: 3bf51bb1da2412449a5f60127e27b50b, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -668,6 +672,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5437584038135105979, guid: 3bf51bb1da2412449a5f60127e27b50b, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6594598329031799093, guid: 3bf51bb1da2412449a5f60127e27b50b, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -686,6 +694,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6893559330840343412, guid: 3bf51bb1da2412449a5f60127e27b50b, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265885212255396994, guid: 3bf51bb1da2412449a5f60127e27b50b, type: 3}
+      propertyPath: m_Interactable
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8493409828060409298, guid: 3bf51bb1da2412449a5f60127e27b50b, type: 3}
@@ -718,6 +730,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6490103081806659708}
     m_Modifications:
+    - target: {fileID: 198510520700731652, guid: cc4d5b98ba0f1044a8a2e4068ef89b7c, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1786189824640153464, guid: cc4d5b98ba0f1044a8a2e4068ef89b7c, type: 3}
       propertyPath: m_Pivot.x
       value: 0

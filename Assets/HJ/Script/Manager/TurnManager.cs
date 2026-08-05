@@ -2,7 +2,6 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class TurnManager : MonoBehaviour
@@ -49,6 +48,8 @@ public class TurnManager : MonoBehaviour
         EndRound, // 한 라운드 (루프 1개) 종료
 
         EndBattle, // 배틀 종료 (전체 배틀이 종료된 상태)
+
+        GameOver, // 게임오버 (플레이어 사망)
     }
 
 
@@ -62,15 +63,22 @@ public class TurnManager : MonoBehaviour
     [ShowInInspector, BoxGroup("필드 값 추적"), ReadOnly]
     private List<EnemyBase> enemyList = new();
     [ShowInInspector, BoxGroup("필드 값 추적"), ReadOnly]
-    private Queue<PlayerTurnData> playerQueue = new Queue<PlayerTurnData>();
+    private int playerQueueCount { get => playerQueue.Count; }
     [ShowInInspector, BoxGroup("필드 값 추적"), ReadOnly]
+    private int enemyQueueCount { get => enemyQueue.Count; }
+    [ShowInInspector, BoxGroup("필드 값 추적"), ReadOnly]
+    private bool isGameOver = false;
+
+
+    // 플레이어와 적의 행동은 큐로 관리
+    private Queue<PlayerTurnData> playerQueue = new Queue<PlayerTurnData>();
     private Queue<EnemyTurnData> enemyQueue = new Queue<EnemyTurnData>();
+
 
 
     // 필수 참조 필드
     [SerializeField, BoxGroup("**필수 참조 필드**"), Required]
     private BattleUIManager uIManager;
-
 
 
 
@@ -80,7 +88,7 @@ public class TurnManager : MonoBehaviour
     public bool isBattleStarted { get; private set; } = false; // 전투가 최초로 시작될 때 true, 
     public int currentRound { get; private set; } = 0; // 플레이어 턴, 적 턴 <- 하나의 라운드
 
- 
+
 
     // 추가적으로 관리 할 필드
     [ReadOnly, ShowInInspector]
@@ -90,7 +98,7 @@ public class TurnManager : MonoBehaviour
 
     //===============================================================================================
 
-   
+
 
 
     //===============================================================================================
@@ -107,7 +115,6 @@ public class TurnManager : MonoBehaviour
         SetPlayerReference();
 
         uIManager.HideAllUI(true);
-
 
         isBattleStarted = true;
 
@@ -136,37 +143,48 @@ public class TurnManager : MonoBehaviour
 
     private void ClearSkillQueue()
     {
-        if (skillQueue.Count > 0)
+        if (playerQueue.Count > 0)
         {
-            skillQueue.Clear();
+            playerQueue.Clear();
         }
     }
 
 
     //===============================================================================================
 
-    // 플레이어의 스킬을 큐 형식으로 저장함
-    private Queue<SkillBaseStat> skillQueue = new();
-
     /// <summary>
     /// 플레이어 스킬 큐에 등록하기
     /// </summary>
     /// <param name="skill"></param>
-    public void RegisterSkill(SkillBaseStat skill)
+    public void RegisterSkill(PlayerTurnData skill)
     {
-        skillQueue.Enqueue(skill);
+        playerQueue.Enqueue(skill);
     }
 
     /// <summary>
     /// 큐에 등록된 스킬 사용하기
     /// </summary>
     /// <returns></returns>
-    private SkillBaseStat UseRegisteredSkill()
+    private PlayerTurnData UseRegisteredSkill()
     {
-        if (skillQueue.Count == 0) return null;
+        if (playerQueueCount == 0) return null;
 
-        return skillQueue.Dequeue();
+        return playerQueue.Dequeue();
     }
+    //===================== Enemy 의 행동을 큐로 관리 =============================================================
+
+    private void RegisterEnemyBehavior(EnemyTurnData enemyTurnData)
+    {
+        enemyQueue.Enqueue(enemyTurnData);
+    }
+
+    private EnemyTurnData DequeueEnemyBehavior()
+    {
+        if (enemyQueueCount == 0) return null;
+
+        return enemyQueue.Dequeue();
+    }
+
 
     //===============================================================================================
 
@@ -226,7 +244,7 @@ public class TurnManager : MonoBehaviour
                 }
             case TurnState.PlayerTurnStart:
                 {
-
+                    PlayerTurnStart();
                     break;
                 }
             case TurnState.PlayerPlanning:
@@ -268,15 +286,41 @@ public class TurnManager : MonoBehaviour
 
     }
 
-    //===============================================================================================
+    //============== 게임 중단점 체크 ============================================================
 
     /// <summary>
-    /// 전투가 지속 가능한 상황인지 체크
+    /// 전투가 지속 가능한 상황인지 체크 (아직 적이 남아있는지)
     /// </summary>
-    private void CheckBattleState()
-    {
-
+    private bool CheckBattleState()
+    {       
+        if (enemyList.Count == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
+
+    private bool CheckIsGameOver()
+    {
+        if (isGameOver)
+        {
+            GoToStep(TurnState.GameOver);
+            return true;
+        }
+        else
+        {
+            if (player.NowHP <= 0)
+            {
+                GoToStep(TurnState.GameOver);
+                return true;
+            }
+            return false;
+        }
+    }
+
 
     //================== 게임 초기에 진행해야하는 필수 메서드 =============================================================================
 
@@ -284,6 +328,7 @@ public class TurnManager : MonoBehaviour
     {
         playerCombat = FindAnyObjectByType<PlayerCombat>();
         player = playerCombat.player;
+        player.OnDead += () => { isGameOver = true; };
     }
 
     /// <summary>
@@ -352,9 +397,31 @@ public class TurnManager : MonoBehaviour
         {
             enemy.SelectBehaviour();
 
+            EnemyTurnData enemyTurnData = new EnemyTurnData(enemy, enemy.currentBehaviour);
+
+            RegisterEnemyBehavior(enemyTurnData);
+
             uIManager.ShowBehaveIcon(enemy);
         }
+
+        GoToStep(TurnState.PlayerTurnStart);
     }
+
+
+    //=============== Player Turn Start 구간 ================================================================================
+
+    private void PlayerTurnStart()
+    {
+        uIManager.ShowSkillMenu(true);
+
+
+
+    }
+
+
+
+
+
 
     //===============================================================================================
 
@@ -402,10 +469,32 @@ public class TurnManager : MonoBehaviour
 
     //================== 디버깅용 임시 메서드 =============================================================================
 
-    [Button,BoxGroup("디버깅용 임시 메서드")]
-    public void DealDamage(EnemyBase enemy, int damage)
+    [Button, BoxGroup("디버깅용 임시 메서드")]
+    public void EnemyDealDamage(EnemyBase enemy, int damage)
     {
         enemy.TakeDamage(damage);
     }
 
+    [Button, BoxGroup("디버깅용 임시 메서드")]
+    public void PlayerDealDamage(int damage)
+    {
+        player.TakeDamage(damage);
+    }
+
+    [Button, BoxGroup("디버깅용 임시 메서드")]
+    public void PlayerUseSkill(int id, Transform target)
+    {
+        bool get = player.SkillData.TryGetValue(id, out var skill);
+
+        if (get)
+        {
+            playerCombat.SetNowSkillAndTarget(skill, new Transform[] { target });
+            playerCombat.PlayerAnmationActive();
+        }
+        else
+        {
+            Debug.Log("없는 스킬데이터 입니다");
+            return;
+        }
+    }
 }

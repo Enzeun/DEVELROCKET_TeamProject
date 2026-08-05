@@ -172,6 +172,18 @@ PrefabInstance:
       propertyPath: playerCombat
       value: 
       objectReference: {fileID: 829625842}
+    - target: {fileID: 2377754123358636421, guid: 17ea3879c61671a42b0686e09f49b75d, type: 3}
+      propertyPath: PlayerTransform
+      value: 
+      objectReference: {fileID: 1099306187}
+    - target: {fileID: 2377754123358636421, guid: 17ea3879c61671a42b0686e09f49b75d, type: 3}
+      propertyPath: PlayerStaffTransformByVertical
+      value: 
+      objectReference: {fileID: 212664292}
+    - target: {fileID: 2377754123358636421, guid: 17ea3879c61671a42b0686e09f49b75d, type: 3}
+      propertyPath: PlayerStaffTransformByHorizontal
+      value: 
+      objectReference: {fileID: 212664292}
     - target: {fileID: 6279414222076372786, guid: 17ea3879c61671a42b0686e09f49b75d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 66.65371
@@ -228,6 +240,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcd8121c8e674004d91fd56a4f4da1f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkillEffectSpawner
+--- !u!4 &212664292 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5585852452740755585, guid: 17e1966291942254fbe1361ac4e7055a, type: 3}
+  m_PrefabInstance: {fileID: 829625841}
+  m_PrefabAsset: {fileID: 0}
 --- !u!223 &258968080 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 8203664661684836741, guid: 0cd4ce7796201cf4e905916a26bd197c, type: 3}
@@ -1064,6 +1081,7 @@ MonoBehaviour:
   enemy_NumberPrefab: {fileID: 4973914337474189900, guid: 493b927d7e388dc498ff814af2a8be0c, type: 3}
   ReadyBattleCanvas: {fileID: 344641978}
   BattleUICanvas: {fileID: 258968080}
+  skillCanvas: {fileID: 1299746902}
 --- !u!4 &1096197460
 Transform:
   m_ObjectHideFlags: 0
@@ -1079,6 +1097,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 723880334}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1099306187 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 982604367651097029, guid: 17e1966291942254fbe1361ac4e7055a, type: 3}
+  m_PrefabInstance: {fileID: 829625841}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1151166045
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1416,6 +1439,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 723880334}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!223 &1299746902 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 2786030847483198955, guid: 0cd4ce7796201cf4e905916a26bd197c, type: 3}
+  m_PrefabInstance: {fileID: 2915399183799969903}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1483557680
 PrefabInstance:
   m_ObjectHideFlags: 0
