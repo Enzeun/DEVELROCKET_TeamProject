@@ -10,8 +10,7 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class BattleUIManager : MonoBehaviour
 {
-    [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
-    private PlayerCombat playerCombat;
+    // 플레이어 관련 참조
     [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
     private TextMeshProUGUI playerHpBarText;
     [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
@@ -21,32 +20,30 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
     private RectTransform playerHP_Number_Location;
 
+    // 적 관련 참조
     [SerializeField, Required, BoxGroup("**참조필요!**적")]
-    private NumberLoacationContriller[] enemy_HpBarControllers;
+    private EnemyUIContriller[] enemy_UIControllers;
     [SerializeField, Required, BoxGroup("**참조필요!**적")]
     private DamageNumber enemy_NumberPrefab;
-    [SerializeField, Required, BoxGroup("**참조필요!**적")]
-    private GameObject[] enemy_HpBarLocations;
-    [SerializeField, Required, BoxGroup("**참조필요!**적")]
-    private EnemyBase[] enemys;
+    //[SerializeField, Required, BoxGroup("**참조필요!**적")]
+    //private GameObject[] enemy_HpBarLocations;
+    //[SerializeField, Required, BoxGroup("**참조필요!**적")]
+    //private EnemyBase[] enemys;
 
+    // UI 컴포넌트 참조
+    [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
+    private Canvas ReadyBattleCanvas;
+    [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
+    private Canvas BattleUICanvas;
 
+    // 참조해야하는 필드들
+    private PlayerCombat playerCombat;
     private PlayerBaseStat playerStat;
+    [ShowInInspector, ReadOnly]
+    private List<EnemyBase> enemyList;
+    private Dictionary<EnemyBase, EnemyUIContriller> UI_Dictionary = new();
 
-    private void OnEnable()
-    {
-        if (playerStat != null)
-        {
-            playerStat.OnHpChanged += PlayerHpChangedUI;
-            playerStat.OnDamagedTaken += TakeDamage_UI_NumberAnimation_Player;
-        }
 
-        foreach (var enemy in enemys)
-        {
-            enemy.OnTakeDamage += Enemy_TakeDamage;
-
-        }
-    }
 
     private void OnDisable()
     {
@@ -55,49 +52,114 @@ public class BattleUIManager : MonoBehaviour
             playerStat.OnHpChanged -= PlayerHpChangedUI;
             playerStat.OnDamagedTaken -= TakeDamage_UI_NumberAnimation_Player;
         }
-        foreach (var enemy in enemys)
+        foreach (var enemy in enemyList)
         {
             enemy.OnTakeDamage -= Enemy_TakeDamage;
+            enemy.OnDie += OnEnemyDie;
         }
     }
 
-    private void Start()
+
+
+
+    //======================= 초기화, 초기상태 설정 메서드 ====================================================
+
+    public void SetEnemyUILocation()
     {
-        playerStat = playerCombat.player;
-
-        SetEnemyUILocation();
-    }
-
-
-    private void SetEnemyUILocation()
-    {
-        // 카메라 뒤쪽으로 넘어갔을때의 코드, 지금은 필요없음
-        //if (newPosition.z < 0)
-        //{           
-        //    enemy_HpBarControllers[0].gameObject.SetActive(false);
-        //    return;
-        //}
-        //enemy_HpBarControllers[0].gameObject.SetActive(true);
-
-        for (int i = 0; i < enemy_HpBarLocations.Length; i++)
+        foreach (var enemy in enemyList)
         {
-            Debug.Log(i + " 번째 실행 중");
-            Vector3 newPosition = Camera.main.WorldToScreenPoint(enemy_HpBarLocations[i].transform.position);
+            EnemyUIContriller enemyUIController;
 
-            float movingPosition = enemy_HpBarControllers[i].GetComponent<RectTransform>().rect.width / 4;
+            UI_Dictionary.TryGetValue(enemy, out enemyUIController);
 
-            enemy_HpBarControllers[i].gameObject.transform.position = newPosition - Vector3.right * movingPosition;
+            if (enemyUIController == null)
+            {
+                Debug.Log("해당 enemy 에 대응하는 ui 가 없음.");
+                return;
+            }
+
+            Vector3 newPosition = Camera.main.WorldToScreenPoint(enemy.transform.position);
+
+            float movingPosition = enemyUIController.GetComponent<RectTransform>().rect.width / 4;
+
+            enemyUIController.gameObject.transform.position = newPosition - Vector3.right * movingPosition;
         }
     }
 
-    //==========================================================================================================================
 
     [BoxGroup("UI Debug_Player"), Button]
-    private void InitializePlayerHpBar()
+    public void InitializeAllHpBar()
     {
+        int playerMaxHp = playerStat.MaxHP;
 
+        playerHpBarText.text = $"{playerMaxHp}/{playerMaxHp}";
+        playerHpSlider.value = 1;
+
+        foreach (var enemy in enemyList)
+        {
+            EnemyUIContriller enemyHpbar;
+
+            int maxHp = enemy.maxHp;
+
+            UI_Dictionary.TryGetValue(enemy, out enemyHpbar);
+
+            if (enemyHpbar == null)
+            {
+                Debug.Log("해당 Enemy 에 해당하는 hpBar 가 없습니다. 확인하세요");
+                return;
+            }
+
+            enemyHpbar.hpSlider.value = 1;
+
+            enemyHpbar.hpText.text = $"{maxHp}/{maxHp}";
+        }
     }
 
+    public void SetPlayerInfo(PlayerCombat _playerCombat)
+    {
+        playerCombat = _playerCombat;
+        playerStat = playerCombat.player;
+        RegisterPlayerEvent();
+    }
+
+    private void RegisterPlayerEvent()
+    {
+        playerStat.OnHpChanged += PlayerHpChangedUI;
+        playerStat.OnDamagedTaken += TakeDamage_UI_NumberAnimation_Player;
+    }
+
+    public void SetEnemyList(List<EnemyBase> list)
+    {
+        enemyList = list;
+    }
+
+    public void InitUIDictinary()
+    {
+        UI_Dictionary = new Dictionary<EnemyBase, EnemyUIContriller>();
+
+        int index = 0;
+
+        foreach (var enemy in enemyList)
+        {
+            Debug.Log($"{index} 번 째 실행 중 (UI Dictionary)");
+            EnemyUIContriller ui = enemy_UIControllers[index];
+            UI_Dictionary.Add(enemy, ui);
+            RegisterEnemyEvent(enemy, ui);
+            index++;
+        }
+    }
+
+    private void RegisterEnemyEvent(EnemyBase enemy, EnemyUIContriller uIContriller)
+    {
+        enemy.OnTakeDamage += Enemy_TakeDamage;
+        enemy.OnDie += OnEnemyDie;
+    }
+
+
+    //======================= Enemy 목록 받아오기. TurnManager 에서 넣어줌 ====================================================
+
+
+    //====================== Player 데미지 받을 때 메서드 ====================================================================================================
 
     [BoxGroup("UI Debug_Player"), Button]
     private void PlayerHpChangedUI(int currentHp, int maxHp)
@@ -120,58 +182,217 @@ public class BattleUIManager : MonoBehaviour
     {
         Math.Clamp(endValue, 0, 1);
         playerHpSlider.transform.DOShakePosition(0.2f, 10f, 90);
-        playerHpSlider.DOValue(endValue, 0.1f);
+        playerHpSlider.DOValue(endValue, 0.5f);
     }
 
-    //==========================================================================================================================
+    //==================== Enemy 데미지 받을 때 메서드 ======================================================================================================
 
-    [BoxGroup("UI Debug_Enemy"), Button]
     private void Enemy_TakeDamage(EnemyBase enemy, int currentHp, int damage)
     {
-        for (int i = 0; i < enemys.Length; i++)
+        EnemyUIContriller uiController;
+
+        UI_Dictionary.TryGetValue(enemy, out uiController);
+
+        if (uiController == null)
         {
-            if (enemy == enemys[i])
+            Debug.Log("해당 Enemy 에 해당하는 uiController 가 없습니다. 확인하세요");
+            return;
+        }
+
+        uiController.hpText.text = $"{currentHp}/{enemy.maxHp}";
+
+        float endValue = (float)currentHp / enemy.maxHp;
+
+        Math.Clamp(endValue, 0, 1);
+
+        TakeDamage_UI_NumberAnimation_Enemy(damage, uiController);
+
+        HP_Decrease_UIAnimation_Enemy(endValue, uiController);
+
+        return;
+
+    }
+
+
+    private void TakeDamage_UI_NumberAnimation_Enemy(int damage, EnemyUIContriller uiController)
+    {
+        DamageNumber damageNumber = enemy_NumberPrefab.SpawnGUI(uiController.numberLocation, Vector2.zero, damage);
+    }
+
+
+    private void HP_Decrease_UIAnimation_Enemy(float endValue, EnemyUIContriller uiController)
+    {
+        uiController.transform.DOShakePosition(0.2f, 10f, 90);
+        uiController.hpSlider.DOValue(endValue, 0.5f);
+    }
+
+    private void OnEnemyDie(EnemyBase enemy)
+    {
+        enemy.OnTakeDamage -= Enemy_TakeDamage;
+        enemy.OnDie -= OnEnemyDie;
+
+    }
+
+    // ============= UI Show / Hide 관련 ===========================================================================
+
+    [BoxGroup("UI 디버깅"), Button]
+    public void HideAllUI(bool hide)
+    {
+        BattleUICanvas.gameObject.SetActive(!hide);
+        ReadyBattleCanvas.gameObject.SetActive(!hide);
+    }
+    [BoxGroup("UI 디버깅"), Button]
+    public void ShowBattleUI(bool show, bool anim = true)
+    {
+        if (anim)
+        {
+            if (show)
             {
-                TakeDamage_UI_NumberAnimation_Enemy(damage, i);
+                OpenPopup(BattleUICanvas);
+            }
+            else
+            {
+                ClosePopup(BattleUICanvas);
+            }
+        }
+        else
+        {
+            BattleUICanvas.gameObject.SetActive(show);
+        }
+    }
+    [BoxGroup("UI 디버깅"), Button]
+    public void ShowReadyBattleUI(bool show, bool anim = true)
+    {
+        if (anim)
+        {
+            if (show)
+            {
+                OpenPopup(ReadyBattleCanvas);
+            }
+            else
+            {
+                ClosePopup(ReadyBattleCanvas);
+            }
+        }
+        else
+        {
+            ReadyBattleCanvas.gameObject.SetActive(show);
+        }
+    }
 
-                enemy_HpBarControllers[i].hpText.text = $"{currentHp}/{enemy.maxHp}";
+    public void InvokeBattleStart()
+    {
+        OnBattleStartClicked?.Invoke();
+    }
 
-                float endValue = (float)currentHp / enemy.maxHp;
+    public void OpenPopup(Canvas targetCanvas)
+    {
+        if (targetCanvas == null) return;
 
-                //Debug.Log(currentHp + "1");
-                //Debug.Log(endValue + "2");
+        targetCanvas.gameObject.SetActive(true);
 
-                Math.Clamp(endValue, 0, 1);
+        int childCount = targetCanvas.transform.childCount;
 
-                HP_Decrease_UIAnimation_Enemy(endValue, i);
+        for (int i = 0; i < childCount; i++)
+        {
+            RectTransform panelTransform = targetCanvas.transform.GetChild(i) as RectTransform;
 
-                return;
+            if (panelTransform == null) continue;
+
+            CanvasGroup canvasGroup = panelTransform.GetComponent<CanvasGroup>();
+
+            if (canvasGroup == null)
+            {
+                canvasGroup = panelTransform.gameObject.AddComponent<CanvasGroup>();
+            }
+
+            // 기존 진행 중인 트윈이 있다면 중단
+            panelTransform.DOKill();
+            canvasGroup.DOKill();
+
+            // Scale 애니메이션
+            panelTransform.DOScale(Vector3.zero, 0.4f)
+                          .From()
+                          .SetEase(Ease.OutBack)
+                          .SetUpdate(true); // Pause 시에도 동작하도록 설정
+
+            // Fade 애니메이션
+            var fadeTween = canvasGroup.DOFade(0f, 0.25f)
+                                       .From()
+                                       .SetEase(Ease.OutQuad)
+                                       .SetUpdate(true);
+        }
+    }
+
+    public void ClosePopup(Canvas targetCanvas)
+    {
+        if (targetCanvas == null) return;
+
+        int childCount = targetCanvas.transform.childCount;
+
+        for (int i = 0; i < childCount; i++)
+        {
+
+            RectTransform panelTransform = targetCanvas.transform.GetChild(i) as RectTransform;
+
+            if (panelTransform == null) continue;
+
+            CanvasGroup canvasGroup = panelTransform.GetComponent<CanvasGroup>();
+
+            if (canvasGroup == null)
+            {
+                canvasGroup = panelTransform.gameObject.AddComponent<CanvasGroup>();
+            }
+
+            panelTransform.DOKill();
+            canvasGroup.DOKill();
+
+            // Scale 애니메이션
+            panelTransform.DOScale(Vector3.zero, 0.25f)
+                          .SetEase(Ease.InBack)
+                          .SetUpdate(true);
+
+            // Fade 애니메이션
+            var fadeTween = canvasGroup.DOFade(0f, 0.25f)
+                                       .SetEase(Ease.InQuad)
+                                       .SetUpdate(true);
+
+            // 마지막 자식 Panel의 트윈에만 OnComplete를 등록하여 Canvas 비활성화
+            if (i == childCount - 1)
+            {
+                fadeTween.OnComplete(() =>
+                {
+                    targetCanvas.gameObject.SetActive(false);
+                });
             }
         }
     }
 
 
-    [BoxGroup("UI Debug_Enemy"), Button]
-    private void TakeDamage_UI_NumberAnimation_Enemy(int damage, int index)
+    public void ShowBehaveIcon(EnemyBase enemy, bool show = true)
     {
-        if (index > enemy_HpBarControllers.Length)
+        if (!show)
         {
-            Debug.Log("존재하지 않는 Index 입니다. 메서드 : TakeDamage_UI_NumberAnimation_Enemy");
-            return;
+            foreach (var ui in UI_Dictionary.Values)
+            {
+                ui.HideBehaviorIcon();
+            }
         }
-        DamageNumber damageNumber = enemy_NumberPrefab.SpawnGUI(enemy_HpBarControllers[index].numberLocation, Vector2.zero, damage);
-    }
-    [BoxGroup("UI Debug_Enemy"), Button]
-    private void HP_Decrease_UIAnimation_Enemy(float endValue, int index)
-    {
-        if (index > enemy_HpBarControllers.Length)
+
+        else
         {
-            Debug.Log("존재하지 않는 Index 입니다. 메서드 : HP_Decrease_UIAnimation_Enemy");
-            return;
+            if (enemy == null) return;
+
+            EnemyUIContriller uiController;
+
+            UI_Dictionary.TryGetValue(enemy, out uiController);
+
+            uiController.ShowBehaviorIcon(enemy.currentBehaviour);
         }
-        Math.Clamp(endValue, 0, 1);
-        enemy_HpBarControllers[index].transform.DOShakePosition(0.2f, 10f, 90);
-        enemy_HpBarControllers[index].hpSlider.DOValue(endValue, 0.1f);
     }
 
+
+    // ============= UI 콜백 이벤트 =================================================================================
+
+    public Action OnBattleStartClicked;
 }

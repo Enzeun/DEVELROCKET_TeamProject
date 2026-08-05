@@ -2,6 +2,20 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using System.Collections;
+
+/// <summary>
+/// 
+/// ==Animation Parameter==
+/// 
+/// NormalAttack
+/// CastSpell
+/// Die
+/// Buff
+/// TakeDamage
+/// ProjectileAttack
+/// 
+/// </summary>
 
 public class EnemyAnimation : MonoBehaviour
 {
@@ -14,6 +28,8 @@ public class EnemyAnimation : MonoBehaviour
 
     [BoxGroup("넣어줄 컴포넌트"), SerializeField]
     private GameObject projectilePrefab;
+    [BoxGroup("넣어줄 컴포넌트"), SerializeField]
+    private GameObject projectileEffectPrefab;
     [BoxGroup("넣어줄 컴포넌트"), SerializeField]
     private Transform EmissionTransform;
     [BoxGroup("넣어줄 컴포넌트"), SerializeField]
@@ -29,10 +45,21 @@ public class EnemyAnimation : MonoBehaviour
     private float projectileSpeed = 20f;
     [BoxGroup("조작가능한 필드"), SerializeField] 
     private float distanceOfPlayerAtNormalAttack = 2f;
+    [BoxGroup("조작가능한 필드"), SerializeField]
+    private float rotateInterval = 0.4f;
+    [BoxGroup("조작가능한 필드"), SerializeField]
+    private float waitInterval = 0.4f;
+    [BoxGroup("조작가능한 필드"), SerializeField]
+    private float animatingInterval = 1f;
+    [BoxGroup("조작가능한 필드"), SerializeField]
+    private float destroyEffectInterval = 2f;
+    [BoxGroup("조작가능한 필드"), SerializeField]
+    private float applyDamageInterval = 1f;
 
     //시작할 때 현재 상태 저장용 필드
     Transform currentTransform;
     Quaternion currentRotation;
+    WaitForSeconds ws;
 
     /// <summary>
     /// doRotation, doLookAt할 때 걸리는 시간은 임의적으로 집어넣었음
@@ -43,6 +70,7 @@ public class EnemyAnimation : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         enemyBase = GetComponent<EnemyBase>();
+        ws = new WaitForSeconds(applyDamageInterval);
     }
 
     private void Start()
@@ -63,25 +91,34 @@ public class EnemyAnimation : MonoBehaviour
         Vector3 direction = targetTransform.position - transform.position;
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(transform.DOLookAt(targetTransform.position, 0.4f));
-        seq.AppendInterval(0.4f);
+        seq.Append(transform.DOLookAt(targetTransform.position, rotateInterval));
+        seq.AppendInterval(waitInterval);
         seq.AppendCallback(() =>
         {
             animator.SetTrigger("ProjectileAttack");
         });
-        seq.AppendInterval(1f);
-        seq.Append(transform.DORotate(currentRotation.eulerAngles, 0.4f));
+        seq.AppendInterval(animatingInterval);
+        seq.Append(transform.DORotate(currentRotation.eulerAngles, rotateInterval));
     }
 
     // Event >> target 위치로 발사체 발사 (발사체 방향도 target 방향으로)
+    // projectile 말고도 EffectProjectile 넣어주면 좋음
     public void EventEnemyEmissionProjectile()
     {
         GameObject projectile = GameObject.Instantiate(projectilePrefab);
         projectile.transform.position = EmissionTransform.position;
-
         Vector3 direction = (targetTransform.position - EmissionTransform.position).normalized;
         projectile.transform.forward = direction;
+        EffectDestroy(projectile, destroyEffectInterval);
 
+        if (projectileEffectPrefab != null)
+        {
+            GameObject effectProjectile = GameObject.Instantiate(projectileEffectPrefab);
+            effectProjectile.transform.position = transform.position;
+            Vector3 effectDirection = (targetTransform.position - transform.position).normalized;
+            effectProjectile.transform.forward = effectDirection;
+            EffectDestroy(effectProjectile, destroyEffectInterval);
+        }
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
         rb.AddForce(direction * projectileSpeed, ForceMode.Impulse);
     }
@@ -93,18 +130,29 @@ public class EnemyAnimation : MonoBehaviour
 
         Sequence seq = DOTween.Sequence();
 
-        seq.Append(transform.DOLookAt(targetTransform.position,0.4f));
-
+        seq.Append(transform.DOLookAt(targetTransform.position, rotateInterval));
+        seq.AppendInterval(waitInterval);
         seq.Append(transform.DOMove((targetTransform.position - direction * distanceOfPlayerAtNormalAttack), enemyMoveSpeed));
 
         seq.AppendCallback(()=>
         {
-            animator.SetTrigger("StingAttack");
+            animator.SetTrigger("NormalAttack");
         });
-
-        seq.AppendInterval(1f);
+        seq.AppendCallback(() =>
+        {
+            StartCoroutine(ApplyDamageRoutine());
+        });
+        seq.AppendInterval(animatingInterval);
         seq.Append(transform.DOMove(currentTransform.position, enemyMoveSpeed));
-        seq.Append(transform.DORotate(currentRotation.eulerAngles, 0.4f));
+        seq.AppendInterval(waitInterval);
+        seq.Append(transform.DORotate(currentRotation.eulerAngles, rotateInterval));
+    }
+
+    private IEnumerator ApplyDamageRoutine()
+    {
+        yield return ws;
+        Debug.Log("start routine");
+        enemyBase.ApplyDamage();
     }
 
     [Button] //마법 공격
@@ -112,21 +160,26 @@ public class EnemyAnimation : MonoBehaviour
     {
         Sequence seq = DOTween.Sequence();
 
-        animator.SetTrigger("CastSpell");
-        seq.Append(transform.DOLookAt(targetTransform.position, 0.4f));
+        seq.Append(transform.DOLookAt(targetTransform.position, rotateInterval));
+        seq.AppendCallback(() =>
+        {
+            animator.SetTrigger("CastSpell");
+        });
         seq.AppendInterval(enemyMagicSpeed);
         seq.AppendCallback(() =>
         {
             GameObject spell = GameObject.Instantiate(spellPrefab);
             spell.transform.position = targetTransform.position;
+            EffectDestroy(spell, destroyEffectInterval);
         });
-        seq.Append(transform.DORotate(currentRotation.eulerAngles, 0.4f));
+        seq.AppendInterval(animatingInterval);
+        seq.Append(transform.DORotate(currentRotation.eulerAngles, rotateInterval));
     }
 
     //Event >> 해당 위치에서 플레이어 damage 받는 함수 제작
     public void EventEnemyCastSpell()
     {
-        //player.TakeDamage(enemyBase.attackPower);
+        StartCoroutine(ApplyDamageRoutine());
     }
 
 
@@ -140,15 +193,15 @@ public class EnemyAnimation : MonoBehaviour
         {
             GameObject buffEffect = GameObject.Instantiate(buffPrefab);
             buffEffect.transform.position = transform.position;
+
+            EffectDestroy(buffEffect, destroyEffectInterval);
         });
-        
+        //버프 할 사항 추가
     }
 
-
-    public void PlayerTakeDamage()
+    private void EffectDestroy(GameObject effect, float destroyTime)
     {
-        //player.TakeDamage(enemyBase.attackPower);
-        Debug.Log("PlayerTakeDamage");
+        Destroy(effect, destroyTime);
     }
 
     public void EnemyTakeDamage()
@@ -156,6 +209,7 @@ public class EnemyAnimation : MonoBehaviour
         animator.SetTrigger("TakeDamage");
     }
 
+    [Button]
     public void EnemyDie()
     {
         animator.SetTrigger("Die");
