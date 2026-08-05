@@ -12,8 +12,6 @@ public class BattleUIManager : MonoBehaviour
 {
     // 플레이어 관련 참조
     [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
-    private PlayerCombat playerCombat;
-    [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
     private TextMeshProUGUI playerHpBarText;
     [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
     private Slider playerHpSlider;
@@ -24,7 +22,7 @@ public class BattleUIManager : MonoBehaviour
 
     // 적 관련 참조
     [SerializeField, Required, BoxGroup("**참조필요!**적")]
-    private NumberLoacationContriller[] enemy_HpBarControllers;
+    private EnemyUIContriller[] enemy_UIControllers;
     [SerializeField, Required, BoxGroup("**참조필요!**적")]
     private DamageNumber enemy_NumberPrefab;
     [SerializeField, Required, BoxGroup("**참조필요!**적")]
@@ -39,24 +37,12 @@ public class BattleUIManager : MonoBehaviour
     private Canvas BattleUICanvas;
 
     // 참조해야하는 필드들
+    private PlayerCombat playerCombat;
     private PlayerBaseStat playerStat;
-    private List<EnemyBase> enemyList; // TurnManager 거 참조함.
+    private List<EnemyBase> enemyList;
+    private Dictionary<EnemyBase, EnemyUIContriller> UI_Dictionary;
 
 
-    private void OnEnable()
-    {
-        if (playerStat != null)
-        {
-            playerStat.OnHpChanged += PlayerHpChangedUI;
-            playerStat.OnDamagedTaken += TakeDamage_UI_NumberAnimation_Player;
-        }
-
-        foreach (var enemy in enemys)
-        {
-            enemy.OnTakeDamage += Enemy_TakeDamage;
-
-        }
-    }
 
     private void OnDisable()
     {
@@ -68,22 +54,16 @@ public class BattleUIManager : MonoBehaviour
         foreach (var enemy in enemys)
         {
             enemy.OnTakeDamage -= Enemy_TakeDamage;
+            enemy.OnDie += OnEnemyDie;
         }
     }
 
-    private void Start()
-    {
-        playerStat = playerCombat.player;
 
-        InitializeAllHpBar();
-
-        SetEnemyUILocation();
-    }
 
 
     //======================= 초기화, 초기상태 설정 메서드 ====================================================
 
-    private void SetEnemyUILocation()
+    public void SetEnemyUILocation()
     {
         // 카메라 뒤쪽으로 넘어갔을때의 코드, 지금은 필요없음
         //if (newPosition.z < 0)
@@ -93,20 +73,20 @@ public class BattleUIManager : MonoBehaviour
         //}
         //enemy_HpBarControllers[0].gameObject.SetActive(true);
 
-        for (int i = 0; i < enemy_HpBarLocations.Length; i++)
+        for (int i = 0; i < enemyList.Count; i++)
         {
             Debug.Log(i + " 번째 실행 중");
             Vector3 newPosition = Camera.main.WorldToScreenPoint(enemy_HpBarLocations[i].transform.position);
 
-            float movingPosition = enemy_HpBarControllers[i].GetComponent<RectTransform>().rect.width / 4;
+            float movingPosition = enemy_UIControllers[i].GetComponent<RectTransform>().rect.width / 4;
 
-            enemy_HpBarControllers[i].gameObject.transform.position = newPosition - Vector3.right * movingPosition;
+            enemy_UIControllers[i].gameObject.transform.position = newPosition - Vector3.right * movingPosition;
         }
     }
 
 
     [BoxGroup("UI Debug_Player"), Button]
-    private void InitializeAllHpBar()
+    public void InitializeAllHpBar()
     {
         int playerMaxHp = playerStat.MaxHP;
 
@@ -115,28 +95,60 @@ public class BattleUIManager : MonoBehaviour
 
         for (int i = 0; i < enemys.Length; i++)
         {
-            NumberLoacationContriller enemyHpbar;
+            EnemyUIContriller enemyHpbar;
 
             int maxHp = enemys[i].maxHp;
 
-            enemyHpbar = enemy_HpBarControllers[i];
+            enemyHpbar = enemy_UIControllers[i];
 
             enemyHpbar.hpSlider.value = 1;
 
-            enemyHpbar.hpText = $"{maxHp}/{maxHp}";
+            enemyHpbar.hpText.text = $"{maxHp}/{maxHp}";
         }
     }
 
-    //======================= Enemy 목록 받아오기. TurnManager 에서 넣어줌 ====================================================
+    public void SetPlayerInfo(PlayerCombat _playerCombat)
+    {
+        playerCombat = _playerCombat;
+        playerStat = playerCombat.player;
+        RegisterPlayerEvent();
+    }
+
+    private void RegisterPlayerEvent()
+    {
+        playerStat.OnHpChanged += PlayerHpChangedUI;
+        playerStat.OnDamagedTaken += TakeDamage_UI_NumberAnimation_Player;
+    }
+
     public void SetEnemyList(List<EnemyBase> list)
     {
         enemyList = list;
 
-        foreach (EnemyBase enemy in enemyList)
+        InitializeAllHpBar();
+    }
+
+    public void InitUIDictinary()
+    {
+        UI_Dictionary = new Dictionary<EnemyBase, EnemyUIContriller>();
+        int index = 0;
+        foreach (var enemy in enemyList)
         {
-            enemy.OnTakeDamage += Enemy_TakeDamage;
+            EnemyUIContriller ui = enemy_UIControllers[index];
+            UI_Dictionary.Add(enemy, ui);
+            RegisterEnemyEvent(enemy, ui);
+            index++;
         }
     }
+
+    private void RegisterEnemyEvent(EnemyBase enemy, EnemyUIContriller uIContriller)
+    {
+        enemy.OnTakeDamage += Enemy_TakeDamage;
+        enemy.OnDie += OnEnemyDie;
+    }
+
+
+    //======================= Enemy 목록 받아오기. TurnManager 에서 넣어줌 ====================================================
+
 
     //====================== Player 데미지 받을 때 메서드 ====================================================================================================
 
@@ -175,7 +187,7 @@ public class BattleUIManager : MonoBehaviour
             {
                 TakeDamage_UI_NumberAnimation_Enemy(damage, i);
 
-                enemy_HpBarControllers[i].hpText.text = $"{currentHp}/{enemy.maxHp}";
+                enemy_UIControllers[i].hpText.text = $"{currentHp}/{enemy.maxHp}";
 
                 float endValue = (float)currentHp / enemy.maxHp;
 
@@ -195,26 +207,32 @@ public class BattleUIManager : MonoBehaviour
     [BoxGroup("UI Debug_Enemy"), Button]
     private void TakeDamage_UI_NumberAnimation_Enemy(int damage, int index)
     {
-        if (index > enemy_HpBarControllers.Length)
+        if (index > enemy_UIControllers.Length)
         {
             Debug.Log("존재하지 않는 Index 입니다. 메서드 : TakeDamage_UI_NumberAnimation_Enemy");
             return;
         }
-        DamageNumber damageNumber = enemy_NumberPrefab.SpawnGUI(enemy_HpBarControllers[index].numberLocation, Vector2.zero, damage);
+        DamageNumber damageNumber = enemy_NumberPrefab.SpawnGUI(enemy_UIControllers[index].numberLocation, Vector2.zero, damage);
     }
     [BoxGroup("UI Debug_Enemy"), Button]
     private void HP_Decrease_UIAnimation_Enemy(float endValue, int index)
     {
-        if (index > enemy_HpBarControllers.Length)
+        if (index > enemy_UIControllers.Length)
         {
             Debug.Log("존재하지 않는 Index 입니다. 메서드 : HP_Decrease_UIAnimation_Enemy");
             return;
         }
         Math.Clamp(endValue, 0, 1);
-        enemy_HpBarControllers[index].transform.DOShakePosition(0.2f, 10f, 90);
-        enemy_HpBarControllers[index].hpSlider.DOValue(endValue, 0.1f);
+        enemy_UIControllers[index].transform.DOShakePosition(0.2f, 10f, 90);
+        enemy_UIControllers[index].hpSlider.DOValue(endValue, 0.1f);
     }
 
+    private void OnEnemyDie(EnemyBase enemy)
+    {
+        enemy.OnTakeDamage -= Enemy_TakeDamage;
+        enemy.OnDie -= OnEnemyDie;
+
+    }
 
     // ============= UI Show / Hide 관련 ===========================================================================
 
@@ -350,6 +368,20 @@ public class BattleUIManager : MonoBehaviour
             }
         }
     }
+
+
+    public void ShowBehaveIcon(int index, bool show = false, Enemy_Behaviour behave = Enemy_Behaviour.None)
+    {
+        if (!show)
+        {
+            enemy_UIControllers[index].HideBehaviorIcon();
+        }
+        else
+        {
+            enemy_UIControllers[index].ShowBehaviorIcon(behave);
+        }
+    }
+
 
     // ============= UI 콜백 이벤트 =================================================================================
 
