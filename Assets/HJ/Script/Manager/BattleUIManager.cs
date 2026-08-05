@@ -39,8 +39,9 @@ public class BattleUIManager : MonoBehaviour
     // 참조해야하는 필드들
     private PlayerCombat playerCombat;
     private PlayerBaseStat playerStat;
+    [ShowInInspector, ReadOnly]
     private List<EnemyBase> enemyList;
-    private Dictionary<EnemyBase, EnemyUIContriller> UI_Dictionary;
+    private Dictionary<EnemyBase, EnemyUIContriller> UI_Dictionary = new();
 
 
 
@@ -130,16 +131,17 @@ public class BattleUIManager : MonoBehaviour
     public void SetEnemyList(List<EnemyBase> list)
     {
         enemyList = list;
-
-        InitializeAllHpBar();
     }
 
     public void InitUIDictinary()
     {
         UI_Dictionary = new Dictionary<EnemyBase, EnemyUIContriller>();
+
         int index = 0;
+
         foreach (var enemy in enemyList)
         {
+            Debug.Log($"{index} 번 째 실행 중 (UI Dictionary)");
             EnemyUIContriller ui = enemy_UIControllers[index];
             UI_Dictionary.Add(enemy, ui);
             RegisterEnemyEvent(enemy, ui);
@@ -180,7 +182,7 @@ public class BattleUIManager : MonoBehaviour
     {
         Math.Clamp(endValue, 0, 1);
         playerHpSlider.transform.DOShakePosition(0.2f, 10f, 90);
-        playerHpSlider.DOValue(endValue, 0.1f);
+        playerHpSlider.DOValue(endValue, 0.5f);
     }
 
     //==================== Enemy 데미지 받을 때 메서드 ======================================================================================================
@@ -199,7 +201,7 @@ public class BattleUIManager : MonoBehaviour
 
         uiController.hpText.text = $"{currentHp}/{enemy.maxHp}";
 
-        float endValue = (float)currentHp / enemy.maxHp;              
+        float endValue = (float)currentHp / enemy.maxHp;
 
         Math.Clamp(endValue, 0, 1);
 
@@ -213,15 +215,15 @@ public class BattleUIManager : MonoBehaviour
 
 
     private void TakeDamage_UI_NumberAnimation_Enemy(int damage, EnemyUIContriller uiController)
-    {        
+    {
         DamageNumber damageNumber = enemy_NumberPrefab.SpawnGUI(uiController.numberLocation, Vector2.zero, damage);
     }
 
 
     private void HP_Decrease_UIAnimation_Enemy(float endValue, EnemyUIContriller uiController)
-    {        
+    {
         uiController.transform.DOShakePosition(0.2f, 10f, 90);
-        uiController.hpSlider.DOValue(endValue, 0.1f);
+        uiController.hpSlider.DOValue(endValue, 0.5f);
     }
 
     private void OnEnemyDie(EnemyBase enemy)
@@ -367,15 +369,25 @@ public class BattleUIManager : MonoBehaviour
     }
 
 
-    public void ShowBehaveIcon(int index, bool show = false, Enemy_Behaviour behave = Enemy_Behaviour.None)
+    public void ShowBehaveIcon(EnemyBase enemy, bool show = true)
     {
         if (!show)
         {
-            enemy_UIControllers[index].HideBehaviorIcon();
+            foreach (var ui in UI_Dictionary.Values)
+            {
+                ui.HideBehaviorIcon();
+            }
         }
+
         else
         {
-            enemy_UIControllers[index].ShowBehaviorIcon(behave);
+            if (enemy == null) return;
+
+            EnemyUIContriller uiController;
+
+            UI_Dictionary.TryGetValue(enemy, out uiController);
+
+            uiController.ShowBehaviorIcon(enemy.currentBehaviour);
         }
     }
 

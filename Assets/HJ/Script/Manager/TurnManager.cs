@@ -306,6 +306,7 @@ public class TurnManager : MonoBehaviour
     {
         uIManager.SetPlayerInfo(playerCombat);
         uIManager.SetEnemyList(enemyList);
+        uIManager.InitUIDictinary();
         uIManager.InitializeAllHpBar();
         uIManager.SetEnemyUILocation();
     }
@@ -347,7 +348,12 @@ public class TurnManager : MonoBehaviour
     //=============== Enemy Planning 구간 ================================================================================
     private void EnemyStartPlanning()
     {
+        foreach (EnemyBase enemy in enemyList)
+        {
+            enemy.SelectBehaviour();
 
+            uIManager.ShowBehaveIcon(enemy);
+        }
     }
 
     //===============================================================================================

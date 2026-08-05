@@ -31,6 +31,20 @@ public class EnemyUIContriller : MonoBehaviour
             case Enemy_Behaviour.Attack:
                 behaviorIcon.sprite = attackicon;
                 break;
+
+            case Enemy_Behaviour.Skill1:
+                behaviorIcon.sprite = attackicon;
+                break;
+            case Enemy_Behaviour.Skill2:
+                behaviorIcon.sprite = attackicon;
+                break;
+            case Enemy_Behaviour.Skill3:
+                behaviorIcon.sprite = attackicon;
+                break;
+            case Enemy_Behaviour.Skill4:
+                behaviorIcon.sprite = attackicon;
+                break;
+         
             case Enemy_Behaviour.Buff:
                 behaviorIcon.sprite = bufficon;
                 break;
