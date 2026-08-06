@@ -3,13 +3,13 @@ using UnityEngine;
 public class PlayerTurnData
 {
 
-    private SkillBaseStat skill;
-    private EnemyBase target;
+    private SkillBaseStat _skill;
+    private EnemyBase[] _target;
 
-    public PlayerTurnData(SkillBaseStat _skill, EnemyBase _target)
+    public PlayerTurnData(SkillBaseStat skill, EnemyBase[] target)
     {        
-        skill = _skill;
-        target = _target;
+        _skill = skill;
+        _target = target;
     }
 }
 public class EnemyTurnData

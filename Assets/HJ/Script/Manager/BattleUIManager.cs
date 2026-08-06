@@ -35,6 +35,11 @@ public class BattleUIManager : MonoBehaviour
     private Canvas ReadyBattleCanvas;
     [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
     private Canvas BattleUICanvas;
+    [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
+    private Canvas skillCanvas;
+    [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
+    private UnityEngine.UI.Button[] skillButtons;
+
 
     // 참조해야하는 필드들
     private PlayerCombat playerCombat;
@@ -44,6 +49,11 @@ public class BattleUIManager : MonoBehaviour
     private Dictionary<EnemyBase, EnemyUIContriller> UI_Dictionary = new();
 
 
+    // 자체적으로 시작할 때 숨길 것 숨기기 위해서 start 사용
+    private void Start()
+    {
+        skillCanvas.enabled = false;
+    }
 
     private void OnDisable()
     {
@@ -117,13 +127,14 @@ public class BattleUIManager : MonoBehaviour
     {
         playerCombat = _playerCombat;
         playerStat = playerCombat.player;
-        RegisterPlayerEvent();
+        SubscribePlayerEvent();
     }
 
-    private void RegisterPlayerEvent()
+    private void SubscribePlayerEvent()
     {
         playerStat.OnHpChanged += PlayerHpChangedUI;
         playerStat.OnDamagedTaken += TakeDamage_UI_NumberAnimation_Player;
+        playerStat.OnCostChanged += OnPlayerUseCost;
     }
 
     public void SetEnemyList(List<EnemyBase> list)
@@ -142,17 +153,25 @@ public class BattleUIManager : MonoBehaviour
             Debug.Log($"{index} 번 째 실행 중 (UI Dictionary)");
             EnemyUIContriller ui = enemy_UIControllers[index];
             UI_Dictionary.Add(enemy, ui);
-            RegisterEnemyEvent(enemy, ui);
+            SubscribeEnemyEvent(enemy, ui);
             index++;
         }
     }
 
-    private void RegisterEnemyEvent(EnemyBase enemy, EnemyUIContriller uIContriller)
+    private void SubscribeEnemyEvent(EnemyBase enemy, EnemyUIContriller uIContriller)
     {
         enemy.OnTakeDamage += Enemy_TakeDamage;
         enemy.OnDie += OnEnemyDie;
     }
 
+    public void InitSkillButtons()
+    {
+        // 임시로 그냥 때려넣음 (개발기간 단축)
+
+        skillButtons[0].onClick.AddListener(() => InvokeSkillClicked(1000));
+        skillButtons[1].onClick.AddListener(() => InvokeSkillClicked(1001));
+        skillButtons[2].onClick.AddListener(() => InvokeSkillClicked(1002));
+    }
 
     //======================= Enemy 목록 받아오기. TurnManager 에서 넣어줌 ====================================================
 
@@ -230,6 +249,14 @@ public class BattleUIManager : MonoBehaviour
         enemy.OnDie -= OnEnemyDie;
 
     }
+    //====================== Player 코스트 사용할 때 메서드 ====================================================================================================
+
+    private void OnPlayerUseCost(int current, int max)
+    {
+
+    }
+
+
 
     // ============= UI Show / Hide 관련 ===========================================================================
 
@@ -278,11 +305,7 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    public void InvokeBattleStart()
-    {
-        OnBattleStartClicked?.Invoke();
-    }
-
+    [BoxGroup("UI 디버깅"), Button]
     public void OpenPopup(Canvas targetCanvas)
     {
         if (targetCanvas == null) return;
@@ -308,20 +331,23 @@ public class BattleUIManager : MonoBehaviour
             panelTransform.DOKill();
             canvasGroup.DOKill();
 
+            // 트윈 시작 전 초기 상태를 '0'으로 명시적 강제 설정
+            panelTransform.localScale = Vector3.zero;
+            canvasGroup.alpha = 0f;
+
             // Scale 애니메이션
-            panelTransform.DOScale(Vector3.zero, 0.4f)
-                          .From()
-                          .SetEase(Ease.OutBack)
-                          .SetUpdate(true); // Pause 시에도 동작하도록 설정
+            panelTransform.DOScale(Vector3.one, 0.4f)
+                          .SetEase(Ease.OutBack);
+            //.SetUpdate(true); // Pause 시에도 동작하도록 설정
 
             // Fade 애니메이션
-            var fadeTween = canvasGroup.DOFade(0f, 0.25f)
-                                       .From()
-                                       .SetEase(Ease.OutQuad)
-                                       .SetUpdate(true);
+            var fadeTween = canvasGroup.DOFade(1f, 0.25f)
+                                       .SetEase(Ease.OutQuad);
+            //.SetUpdate(true);
         }
     }
 
+    [BoxGroup("UI 디버깅"), Button]
     public void ClosePopup(Canvas targetCanvas)
     {
         if (targetCanvas == null) return;
@@ -390,7 +416,39 @@ public class BattleUIManager : MonoBehaviour
     }
 
 
+    public void ShowSkillMenu(bool show)
+    {
+        if (show)
+        {
+            skillCanvas.enabled = true;
+            Debug.Log("스킬메뉴 열기");
+            OpenPopup(skillCanvas);
+        }
+        else
+        {
+            Debug.Log("스킬메뉴 닫기"); 
+            skillCanvas.enabled = false;
+            ClosePopup(skillCanvas);
+        }
+    }
+
     // ============= UI 콜백 이벤트 =================================================================================
 
+    public void InvokeBattleStart()
+    {
+        OnBattleStartClicked?.Invoke();
+    }
+    public void InvokeEndTurn()
+    {
+        OnEndTurnBtnClicked?.Invoke();
+    }
+
+    public void InvokeSkillClicked(int id)
+    {
+        OnSkillBtnClicked?.Invoke(id);
+    }
+
     public Action OnBattleStartClicked;
+    public Action OnEndTurnBtnClicked;
+    public Action<int> OnSkillBtnClicked;
 }
