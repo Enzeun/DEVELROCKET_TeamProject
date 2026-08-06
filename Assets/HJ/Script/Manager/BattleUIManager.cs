@@ -39,7 +39,8 @@ public class BattleUIManager : MonoBehaviour
     private Canvas skillCanvas;
     [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
     private UnityEngine.UI.Button[] skillButtons;
-
+    [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
+    private CanvasGroup darkImage; 
 
     // 참조해야하는 필드들
     private PlayerCombat playerCombat;
@@ -52,6 +53,8 @@ public class BattleUIManager : MonoBehaviour
     // 자체적으로 시작할 때 숨길 것 숨기기 위해서 start 사용
     private void Start()
     {
+        darkImage.alpha = 1f;
+
         skillCanvas.enabled = false;
     }
 
@@ -432,6 +435,13 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
+    public void FadeDarkImage(float sec)
+    {
+        darkImage.alpha = 1f;
+        darkImage.DOFade(0f, sec)
+                 .SetEase(Ease.InQuad);
+    }
+    
     // ============= UI 콜백 이벤트 =================================================================================
 
     public void InvokeBattleStart()
