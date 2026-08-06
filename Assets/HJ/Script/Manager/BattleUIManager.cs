@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using static UnityEngine.Rendering.DebugUI;
+using System.Linq;
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -40,7 +41,9 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
     private UnityEngine.UI.Button[] skillButtons;
     [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
-    private CanvasGroup darkImage; 
+    private UnityEngine.UI.Button endTurnButton;
+    [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
+    private CanvasGroup darkImage;
 
     // 참조해야하는 필드들
     private PlayerCombat playerCombat;
@@ -56,6 +59,8 @@ public class BattleUIManager : MonoBehaviour
         darkImage.alpha = 1f;
 
         skillCanvas.enabled = false;
+
+        endTurnButton.interactable = false;
     }
 
     private void OnDisable()
@@ -165,15 +170,6 @@ public class BattleUIManager : MonoBehaviour
     {
         enemy.OnTakeDamage += Enemy_TakeDamage;
         enemy.OnDie += OnEnemyDie;
-    }
-
-    public void InitSkillButtons()
-    {
-        // 임시로 그냥 때려넣음 (개발기간 단축)
-
-        skillButtons[0].onClick.AddListener(() => InvokeSkillClicked(1000));
-        skillButtons[1].onClick.AddListener(() => InvokeSkillClicked(1001));
-        skillButtons[2].onClick.AddListener(() => InvokeSkillClicked(1002));
     }
 
     //======================= Enemy 목록 받아오기. TurnManager 에서 넣어줌 ====================================================
@@ -396,7 +392,7 @@ public class BattleUIManager : MonoBehaviour
     }
 
 
-    public void ShowBehaveIcon(EnemyBase enemy, bool show = true)
+    public void ShowBehaveIcon(bool show = true)
     {
         if (!show)
         {
@@ -408,13 +404,22 @@ public class BattleUIManager : MonoBehaviour
 
         else
         {
-            if (enemy == null) return;
+            foreach (var enemy in enemyList)
+            {
+                // 죽었으면 스킵
+                if (enemy == null || enemy.isDead) continue;
 
-            EnemyUIContriller uiController;
+                EnemyUIContriller uiController;
 
-            UI_Dictionary.TryGetValue(enemy, out uiController);
+                UI_Dictionary.TryGetValue(enemy, out uiController);
 
-            uiController.ShowBehaviorIcon(enemy.currentBehaviour);
+                if(uiController == null)
+                {
+                    Debug.Log("UI 아이콘이 없습니다! 확인하세요");
+                }
+
+                uiController.ShowBehaviorIcon(enemy.currentBehaviour);
+            }
         }
     }
 
@@ -423,25 +428,39 @@ public class BattleUIManager : MonoBehaviour
     {
         if (show)
         {
-            skillCanvas.enabled = true;
+            EnableSkillButtons(true);
             Debug.Log("스킬메뉴 열기");
             OpenPopup(skillCanvas);
         }
         else
         {
-            Debug.Log("스킬메뉴 닫기"); 
-            skillCanvas.enabled = false;
+            Debug.Log("스킬메뉴 닫기");            
+            EnableSkillButtons(false);
             ClosePopup(skillCanvas);
         }
     }
 
-    public void FadeDarkImage(float sec)
+    private void EnableSkillButtons(bool enable = true)
+    {
+        foreach(var btn in skillButtons)
+        {
+            btn.interactable = enable;
+        }
+    }
+
+    public void EnableEndTurnBtn(bool enable = true)
+    {
+        endTurnButton.interactable = enable;
+    }
+
+
+    public void FadeDarkImage(float sec = 0.5f)
     {
         darkImage.alpha = 1f;
         darkImage.DOFade(0f, sec)
                  .SetEase(Ease.InQuad);
     }
-    
+
     // ============= UI 콜백 이벤트 =================================================================================
 
     public void InvokeBattleStart()

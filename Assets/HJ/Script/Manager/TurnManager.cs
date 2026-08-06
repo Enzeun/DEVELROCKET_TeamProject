@@ -71,8 +71,6 @@ public class TurnManager : MonoBehaviour
     private bool isGameOver = false;
     [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
     private int currentSelectedSkillId = -1;
-    [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
-    private EnemyBase currentTargetEnemy = null;
     [ShowInInspector, BoxGroup("필드 값 추적"), ReadOnly]
     private int nowCost
     {
@@ -85,6 +83,8 @@ public class TurnManager : MonoBehaviour
             return player.NowCost;
         }
     }
+    [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
+    private int remainEnemy = -1;
 
 
     // 플레이어와 적의 행동은 큐로 관리
@@ -110,6 +110,10 @@ public class TurnManager : MonoBehaviour
     // 추가적으로 관리 할 필드
     [ReadOnly, ShowInInspector]
     private DrawCircleWhenMouseOver[] circleController; // Initial 에서 초기화
+
+
+
+    WaitForSeconds waitHalfSec = new WaitForSeconds(0.5f);
 
 
 
@@ -155,16 +159,26 @@ public class TurnManager : MonoBehaviour
     /// </summary>
     private void ReadyForNewRound()
     {
-        ClearSkillQueue();
+        CheckRemainEnemy();
+
+        player.NowCost = player.MaxCost;
+
+        currentSelectedSkillId = -1;
+
+        ClearTurnQueue();
 
         currentRound++;
     }
 
-    private void ClearSkillQueue()
+    private void ClearTurnQueue()
     {
-        if (playerQueue.Count > 0)
+        if (playerQueueCount > 0)
         {
             playerQueue.Clear();
+        }
+        if (enemyQueueCount > 0)
+        {
+            enemyQueue.Clear();
         }
     }
 
@@ -299,36 +313,73 @@ public class TurnManager : MonoBehaviour
 
     enum EnemyBattleState
     {
-        GameOver,
+        PlayerIsDead,
         NoMoreEnemyQueue,
-        Continue,
+        ContinueBattle,
     }
 
     /// <summary>
-    /// 전투가 지속 가능한 상황인지 체크 (아직 적이 남아있는지)
+    /// 전투가 지속 가능한 상황인지 체크 (플레이어가 죽었는지)
     /// </summary>
     private EnemyBattleState CheckEnemyBattleState()
     {
         if (isGameOver)
         {
-            return EnemyBattleState.GameOver;
+            return EnemyBattleState.PlayerIsDead;
         }
 
         if (player.NowHP <= 0)
         {
-            return EnemyBattleState.GameOver;
+            return EnemyBattleState.PlayerIsDead;
         }
 
         if (enemyQueueCount <= 0)
         {
             return EnemyBattleState.NoMoreEnemyQueue;
         }
-        return EnemyBattleState.Continue;
+        return EnemyBattleState.ContinueBattle;
 
     }
 
+    enum PlayerBattleState
+    {
+        NoMoreEnemy,
+        NoMoreSkillQueue,
+        ContinueBattle,
+    }
 
+    /// <summary>
+    /// 전투가 지속 가능한 상황인지 체크 (아직 적이 남아있는지)
+    /// </summary>
+    private PlayerBattleState CheckPlayerBattleState()
+    {
+        CheckRemainEnemy();
 
+        if (remainEnemy <= 0)
+        {
+            return PlayerBattleState.NoMoreEnemy;
+        }
+
+        if (playerQueueCount <= 0)
+        {
+            return PlayerBattleState.NoMoreSkillQueue;
+        }
+        return PlayerBattleState.ContinueBattle;
+
+    }
+
+    private void CheckRemainEnemy()
+    {
+        remainEnemy = 0;
+
+        foreach (var enemy in enemyList)
+        {
+            if (enemy.isDead)
+            {
+                remainEnemy++;
+            }
+        }
+    }
 
     //================== 게임 초기에 진행해야하는 필수 메서드 =============================================================================
 
@@ -351,7 +402,8 @@ public class TurnManager : MonoBehaviour
         foreach (EnemyBase enemy in enemyList)
         {
             enemy.InitEnemyTarget(playerCombat);
-            enemy.OnDie += (enemy) => { enemyList.Remove(enemy); };
+            //enemy.OnDie += (enemy) => { enemyList.Remove(enemy); }; 
+            // 처음엔 죽으면 List 에서 지웠으나, 그냥 isDead 로 판정하고 남겨두는게 좋을 것 같아서 주석처리함.
         }
 
     }
@@ -363,7 +415,6 @@ public class TurnManager : MonoBehaviour
         uIManager.InitUIDictinary();
         uIManager.InitializeAllHpBar();
         uIManager.SetEnemyUILocation();
-        uIManager.InitSkillButtons();
     }
 
     //================== Start Battle 구간 =============================================================================
@@ -373,17 +424,17 @@ public class TurnManager : MonoBehaviour
     /// </summary>
     private void StartBattle()
     {
-        uIManager.ShowReadyBattleUI(true);
-
         uIManager.OnBattleStartClicked += OnBattleStart;
+        // 시작 전 UI 보여주기
+        uIManager.ShowReadyBattleUI(true);
     }
 
     private void OnBattleStart()
     {
         uIManager.OnBattleStartClicked -= OnBattleStart;
-
+        // 시작 전 UI 숨기기
         uIManager.ShowReadyBattleUI(false);
-
+        // 라운드 시작
         GoToStep(TurnState.StartNewRound);
     }
 
@@ -391,40 +442,65 @@ public class TurnManager : MonoBehaviour
 
     private void StartNewRound()
     {
-        ReadyForNewRound(); // 초기화 할 것 초기화
+        // 초기화 할 것 초기화
+        ReadyForNewRound();
 
-        uIManager.ShowBattleUI(true);
+        // 맨 첫 라운드에서만 UI 띄우기
+        if (currentRound == 1)
+        {
+            uIManager.ShowBattleUI(true);
+        }
 
+        // 적 계획 단계로 이동
         GoToStep(TurnState.EnemyPlanning);
     }
 
     //=============== Enemy Planning 구간 ================================================================================
+
     private void EnemyStartPlanning()
     {
-        foreach (EnemyBase enemy in enemyList)
-        {
-            enemy.SelectBehaviour();
+        // 모든 적이 순차적으로 행동결정
+        StartCoroutine(EnemyPlanningRoutine());
 
-            EnemyTurnData enemyTurnData = new EnemyTurnData(enemy, enemy.currentBehaviour);
+        // 행동이 끝나면 전체 유닛 행동아이콘 표시
+        uIManager.ShowBehaveIcon();
 
-            RegisterEnemyBehavior(enemyTurnData);
-
-            uIManager.ShowBehaveIcon(enemy);
-        }
-
+        // 다음 단계로
         GoToStep(TurnState.PlayerTurnStart);
     }
 
+    /// <summary>
+    /// 0.5 초 간격으로 적들이 자신의 행동을 정함.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator EnemyPlanningRoutine()
+    {
+        foreach (EnemyBase enemy in enemyList)
+        {
+            // null 이거나 isDead 면 건너뛰기
+            if (enemy == null || enemy.isDead) continue;
+
+            // 행동 선택
+            enemy.SelectBehaviour();
+
+            // 선택한 행동으로 새로운 턴 Data 생성
+            EnemyTurnData enemyTurnData = new EnemyTurnData(enemy, enemy.currentBehaviour);
+
+            // 큐에 등록
+            RegisterEnemyBehavior(enemyTurnData);
+
+            yield return waitHalfSec;
+        }
+    }
 
     //=============== Player Turn Start 구간 ================================================================================
 
     private void PlayerTurnStart()
     {
         // 버튼에 이벤트 구독을 한다
+        UnSubscribeSkillBtnClicked();
         SubscribeSkillBtnClicked();
-        // 적 클릭에 이벤트 구독을 한다
-        SubscribeEnemyClicked();
-        // 
+
         // 다음 단계로 이동
         GoToStep(TurnState.PlayerPlanning);
     }
@@ -434,44 +510,112 @@ public class TurnManager : MonoBehaviour
 
     private void PlayerPlanning()
     {
-        if (!CheckRemainCost())
+        // 스킬 큐에 데이터가 존재하면 EndTurn 버튼 활성화
+        if (playerQueueCount > 0)
         {
-            EndPlayerPlanning();
-            return;
+            uIManager.EnableEndTurnBtn();
         }
 
+        // 스킬 메뉴를 보여준다
         uIManager.ShowSkillMenu(true);
 
+        // 플레이어가 행동할 때 까지 대기.
     }
+
     private void OnSkillBtnClicked(int id)
     {
+        // 플레이어가 선택한 스킬 id 확인
         currentSelectedSkillId = id;
+
         // 스킬버튼을 누르면 스킬메뉴를 숨김.
         uIManager.ShowSkillMenu(false);
 
-        // 광역 공격 판정 여기서 해야함 ******************************************미완성
+        // 스킬 정보 확인
+        CheckSkillResult result = CheckSkillData();
 
-        // 적을 선택 가능하게 한다.
-        EnableSelectTarget(true);
+        switch (result)
+        {
+            case CheckSkillResult.IsBug:
+                break;
+
+            // 단일 공격일 경우
+            case CheckSkillResult.IsSingleAttack:
+                // 적 클릭에 이벤트 구독을 한다
+                UnSubscribeEnemyClicked();
+                SubscribeEnemyClicked();
+                // 적을 선택 가능하게 한다.
+                EnableSelectTarget(true);
+                break;
+
+            // 범위 공격일 경우
+            case CheckSkillResult.IsAreaAttack:
+                MakeAreaAttack();
+                break;
+
+            // 코스트가 부족할 경우
+            case CheckSkillResult.OverCost:
+                Debug.Log("코스트가 부족합니다");
+                PlayerPlanning();
+                break;
+        }
     }
 
+    // 지금 선택한 스킬이 사용가능한지 등등 확인
+    private CheckSkillResult CheckSkillData()
+    {
+        if (!player.SkillData.TryGetValue(currentSelectedSkillId, out var skillData))
+        {
+            Debug.Log("스킬 ID 가 없습니다.");
+            return CheckSkillResult.IsBug;
+        }
 
+        if (nowCost < skillData.GetCost())
+        {
+            return CheckSkillResult.OverCost;
+        }
+
+        switch (skillData.TargetType)
+        {
+            case SkillEnums.SkillTargetType.Single:
+                return CheckSkillResult.IsSingleAttack;
+
+            case SkillEnums.SkillTargetType.Area:
+                return CheckSkillResult.IsAreaAttack;
+        }
+
+        Debug.Log("스킬 데이터에 처리가 안된 것이 있습니다.");
+        return CheckSkillResult.IsBug;
+    }
+
+    enum CheckSkillResult
+    {
+        OverCost,
+        IsAreaAttack,
+        IsSingleAttack,
+        IsBug,
+    }
+
+    // 단일공격에서의 로직
     private void OnEnemyClicked(EnemyBase enemy)
     {
-        // 적을 클릭하면
-        currentTargetEnemy = enemy;
+        // 적을 클릭하면 구독을 해제한다
+        UnSubscribeEnemyClicked();
+
         // 해당 스킬을 큐에 저장한다
-        RegisterSkill(MakePlayerTurnData());
+        RegisterSkill(MakeSingleTargetTurnData(enemy));
+
         // 스킬 id 를 초기화 한다
         currentSelectedSkillId = -1;
+
         // 선택이 불가능하게 한다
         EnableSelectTarget(false);
 
         // 남은 스킬 코스트를 확인하고
         if (CheckRemainCost())
         {
-            // 코스트가 남아있으면 스킬메뉴를 다시 보여준다
-            uIManager.ShowSkillMenu(true);
+            // 코스트가 남아있으면 다시 Planning
+            PlayerPlanning();
+
             return;
         }
 
@@ -479,6 +623,30 @@ public class TurnManager : MonoBehaviour
         // 임시로 턴을 종료하게 만듦
         EndPlayerPlanning();
     }
+
+    // 범위 공격에서의 로직
+    private void MakeAreaAttack()
+    {
+        // 모든 적을 타깃으로 설정 하고 큐에 저장
+        RegisterSkill(MakeMultiTargetTurnData());
+
+        // 스킬 id 를 초기화 한다
+        currentSelectedSkillId = -1;
+
+        // 남은 스킬 코스트를 확인하고
+        if (CheckRemainCost())
+        {
+            // 코스트가 남아있으면 다시 Planning
+            PlayerPlanning();
+
+            return;
+        }
+
+        // 코스트가 없으면 멈춘다.
+        // 임시로 턴을 종료하게 만듦
+        EndPlayerPlanning();
+    }
+
 
     private bool CheckRemainCost()
     {
@@ -489,28 +657,57 @@ public class TurnManager : MonoBehaviour
         return true;
     }
 
-    private PlayerTurnData MakePlayerTurnData()
+    // 단일 대상 턴데이터 생성
+    private PlayerTurnData MakeSingleTargetTurnData(EnemyBase enemy)
     {
         PlayerTurnData turnData;
 
+        EnemyBase[] targets = new[] { enemy };
+
         if (player.SkillData.TryGetValue(currentSelectedSkillId, out SkillBaseStat skill))
         {
-            turnData = new PlayerTurnData(skill, new EnemyBase[] { currentTargetEnemy });
+            turnData = new PlayerTurnData(skill, targets);
+            // 코스트를 깎는다.
+            player.UseCost(skill.GetCost());
+
             return turnData;
         }
         else
         {
-            
             return null;
         }
+    }
 
+    // 범위 대상 턴 데이터 생성
+    private PlayerTurnData MakeMultiTargetTurnData()
+    {
+        PlayerTurnData turnData;
 
+        EnemyBase[] targets = enemyList.ToArray();
+
+        if (player.SkillData.TryGetValue(currentSelectedSkillId, out SkillBaseStat skill))
+        {
+            turnData = new PlayerTurnData(skill, targets);
+            // 코스트를 깎는다.
+            player.UseCost(skill.GetCost());
+
+            return turnData;
+        }
+        else
+        {
+            return null;
+        }
     }
 
 
     private void OnEndTurnBtnClicked()
     {
+        UnSubscribeSkillBtnClicked();
+        UnSubscribeEnemyClicked();
+
         uIManager.ShowSkillMenu(false);
+
+        uIManager.EnableEndTurnBtn(false);
 
         EndPlayerPlanning();
     }
@@ -524,68 +721,118 @@ public class TurnManager : MonoBehaviour
 
     private void ExecuteSkill()
     {
+        // 플레이어 공격 끝나는 지점 구독
+        UnSubscribePlayerCompleteAttack();
+        SubscribePlayerCompleteAttack();
+
         PlayNextSkill();
     }
 
     private void PlayNextSkill()
     {
-        if (playerQueueCount <= 0)
-        {
-            GoToStep(TurnState.PlayerTurnEnd);
-            return;
-        }
-
+        // 큐에 있는걸 꺼낸다.
         PlayerTurnData turnData = playerQueue.Dequeue();
 
-        int count = turnData.target.Length;
+        // 큐에있는 적의 숫자 만큼 똑같은 Transform 배열을 생성한다.
+        int length = turnData.target.Length;
 
-        Transform[] targets = new Transform[count];
+        Transform[] targets = new Transform[length];
 
-        for (int i = 0; i < count; i++)
+        // 싱글, 멀티 타깃에 따라 분기
+        switch (turnData.skill.TargetType)
         {
-            targets[i] = turnData.target[i].transform;
+            case SkillEnums.SkillTargetType.Single:
+                // 싱글 타깃인데, 목표가 이미 죽었으면, 다른 목표 검색
+                if (turnData.target[0].isDead)
+                {
+                    foreach (var enemy in enemyList)
+                    {
+                        if (!enemy.isDead)
+                        {
+                            targets[0] = enemy.transform;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    targets[0] = turnData.target[0].transform;
+                }
+                break;
+
+
+            case SkillEnums.SkillTargetType.Area:
+
+                for (int i = 0; i < length; i++)
+                {
+                    targets[i] = turnData.target[i].transform;
+                }
+                break;
         }
 
+
+        // 스킬 준비
         playerCombat.SetNowSkillAndTarget(turnData.skill, targets);
 
+        // 스킬 시전 모션 시작
         StartCoroutine(PlayBeforeAttackRoutine());
     }
 
     private IEnumerator PlayBeforeAttackRoutine()
     {
+        // 스킬 시전 모션 시작
         playerCombat.PlayerActiveSkillSelect();
-
-        yield return new WaitForSeconds(1);
-
-        StartCoroutine(PlayAttackRoutine());
-    }
-
-    private IEnumerator PlayAttackRoutine()
-    {
+        // 0.5초 후
+        yield return waitHalfSec;
+        // 실제 공격
         playerCombat.PlayerAnmationActive();
-
-        yield return new WaitForSeconds(2);
-
-        if (playerQueueCount <= 0)
-        {
-            GoToStep(TurnState.PlayerTurnEnd);
-            yield break;
-        }
-
-        PlayNextSkill();
     }
 
+    private void PlayerCompleteAttack()
+    {
+        StartCoroutine(PlayerDelay());
+    }
+
+    private IEnumerator PlayerDelay()
+    {
+        // 0.5 초 기다린다
+        yield return waitHalfSec;
+        // 남은 적이 있는지, 큐에 데이터가 남았는지, 배틀 상황을 확인한다.
+        switch (CheckPlayerBattleState())
+        {
+            // 데이터가 있으면 다음 스킬 시전
+            case PlayerBattleState.ContinueBattle:
+                PlayNextSkill();
+                yield break;
+
+            // 큐에 남은 데이터가 없으면
+            case PlayerBattleState.NoMoreSkillQueue:
+                // 턴 종료
+                GoToStep(TurnState.PlayerTurnEnd);
+                yield break;
+
+            // 모든 적이 처치됐으면
+            case PlayerBattleState.NoMoreEnemy:
+                // 배틀 종료
+                GoToStep(TurnState.EndBattle);
+                yield break;
+        }
+    }
 
 
     //========================= Player Turn End 구간 =====================================================
 
     private void PlayerTurnEnd()
     {
-        GoToStep(TurnState.EnemyTurn);
-
+        StartCoroutine(PlayerTurnEndDelay());
     }
 
+    private IEnumerator PlayerTurnEndDelay()
+    {
+        yield return waitHalfSec;
 
+        GoToStep(TurnState.EnemyTurn);
+    }
 
     //====================== Enemy Turn 구간 ==============================================================
 
@@ -593,18 +840,20 @@ public class TurnManager : MonoBehaviour
     {
         PlayNextEnemyTurn();
     }
+
     private void PlayNextEnemyTurn()
     {
         switch (CheckEnemyBattleState())
         {
-            case EnemyBattleState.GameOver:
+            case EnemyBattleState.PlayerIsDead:
                 GoToStep(TurnState.GameOver);
                 break;
 
             case EnemyBattleState.NoMoreEnemyQueue:
                 GoToStep(TurnState.EnemyTurnEnd);
                 break;
-            case EnemyBattleState.Continue:
+
+            case EnemyBattleState.ContinueBattle:
                 break;
         }
 
@@ -629,14 +878,14 @@ public class TurnManager : MonoBehaviour
 
         switch (CheckEnemyBattleState())
         {
-            case EnemyBattleState.GameOver:
+            case EnemyBattleState.PlayerIsDead:
                 GoToStep(TurnState.GameOver);
                 break;
 
             case EnemyBattleState.NoMoreEnemyQueue:
                 GoToStep(TurnState.EnemyTurnEnd);
                 break;
-            case EnemyBattleState.Continue:
+            case EnemyBattleState.ContinueBattle:
                 break;
         }
 
@@ -650,7 +899,7 @@ public class TurnManager : MonoBehaviour
         GoToStep(TurnState.EndRound);
     }
 
-    
+
 
 
     //======================== End Round 구간 ==============================================================
@@ -774,7 +1023,15 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    private void SubscribePlayerCompleteAttack()
+    {
+        playerCombat.SubEventByEffect(PlayerCompleteAttack);
+    }
 
+    private void UnSubscribePlayerCompleteAttack()
+    {
+        playerCombat.UnSubEventByEffect(PlayerCompleteAttack);
+    }
 
 
     //================== 디버깅용 임시 메서드 =============================================================================
