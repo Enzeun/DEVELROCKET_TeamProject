@@ -1,5 +1,3 @@
-using Sirenix.OdinInspector.Editor.Drawers;
-using UnityEngine;
 
 public static class SkillEnums
 {
