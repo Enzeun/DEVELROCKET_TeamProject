@@ -283,6 +283,7 @@ GameObject:
   - component: {fileID: 216557739294672970}
   - component: {fileID: -5998027569905255999}
   - component: {fileID: 2315374151239835973}
+  - component: {fileID: 531502227347674813}
   m_Layer: 0
   m_Name: Earthworm
   m_TagString: Untagged
@@ -344,6 +345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
   _maxHp: 15
+  maxBuffCount: 3
   attackPoint: 8
   defencePoint: 0
   behaviourListData:
@@ -430,6 +432,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3604ceba36d11340a35b28604f4c1e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DrawCircleWhenMouseOver
+--- !u!114 &531502227347674813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2957573447401540848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62c12e25c747c964baee827e5e197615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBuff
+  enemyType: 3
+  buffAmount: 0
 --- !u!1 &3351070931486633912
 GameObject:
   m_ObjectHideFlags: 0
