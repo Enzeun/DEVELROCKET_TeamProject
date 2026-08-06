@@ -77,7 +77,11 @@ public class PlayerCombat : MonoBehaviour
         //string name, int maxHP, int nowHP, int maxCost, int nowCost,
         /*int atkPoint, int defPoint,
         Dictionary< int, SkillBaseStat > skillData*/
-        player = new ("베이스", 200, 200, 6, 6, 10, 5, SkillData.BaseSkillData);
+
+        if(GameStateManager.Instance.saveSkillData.Count > 0)
+            player = new ("베이스", 200, 200, 6, 6, 10, 5, GameStateManager.Instance.saveSkillData);
+        else
+            player = new("베이스", 200, 200, 6, 6, 10, 5, SkillData.BaseSkillData);
 
         if (playerAnimator.GetBool(IsDeathHash)) playerAnimator.SetBool(IsDeathHash, false);
 

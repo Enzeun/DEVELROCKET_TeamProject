@@ -148,11 +148,6 @@ public class TitleManager : MonoBehaviour
             startBtn.interactable = true;
             exitBtn.interactable = true;
         });
-
-
-
-
-
     }
 
     public void StartGame()
