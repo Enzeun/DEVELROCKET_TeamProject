@@ -752,6 +752,7 @@ GameObject:
   - component: {fileID: 5263475148059320058}
   - component: {fileID: -156009586071541281}
   - component: {fileID: 223573917149607559}
+  - component: {fileID: 6645446898058158098}
   m_Layer: 0
   m_Name: Wraith
   m_TagString: Untagged
@@ -813,6 +814,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
   _maxHp: 400
+  maxBuffCount: 3
   attackPoint: 22
   defencePoint: 8
   behaviourListData:
@@ -903,6 +905,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3604ceba36d11340a35b28604f4c1e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DrawCircleWhenMouseOver
+--- !u!114 &6645446898058158098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5579563553420432645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62c12e25c747c964baee827e5e197615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBuff
+  enemyBuffType: 0
+  buffAmount: 4
 --- !u!1 &5881574729786581358
 GameObject:
   m_ObjectHideFlags: 0

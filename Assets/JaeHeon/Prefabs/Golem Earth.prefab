@@ -440,6 +440,7 @@ GameObject:
   - component: {fileID: -2353700070017464438}
   - component: {fileID: 5252688395351191953}
   - component: {fileID: -4331148247909423649}
+  - component: {fileID: 2006220309434321402}
   m_Layer: 0
   m_Name: Golem Earth
   m_TagString: Untagged
@@ -511,6 +512,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
   _maxHp: 100
+  maxBuffCount: 3
   attackPoint: 8
   defencePoint: 10
   behaviourListData:
@@ -599,6 +601,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3604ceba36d11340a35b28604f4c1e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DrawCircleWhenMouseOver
+--- !u!114 &2006220309434321402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2495898927994676689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62c12e25c747c964baee827e5e197615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBuff
+  enemyBuffType: 1
+  buffAmount: 3
 --- !u!1 &3281604490257342398
 GameObject:
   m_ObjectHideFlags: 0

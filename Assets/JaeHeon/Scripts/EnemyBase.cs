@@ -1,7 +1,6 @@
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum Enemy_Behaviour
@@ -13,6 +12,13 @@ public enum Enemy_Behaviour
     Skill3,
     Skill4,
     Buff
+}
+public enum EnemyBuffType
+{
+    AttackPointBuff,
+    DefencePointBuff,
+    HpBuff,
+    NoneBuff
 }
 
 [Serializable]
@@ -27,17 +33,16 @@ public class BehaviorData
 
 public class EnemyBase : MonoBehaviour
 {
-    //가중치를 통한 행동 변경 
-    //행동 목록 enum
-    //적 타입 enum
-    //가중치는 적에게 개별 적용
-    //적들 필요한 필드 내용 : 몬스터타입, 체력, 방어력, 가중치, 현재 할 행동 내역, 
     EnemyAnimation ani;
+    EnemyBuff eBuff;
     EnemySelectBehaviour behaviour;
 
 
     [BoxGroup("적 초기스탯"), SerializeField]
-    private int _maxHp;
+    private int _maxHp; 
+    [BoxGroup("적 초기스탯"), SerializeField]
+    private int maxBuffCount = 3;
+    public int maxBuffCount_ { get => maxBuffCount; }
     public int maxHp { get => _maxHp; }
     [BoxGroup("적 초기스탯"), SerializeField]
     private int attackPoint;
@@ -49,6 +54,12 @@ public class EnemyBase : MonoBehaviour
 
     [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
     public int currentHp { get; private set; }
+    [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
+    public int currentAttackPoint { get; private set; }
+    [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
+    public int currentDefencePoint { get; private set; }
+    [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
+    public int buffStack { get; private set; }
     [BoxGroup("적 현재스탯"), ShowInInspector, ReadOnly]
     public bool isDead { get; private set; } = false;
 
@@ -62,19 +73,25 @@ public class EnemyBase : MonoBehaviour
     public Enemy_Behaviour currentBehaviour { get => _currentBehaviour; }
 
     public Transform hpBarLocation;
-
+    
     public event Action<EnemyBase> OnDie;
     public Action<EnemyBase, int, int> OnTakeDamage;
     private PlayerBaseStat playerStat;
 
-
     private void Awake()
     {
-        //InitStat();
-        //Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attackPoint} / defence : {defencePoint}");
         ani = GetComponent<EnemyAnimation>();
         behaviour = GetComponent<EnemySelectBehaviour>();
+        eBuff = GetComponent<EnemyBuff>();
+        InitStat();
+    }
+
+    private void InitStat()
+    {
         currentHp = maxHp;
+        currentAttackPoint = attackPoint;
+        currentDefencePoint = defencePoint;
+        buffStack = 0;
     }
 
 
@@ -166,7 +183,7 @@ public class EnemyBase : MonoBehaviour
     }
     private void Buff()
     {
-        ani.EnemyBuff();
+        eBuff.CheckBuff();
     }
     private void None()
     {
@@ -186,6 +203,9 @@ public class EnemyBase : MonoBehaviour
     [Button] // 방어력 만큼 현재 피해에서 감쇠 한 다음 hp 계산
     public void TakeDamage(int amount)
     {
+        if (isDead)
+            return;
+
         if (amount > 0)
         {
             ani.EnemyTakeDamage();
@@ -201,6 +221,26 @@ public class EnemyBase : MonoBehaviour
         {
             Die();
         }
+    }
+
+    public void ApplyChangeStat(EnemyBuffType type, int amount)
+    {
+        switch(type)
+        {
+            case EnemyBuffType.AttackPointBuff:
+                currentAttackPoint += amount;
+                break;
+            case EnemyBuffType.DefencePointBuff:
+                currentDefencePoint += amount;
+                break;
+            case EnemyBuffType.HpBuff:
+                currentHp = Math.Min(currentHp += amount, maxHp);
+                    break;
+            case EnemyBuffType.NoneBuff:
+                break;
+        }
+        buffStack++;
+        ani.EnemyBuff();
     }
 
     public void ApplyDamage()

@@ -337,6 +337,7 @@ GameObject:
   - component: {fileID: 4725451496344289923}
   - component: {fileID: -2455953845461549653}
   - component: {fileID: 7907714145648030578}
+  - component: {fileID: -3387580429445511102}
   m_Layer: 0
   m_Name: Plant Chewer
   m_TagString: Untagged
@@ -400,6 +401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
   _maxHp: 40
+  maxBuffCount: 3
   attackPoint: 9
   defencePoint: 2
   behaviourListData:
@@ -486,6 +488,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3604ceba36d11340a35b28604f4c1e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DrawCircleWhenMouseOver
+--- !u!114 &-3387580429445511102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4145791839865359330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62c12e25c747c964baee827e5e197615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBuff
+  enemyBuffType: 2
+  buffAmount: 10
 --- !u!1 &5551549313384924501
 GameObject:
   m_ObjectHideFlags: 0

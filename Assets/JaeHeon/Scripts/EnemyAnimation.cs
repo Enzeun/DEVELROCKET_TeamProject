@@ -117,7 +117,7 @@ public class EnemyAnimation : MonoBehaviour
     {
         GameObject projectile = GameObject.Instantiate(projectilePrefab);
         projectile.transform.position = EmissionTransform.position;
-        projectile.GetComponent<EnemyProjectile>().projectileDamage = enemyBase.GetAttackPoint();
+        projectile.GetComponent<EnemyProjectile>().projectileDamage = enemyBase.currentAttackPoint;
         Vector3 direction = ((targetTransform.position + playerYOffset) - EmissionTransform.position).normalized;
         projectile.transform.forward = direction;
         ObjectDestroy(projectile, destroyEffectInterval);
@@ -195,7 +195,7 @@ public class EnemyAnimation : MonoBehaviour
     }
 
 
-    [Button]
+    [Button("버프 이펙트만 표현")]
     public void EnemyBuff()
     {
         Sequence seq = DOTween.Sequence();

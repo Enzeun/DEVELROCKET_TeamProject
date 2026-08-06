@@ -142,6 +142,7 @@ GameObject:
   - component: {fileID: 8402668728926015806}
   - component: {fileID: 1483555603561445503}
   - component: {fileID: 3693548572017401148}
+  - component: {fileID: -5416409491137487095}
   m_Layer: 0
   m_Name: Queen Worm
   m_TagString: Untagged
@@ -203,6 +204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
   _maxHp: 30
+  maxBuffCount: 3
   attackPoint: 14
   defencePoint: 0
   behaviourListData:
@@ -289,6 +291,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3604ceba36d11340a35b28604f4c1e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DrawCircleWhenMouseOver
+--- !u!114 &-5416409491137487095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1734317337220509662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62c12e25c747c964baee827e5e197615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBuff
+  enemyBuffType: 3
+  buffAmount: 0
 --- !u!1 &2052834361857246991
 GameObject:
   m_ObjectHideFlags: 0
