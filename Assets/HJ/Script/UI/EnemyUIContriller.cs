@@ -28,14 +28,14 @@ public class EnemyUIContriller : MonoBehaviour
                 behaviorIcon.enabled = false;
                 Debug.Log("설정이 안된 행동입니다. EnemyUIController 의 RefreshBehaviorIcon 을 확인하세요");
                 return;
-            case Enemy_Behaviour.Attack:
+            case Enemy_Behaviour.NormalAttack:
                 behaviorIcon.sprite = attackicon;
                 break;
 
-            case Enemy_Behaviour.Skill1:
+            case Enemy_Behaviour.Shoot:
                 behaviorIcon.sprite = attackicon;
                 break;
-            case Enemy_Behaviour.Skill2:
+            case Enemy_Behaviour.Spell:
                 behaviorIcon.sprite = attackicon;
                 break;
             case Enemy_Behaviour.Skill3:

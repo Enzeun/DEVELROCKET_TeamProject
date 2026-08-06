@@ -299,6 +299,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2983258011309089962}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1578151640976936118
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2348417866517095436}
+  m_Layer: 0
+  m_Name: HpBarLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2348417866517095436
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578151640976936118}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.455, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2983258011309089962}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1690374974509344298
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,8 +438,10 @@ GameObject:
   - component: {fileID: 5976719210908756150}
   - component: {fileID: -1590017183247390402}
   - component: {fileID: -2353700070017464438}
+  - component: {fileID: 5252688395351191953}
+  - component: {fileID: -4331148247909423649}
   m_Layer: 0
-  m_Name: Golem Earth (1)
+  m_Name: Golem Earth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -423,7 +456,7 @@ Transform:
   m_GameObject: {fileID: 2495898927994676689}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.17413, y: -0, z: 6.77796}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -440,6 +473,7 @@ Transform:
   - {fileID: 7240812171063454374}
   - {fileID: 7436028946200266871}
   - {fileID: 3111415683409368246}
+  - {fileID: 2348417866517095436}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &5639721831756672276
@@ -452,7 +486,7 @@ Animator:
   m_GameObject: {fileID: 2495898927994676689}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: bfe92606348df634fb607686bbb0ca33, type: 3}
-  m_Controller: {fileID: 9100000, guid: b890e9245b20c344b9076194f293927f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 52845d80423198843b06c53e0f34b7d4, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -476,12 +510,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933a5412bb7fe8b46824de0f283f049e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
-  ani: {fileID: 0}
-  behaviour: {fileID: 0}
+  _maxHp: 100
+  attackPoint: 8
+  defencePoint: 10
+  behaviourListData:
+  - BehaviorType: 1
+    Weight_: 50
+  - BehaviorType: 3
+    Weight_: 20
+  - BehaviorType: 6
+    Weight_: 30
   playerTransform: {fileID: 0}
-  _maxHp: 0
-  attackPower: 0
-  behaviourListData: []
+  hpBarLocation: {fileID: 2348417866517095436}
 --- !u!114 &-1590017183247390402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,7 +534,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47d43e8fc98caa64497aaca5e3f9266c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySelectBehaviour
-  enemyBase: {fileID: 0}
   finalValue: 0
   currentBehaviour: 0
 --- !u!114 &-2353700070017464438
@@ -513,6 +552,7 @@ MonoBehaviour:
   enemyBase: {fileID: 0}
   targetTransform: {fileID: 0}
   projectilePrefab: {fileID: 0}
+  projectileEffectPrefab: {fileID: 0}
   EmissionTransform: {fileID: 0}
   spellPrefab: {fileID: 0}
   buffPrefab: {fileID: 5943402860343802046, guid: 791a844400dd9674fb1568afd1369472, type: 3}
@@ -525,6 +565,39 @@ MonoBehaviour:
   animatingInterval: 1
   destroyEffectInterval: 2
   applyDamageInterval: 1
+--- !u!65 &5252688395351191953
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2495898927994676689}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.2, y: 2.4, z: 1}
+  m_Center: {x: 0, y: 1.2, z: 0}
+--- !u!114 &-4331148247909423649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2495898927994676689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3604ceba36d11340a35b28604f4c1e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrawCircleWhenMouseOver
 --- !u!1 &3281604490257342398
 GameObject:
   m_ObjectHideFlags: 0
