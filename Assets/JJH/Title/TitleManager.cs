@@ -152,8 +152,8 @@ public class TitleManager : MonoBehaviour
 
     public void StartGame()
     {
-        GameStateManager.Instance.LoadSceneName = "JJH_TestScene";
-        SceneManager.LoadScene("JJH_LoadingScene");
+        GameStateManager.Instance.LoadSceneName = "Battle_Round_1";
+        SceneManager.LoadScene("LoadingScene");
     }
 
     public void ExitGame()
