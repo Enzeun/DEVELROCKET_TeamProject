@@ -13,12 +13,20 @@ public enum Enemy_Behaviour
     Skill4,
     Buff
 }
-public enum EnemyBuffType
+//public enum EnemyBuffType
+//{
+//    AttackPointBuff,
+//    DefencePointBuff,
+//    HpBuff,
+//    NoneBuff
+//}
+public enum EnemyType
 {
-    AttackPointBuff,
-    DefencePointBuff,
-    HpBuff,
-    NoneBuff
+    Scorpion,
+    Plant,
+    Golem,
+    Worm,
+    Boss
 }
 
 [Serializable]
@@ -223,25 +231,48 @@ public class EnemyBase : MonoBehaviour
         }
     }
 
-    public void ApplyChangeStat(EnemyBuffType type, int amount)
+    public void ApplyChangeStat(EnemyType type, int amount)
     {
         switch(type)
         {
-            case EnemyBuffType.AttackPointBuff:
+            case EnemyType.Scorpion:
                 currentAttackPoint += amount;
                 break;
-            case EnemyBuffType.DefencePointBuff:
+            case EnemyType.Golem:
                 currentDefencePoint += amount;
                 break;
-            case EnemyBuffType.HpBuff:
+            case EnemyType.Plant:
                 currentHp = Math.Min(currentHp += amount, maxHp);
                     break;
-            case EnemyBuffType.NoneBuff:
+            case EnemyType.Worm:
+                break;
+            case EnemyType.Boss:
+                currentAttackPoint += amount;
+                currentDefencePoint += amount;
                 break;
         }
         buffStack++;
         ani.EnemyBuff();
     }
+    //public void ApplyChangeStat(EnemyBuffType type, int amount)
+    //{
+    //    switch(type)
+    //    {
+    //        case EnemyBuffType.AttackPointBuff:
+    //            currentAttackPoint += amount;
+    //            break;
+    //        case EnemyBuffType.DefencePointBuff:
+    //            currentDefencePoint += amount;
+    //            break;
+    //        case EnemyBuffType.HpBuff:
+    //            currentHp = Math.Min(currentHp += amount, maxHp);
+    //                break;
+    //        case EnemyBuffType.NoneBuff:
+    //            break;
+    //    }
+    //    buffStack++;
+    //    ani.EnemyBuff();
+    //}
 
     public void ApplyDamage()
     {

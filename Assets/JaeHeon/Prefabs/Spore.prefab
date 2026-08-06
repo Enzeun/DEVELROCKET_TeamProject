@@ -868,7 +868,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62c12e25c747c964baee827e5e197615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBuff
-  enemyBuffType: 2
+  enemyType: 1
   buffAmount: 10
 --- !u!1 &5063538707804269337
 GameObject:

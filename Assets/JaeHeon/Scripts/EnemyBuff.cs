@@ -9,7 +9,8 @@ public class EnemyBuff : MonoBehaviour
 
 
     [BoxGroup("버프 타입 설정"), SerializeField]
-    private EnemyBuffType enemyBuffType;
+    //private EnemyBuffType enemyBuffType;
+    private EnemyType enemyType;
     [BoxGroup("버프 값 설정"), SerializeField]
     private int buffAmount;
     
@@ -34,7 +35,7 @@ public class EnemyBuff : MonoBehaviour
 
     public void RemoveBuffStack()
     {
-        if (enemyBuffType == EnemyBuffType.NoneBuff)
+        if (enemyType == EnemyType.Worm)
             return;
 
         var dataList = eBase.GetListData();
@@ -45,15 +46,39 @@ public class EnemyBuff : MonoBehaviour
 
     public void DoBuff(int amount)
     {
-        if(enemyBuffType == EnemyBuffType.NoneBuff)
+        if(enemyType == EnemyType.Worm)
             return;
 
         if (amount <= 0)
         {
-            Debug.Log("수치 조정 필요");
+            Debug.Log("0 <= 값이 들어왔음, 수치 조정 필요");
             return;
         }
 
-        eBase.ApplyChangeStat(enemyBuffType, amount);
+        eBase.ApplyChangeStat(enemyType, amount);
     }
+    //public void RemoveBuffStack()
+    //{
+    //    if (enemyBuffType == EnemyBuffType.NoneBuff)
+    //        return;
+
+    //    var dataList = eBase.GetListData();
+    //    var data = dataList.Find(a => a.Type == Enemy_Behaviour.Buff);
+
+    //    dataList.Remove(data);
+    //}
+
+    //public void DoBuff(int amount)
+    //{
+    //    if(enemyBuffType == EnemyBuffType.NoneBuff)
+    //        return;
+
+    //    if (amount <= 0)
+    //    {
+    //        Debug.Log("수치 조정 필요");
+    //        return;
+    //    }
+
+    //    eBase.ApplyChangeStat(enemyBuffType, amount);
+    //}
 }
