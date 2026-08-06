@@ -353,7 +353,7 @@ Transform:
   m_GameObject: {fileID: 4145791839865359330}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1863073, y: 0.00000032439232, z: 4.7201405}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -362,6 +362,7 @@ Transform:
   - {fileID: 8657670681920668777}
   - {fileID: 6010747336345596307}
   - {fileID: 6206059955771244243}
+  - {fileID: 4949351138638937323}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &21197914662156500
@@ -398,11 +399,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933a5412bb7fe8b46824de0f283f049e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
-  _maxHp: 0
-  attackPower: 0
-  behaviourListData: []
+  _maxHp: 25
+  attackPoint: 5
+  defencePoint: 0
+  behaviourListData:
+  - BehaviorType: 1
+    Weight_: 70
+  - BehaviorType: 6
+    Weight_: 30
   playerTransform: {fileID: 0}
-  hpBarLocation: {fileID: 0}
+  hpBarLocation: {fileID: 4949351138638937323}
 --- !u!114 &-6820356033228986475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -415,7 +421,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47d43e8fc98caa64497aaca5e3f9266c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySelectBehaviour
-  enemyBase: {fileID: 0}
   finalValue: 0
   currentBehaviour: 0
 --- !u!114 &4725451496344289923
@@ -437,7 +442,7 @@ MonoBehaviour:
   projectileEffectPrefab: {fileID: 0}
   EmissionTransform: {fileID: 0}
   spellPrefab: {fileID: 0}
-  buffPrefab: {fileID: 0}
+  buffPrefab: {fileID: 682793325478354899, guid: a524cabda7098b84ea974d021b75b373, type: 3}
   enemyMagicSpeed: 0.4
   enemyMoveSpeed: 1
   projectileSpeed: 20
@@ -906,6 +911,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.7010906, y: -0.1911583, z: 0.0000006556511}
     m_Extent: {x: 1.1371388, y: 0.91590023, z: 1.5632217}
   m_DirtyAABB: 0
+--- !u!1 &8413555835120756935
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4949351138638937323}
+  m_Layer: 0
+  m_Name: HpBarLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4949351138638937323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8413555835120756935}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.02, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1490496059938560597}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8898312940656770990
 GameObject:
   m_ObjectHideFlags: 0

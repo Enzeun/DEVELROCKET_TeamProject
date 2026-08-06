@@ -76,11 +76,19 @@ public class EnemyAnimation : MonoBehaviour
     private void Start()
     {
         //targetTransform을 enemyBase에서  가져옴
-        targetTransform = enemyBase.playerTransform;
+        InitPlayerTransform();
 
         //시작할 때 현재 상태 저장
         currentTransform = transform;
         currentRotation = transform.rotation;
+    }
+
+    private void InitPlayerTransform()
+    {
+        if (targetTransform == null)
+        {
+            targetTransform = FindFirstObjectByType<PlayerCombat>().transform;
+        }
     }
 
  
@@ -107,9 +115,10 @@ public class EnemyAnimation : MonoBehaviour
     {
         GameObject projectile = GameObject.Instantiate(projectilePrefab);
         projectile.transform.position = EmissionTransform.position;
+        projectile.GetComponent<EnemyProjectile>().projectileDamage = enemyBase.GetAttackPoint();
         Vector3 direction = (targetTransform.position - EmissionTransform.position).normalized;
         projectile.transform.forward = direction;
-        EffectDestroy(projectile, destroyEffectInterval);
+        ObjectDestroy(projectile, destroyEffectInterval);
 
         if (projectileEffectPrefab != null)
         {
@@ -117,7 +126,7 @@ public class EnemyAnimation : MonoBehaviour
             effectProjectile.transform.position = transform.position;
             Vector3 effectDirection = (targetTransform.position - transform.position).normalized;
             effectProjectile.transform.forward = effectDirection;
-            EffectDestroy(effectProjectile, destroyEffectInterval);
+            ObjectDestroy(effectProjectile, destroyEffectInterval);
         }
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
         rb.AddForce(direction * projectileSpeed, ForceMode.Impulse);
@@ -138,6 +147,7 @@ public class EnemyAnimation : MonoBehaviour
         {
             animator.SetTrigger("NormalAttack");
         });
+        seq.AppendInterval(waitInterval);
         seq.AppendCallback(() =>
         {
             StartCoroutine(ApplyDamageRoutine());
@@ -170,7 +180,7 @@ public class EnemyAnimation : MonoBehaviour
         {
             GameObject spell = GameObject.Instantiate(spellPrefab);
             spell.transform.position = targetTransform.position;
-            EffectDestroy(spell, destroyEffectInterval);
+            ObjectDestroy(spell, destroyEffectInterval);
         });
         seq.AppendInterval(animatingInterval);
         seq.Append(transform.DORotate(currentRotation.eulerAngles, rotateInterval));
@@ -194,12 +204,12 @@ public class EnemyAnimation : MonoBehaviour
             GameObject buffEffect = GameObject.Instantiate(buffPrefab);
             buffEffect.transform.position = transform.position;
 
-            EffectDestroy(buffEffect, destroyEffectInterval);
+            ObjectDestroy(buffEffect, destroyEffectInterval);
         });
         //버프 할 사항 추가
     }
 
-    private void EffectDestroy(GameObject effect, float destroyTime)
+    private void ObjectDestroy(GameObject effect, float destroyTime)
     {
         Destroy(effect, destroyTime);
     }
