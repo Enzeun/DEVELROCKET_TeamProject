@@ -767,12 +767,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933a5412bb7fe8b46824de0f283f049e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
-  _maxHp: 0
-  attackPoint: 0
+  _maxHp: 25
+  attackPoint: 5
   defencePoint: 0
-  behaviourListData: []
+  behaviourListData:
+  - BehaviorType: 1
+    Weight_: 70
+  - BehaviorType: 6
+    Weight_: 30
   playerTransform: {fileID: 0}
-  hpBarLocation: {fileID: 0}
+  hpBarLocation: {fileID: 8373743257196624062}
 --- !u!114 &677241462805578885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -806,16 +810,17 @@ MonoBehaviour:
   projectileEffectPrefab: {fileID: 0}
   EmissionTransform: {fileID: 0}
   spellPrefab: {fileID: 0}
-  buffPrefab: {fileID: 0}
+  buffPrefab: {fileID: 682793325478354899, guid: 441613b5593a5e84881ac951c3ab057f, type: 3}
   enemyMagicSpeed: 0.4
   enemyMoveSpeed: 1
   projectileSpeed: 20
-  distanceOfPlayerAtNormalAttack: 2
+  distanceOfPlayerAtNormalAttack: 1
   rotateInterval: 0.4
   waitInterval: 0.4
   animatingInterval: 1
   destroyEffectInterval: 2
-  applyDamageInterval: 1
+  applyDamageInterval: 0.3
+  playerYOffset: {x: 0, y: 1.1, z: 0}
 --- !u!65 &6399058228598057242
 BoxCollider:
   m_ObjectHideFlags: 0

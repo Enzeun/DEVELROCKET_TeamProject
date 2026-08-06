@@ -399,9 +399,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933a5412bb7fe8b46824de0f283f049e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
-  _maxHp: 25
-  attackPoint: 5
-  defencePoint: 0
+  _maxHp: 40
+  attackPoint: 9
+  defencePoint: 2
   behaviourListData:
   - BehaviorType: 1
     Weight_: 70
@@ -451,7 +451,8 @@ MonoBehaviour:
   waitInterval: 0.4
   animatingInterval: 1
   destroyEffectInterval: 2
-  applyDamageInterval: 1
+  applyDamageInterval: 0.3
+  playerYOffset: {x: 0, y: 1.3, z: 0}
 --- !u!65 &-2455953845461549653
 BoxCollider:
   m_ObjectHideFlags: 0
