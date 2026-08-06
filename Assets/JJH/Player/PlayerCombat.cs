@@ -1,5 +1,5 @@
 using DG.Tweening;
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static SkillEnums;
@@ -256,5 +256,15 @@ public class PlayerCombat : MonoBehaviour
             effectFinSub = true;
         }
         
+    }
+
+    public void SubEventByEffect(Action event1)
+    {
+        spawner.OnEffectFinished += event1;
+    }
+
+    public void UnSubEventByEffect(Action event1)
+    {
+        spawner.OnEffectFinished -= event1;
     }
 }
