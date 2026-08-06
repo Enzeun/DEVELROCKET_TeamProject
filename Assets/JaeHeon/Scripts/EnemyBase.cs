@@ -191,6 +191,7 @@ public class EnemyBase : MonoBehaviour
     }
     private void Buff()
     {
+        buffStack++;
         eBuff.CheckBuff();
     }
     private void None()
@@ -251,7 +252,6 @@ public class EnemyBase : MonoBehaviour
                 currentDefencePoint += amount;
                 break;
         }
-        buffStack++;
         ani.EnemyBuff();
     }
     //public void ApplyChangeStat(EnemyBuffType type, int amount)
