@@ -137,6 +137,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8866079537236649703}
   - component: {fileID: 6610908384738918525}
+  - component: {fileID: 8916534488181118393}
+  - component: {fileID: -3808605793012896727}
+  - component: {fileID: -483902795254013997}
+  - component: {fileID: -2094750709503558960}
+  - component: {fileID: 5531915364003827885}
   m_Layer: 0
   m_Name: Scorpion King
   m_TagString: Untagged
@@ -164,6 +169,7 @@ Transform:
   - {fileID: 7061684420594262570}
   - {fileID: 3742761485346127579}
   - {fileID: 4420274270879378960}
+  - {fileID: 5184697098936071411}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6610908384738918525
@@ -188,6 +194,100 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8916534488181118393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486764000082545760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933a5412bb7fe8b46824de0f283f049e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
+  _maxHp: 0
+  attackPoint: 0
+  defencePoint: 0
+  behaviourListData: []
+  playerTransform: {fileID: 0}
+  hpBarLocation: {fileID: 0}
+--- !u!114 &-3808605793012896727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486764000082545760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47d43e8fc98caa64497aaca5e3f9266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySelectBehaviour
+  finalValue: 0
+  currentBehaviour: 0
+--- !u!114 &-483902795254013997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486764000082545760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1907d8002404518489c2b4d92386909d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimation
+  animator: {fileID: 0}
+  enemyBase: {fileID: 0}
+  targetTransform: {fileID: 0}
+  projectilePrefab: {fileID: 0}
+  projectileEffectPrefab: {fileID: 0}
+  EmissionTransform: {fileID: 0}
+  spellPrefab: {fileID: 0}
+  buffPrefab: {fileID: 0}
+  enemyMagicSpeed: 0.4
+  enemyMoveSpeed: 1
+  projectileSpeed: 20
+  distanceOfPlayerAtNormalAttack: 2
+  rotateInterval: 0.4
+  waitInterval: 0.4
+  animatingInterval: 1
+  destroyEffectInterval: 2
+  applyDamageInterval: 1
+--- !u!65 &-2094750709503558960
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486764000082545760}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 2.6, z: 2.6}
+  m_Center: {x: 0, y: 1.3, z: 0}
+--- !u!114 &5531915364003827885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486764000082545760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3604ceba36d11340a35b28604f4c1e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrawCircleWhenMouseOver
 --- !u!1 &626181447122028002
 GameObject:
   m_ObjectHideFlags: 0
@@ -1470,6 +1570,37 @@ Transform:
   m_Children:
   - {fileID: 6393662011705811286}
   m_Father: {fileID: 7744354644129537557}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7995347500757005947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5184697098936071411}
+  m_Layer: 0
+  m_Name: HpBarLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5184697098936071411
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7995347500757005947}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8866079537236649703}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8094690258814143711
 GameObject:

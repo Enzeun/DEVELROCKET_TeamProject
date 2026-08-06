@@ -438,6 +438,7 @@ GameObject:
   - component: {fileID: 5976719210908756150}
   - component: {fileID: -1590017183247390402}
   - component: {fileID: -2353700070017464438}
+  - component: {fileID: 5252688395351191953}
   - component: {fileID: -4331148247909423649}
   m_Layer: 0
   m_Name: Golem Earth
@@ -564,6 +565,27 @@ MonoBehaviour:
   animatingInterval: 1
   destroyEffectInterval: 2
   applyDamageInterval: 1
+--- !u!65 &5252688395351191953
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2495898927994676689}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.2, y: 2.4, z: 1}
+  m_Center: {x: 0, y: 1.2, z: 0}
 --- !u!114 &-4331148247909423649
 MonoBehaviour:
   m_ObjectHideFlags: 0

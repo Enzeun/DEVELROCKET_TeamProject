@@ -110,7 +110,7 @@ public class EnemyBase : MonoBehaviour
             _currentBehaviour = behaviour.Calc_Enemy_Behaviour();
         }
     }
-    private void StartBehaviour()
+    public void StartBehaviour()
     {
         if (isDead)
             return;
@@ -204,6 +204,15 @@ public class EnemyBase : MonoBehaviour
 
     public void ApplyDamage()
     {
+        if(playerStat == null)
+        {
+            playerStat = playerCombat.player;
+        }
         playerStat.TakeDamage(attackPoint);
+    }
+
+    public int GetAttackPoint()
+    {
+        return attackPoint;
     }
 }

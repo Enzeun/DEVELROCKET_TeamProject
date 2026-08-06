@@ -1315,7 +1315,7 @@ MonoBehaviour:
   waitInterval: 0.4
   animatingInterval: 1
   destroyEffectInterval: 2
-  applyDamageInterval: 0.1
+  applyDamageInterval: 0.3
 --- !u!65 &886420324542358980
 BoxCollider:
   m_ObjectHideFlags: 0
