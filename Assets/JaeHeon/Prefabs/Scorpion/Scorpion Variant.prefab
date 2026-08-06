@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Scorpion Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 9164061269032085072, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
+      propertyPath: playerYOffset.y
+      value: 1.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

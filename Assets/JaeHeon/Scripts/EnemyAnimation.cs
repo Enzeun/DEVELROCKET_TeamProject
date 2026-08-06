@@ -55,6 +55,8 @@ public class EnemyAnimation : MonoBehaviour
     private float destroyEffectInterval = 2f;
     [BoxGroup("조작가능한 필드"), SerializeField]
     private float applyDamageInterval = 1f;
+    [BoxGroup("조작가능한 필드"), SerializeField]
+    private Vector3 playerYOffset = new Vector3(0f, 1.3f, 0f);
 
     //시작할 때 현재 상태 저장용 필드
     Transform currentTransform;
@@ -116,7 +118,7 @@ public class EnemyAnimation : MonoBehaviour
         GameObject projectile = GameObject.Instantiate(projectilePrefab);
         projectile.transform.position = EmissionTransform.position;
         projectile.GetComponent<EnemyProjectile>().projectileDamage = enemyBase.GetAttackPoint();
-        Vector3 direction = (targetTransform.position - EmissionTransform.position).normalized;
+        Vector3 direction = ((targetTransform.position + playerYOffset) - EmissionTransform.position).normalized;
         projectile.transform.forward = direction;
         ObjectDestroy(projectile, destroyEffectInterval);
 
