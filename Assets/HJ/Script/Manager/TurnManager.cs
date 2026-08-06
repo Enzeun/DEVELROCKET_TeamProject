@@ -180,16 +180,7 @@ public class TurnManager : MonoBehaviour
         playerQueue.Enqueue(skill);
     }
 
-    /// <summary>
-    /// 큐에 등록된 스킬 사용하기
-    /// </summary>
-    /// <returns></returns>
-    private PlayerTurnData UseRegisteredSkill()
-    {
-        if (playerQueueCount == 0) return null;
 
-        return playerQueue.Dequeue();
-    }
     //===================== Enemy 의 행동을 큐로 관리 =============================================================
 
     private void RegisterEnemyBehavior(EnemyTurnData enemyTurnData)
@@ -197,12 +188,6 @@ public class TurnManager : MonoBehaviour
         enemyQueue.Enqueue(enemyTurnData);
     }
 
-    private EnemyTurnData DequeueEnemyBehavior()
-    {
-        if (enemyQueueCount == 0) return null;
-
-        return enemyQueue.Dequeue();
-    }
 
 
     //===============================================================================================
@@ -278,27 +263,32 @@ public class TurnManager : MonoBehaviour
                 }
             case TurnState.PlayerTurnEnd:
                 {
-
+                    PlayerTurnEnd();
                     break;
                 }
             case TurnState.EnemyTurn:
                 {
-
+                    EnemyTurn();
                     break;
                 }
             case TurnState.EnemyTurnEnd:
                 {
-
+                    EnemyTurnEnd();
                     break;
                 }
             case TurnState.EndRound:
                 {
-
+                    EndRound();
                     break;
                 }
             case TurnState.EndBattle:
                 {
-
+                    EndBattle();
+                    break;
+                }
+            case TurnState.GameOver:
+                {
+                    GameOver();
                     break;
                 }
         }
@@ -307,38 +297,37 @@ public class TurnManager : MonoBehaviour
 
     //============== 게임 중단점 체크 ============================================================
 
+    enum EnemyBattleState
+    {
+        GameOver,
+        NoMoreEnemyQueue,
+        Continue,
+    }
+
     /// <summary>
     /// 전투가 지속 가능한 상황인지 체크 (아직 적이 남아있는지)
     /// </summary>
-    private bool CheckBattleState()
-    {
-        if (enemyList.Count == 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    private bool CheckIsGameOver()
+    private EnemyBattleState CheckEnemyBattleState()
     {
         if (isGameOver)
         {
-            GoToStep(TurnState.GameOver);
-            return true;
+            return EnemyBattleState.GameOver;
         }
-        else
+
+        if (player.NowHP <= 0)
         {
-            if (player.NowHP <= 0)
-            {
-                GoToStep(TurnState.GameOver);
-                return true;
-            }
-            return false;
+            return EnemyBattleState.GameOver;
         }
+
+        if (enemyQueueCount <= 0)
+        {
+            return EnemyBattleState.NoMoreEnemyQueue;
+        }
+        return EnemyBattleState.Continue;
+
     }
+
+
 
 
     //================== 게임 초기에 진행해야하는 필수 메서드 =============================================================================
@@ -464,7 +453,7 @@ public class TurnManager : MonoBehaviour
         // 적을 선택 가능하게 한다.
         EnableSelectTarget(true);
     }
-     
+
 
     private void OnEnemyClicked(EnemyBase enemy)
     {
@@ -510,14 +499,18 @@ public class TurnManager : MonoBehaviour
         }
         else
         {
+            
             return null;
         }
+
 
     }
 
 
     private void OnEndTurnBtnClicked()
     {
+        uIManager.ShowSkillMenu(false);
+
         EndPlayerPlanning();
     }
 
@@ -530,11 +523,170 @@ public class TurnManager : MonoBehaviour
 
     private void ExecuteSkill()
     {
+        PlayNextSkill();
+    }
+
+    private void PlayNextSkill()
+    {
+        if (playerQueueCount <= 0)
+        {
+            GoToStep(TurnState.PlayerTurnEnd);
+            return;
+        }
+
+        PlayerTurnData turnData = playerQueue.Dequeue();
+
+        int count = turnData.target.Length;
+
+        Transform[] targets = new Transform[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            targets[i] = turnData.target[i].transform;
+        }
+
+        playerCombat.SetNowSkillAndTarget(turnData.skill, targets);
+
+        StartCoroutine(PlayBeforeAttackRoutine());
+    }
+
+    private IEnumerator PlayBeforeAttackRoutine()
+    {
+        playerCombat.PlayerActiveSkillSelect();
+
+        yield return new WaitForSeconds(1);
+
+        StartCoroutine(PlayAttackRoutine());
+    }
+
+    private IEnumerator PlayAttackRoutine()
+    {
+        playerCombat.PlayerAnmationActive();
+
+        yield return new WaitForSeconds(2);
+
+        if (playerQueueCount <= 0)
+        {
+            GoToStep(TurnState.PlayerTurnEnd);
+            yield break;
+        }
+
+        PlayNextSkill();
+    }
+
+
+
+    //========================= Player Turn End 구간 =====================================================
+
+    private void PlayerTurnEnd()
+    {
+        GoToStep(TurnState.EnemyTurn);
 
     }
 
 
 
+    //====================== Enemy Turn 구간 ==============================================================
+
+    private void EnemyTurn()
+    {
+        PlayNextEnemyTurn();
+    }
+    private void PlayNextEnemyTurn()
+    {
+        switch (CheckEnemyBattleState())
+        {
+            case EnemyBattleState.GameOver:
+                GoToStep(TurnState.GameOver);
+                break;
+
+            case EnemyBattleState.NoMoreEnemyQueue:
+                GoToStep(TurnState.EnemyTurnEnd);
+                break;
+            case EnemyBattleState.Continue:
+                break;
+        }
+
+        EnemyTurnData turnData = enemyQueue.Dequeue();
+
+        if (turnData.casterEnemy == null || turnData.casterEnemy.isDead)
+        {
+            PlayNextEnemyTurn();
+            return;
+        }
+        else
+        {
+            StartCoroutine(PlayEnemyAttackRoutine(turnData.casterEnemy));
+        }
+    }
+
+    private IEnumerator PlayEnemyAttackRoutine(EnemyBase caster)
+    {
+        caster.StartBehaviour();
+
+        yield return new WaitForSeconds(1.5f);
+
+        switch (CheckEnemyBattleState())
+        {
+            case EnemyBattleState.GameOver:
+                GoToStep(TurnState.GameOver);
+                break;
+
+            case EnemyBattleState.NoMoreEnemyQueue:
+                GoToStep(TurnState.EnemyTurnEnd);
+                break;
+            case EnemyBattleState.Continue:
+                break;
+        }
+
+        PlayNextEnemyTurn();
+    }
+
+    //======================== Enemy Turn End 구간 ====================================================
+
+    private void EnemyTurnEnd()
+    {
+        GoToStep(TurnState.EndRound);
+    }
+
+    
+
+
+    //======================== End Round 구간 ==============================================================
+
+    private void EndRound()
+    {
+        StartCoroutine(RoundResult());
+    }
+
+    private IEnumerator RoundResult()
+    {
+        yield return new WaitForSeconds(3f);
+
+        GoToStep(TurnState.StartNewRound);
+    }
+
+    //========================== End Battle 구간 =====================================================================
+
+    private void EndBattle()
+    {
+
+    }
+
+
+
+
+
+    //==================== Game Over 구간 ===========================================================================
+
+    private void GameOver()
+    {
+
+    }
+
+
+
+    //===============================================================================================
     //===============================================================================================
     //===============================================================================================
     //===============================================================================================
