@@ -5,18 +5,21 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/JJH_Title.unity
     guid: a636d79e77a897e4eaa6b3854cf2c38d
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/JJH_TestScene.unity
     guid: 45efa3187cd9a644b87fc275204d4c3f
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/JJH_LoadingScene.unity
     guid: 149aa121271cf9143a403cf6a3887a3c
+  - enabled: 1
+    path: Assets/HJ/Scene/TestScene_HJ.unity
+    guid: 9a6142d7892bb6a409950e428e1bf3fa
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
