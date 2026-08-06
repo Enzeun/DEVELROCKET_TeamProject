@@ -350,6 +350,7 @@ public class TurnManager : MonoBehaviour
 
         foreach (EnemyBase enemy in enemyList)
         {
+            enemy.InitEnemyTarget(playerCombat);
             enemy.OnDie += (enemy) => { enemyList.Remove(enemy); };
         }
 

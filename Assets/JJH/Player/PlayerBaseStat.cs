@@ -60,7 +60,7 @@ public class PlayerBaseStat
     /// <param name="damage">피해량</param>
     public void TakeDamage(int damage)
     {
-        NowHP = Mathf.Clamp(NowHP - damage, 0, MaxHP);
+        NowHP = Mathf.Clamp(NowHP - (damage - DefPoint), 0, MaxHP);
 
         if (NowHP <= 0) OnDead?.Invoke();
         else OnDamagedTaken?.Invoke(damage);

@@ -14,12 +14,12 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  m_FogMode: 3
+  m_Fog: 1
+  m_FogColor: {r: 0, g: 0, b: 0, a: 1}
+  m_FogMode: 1
   m_FogDensity: 0.01
-  m_LinearFogStart: 0
-  m_LinearFogEnd: 300
+  m_LinearFogStart: 10.1
+  m_LinearFogEnd: 19.1
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
   _maxHp: 0
-  attakPoint: 0
+  attackPoint: 0
   defencePoint: 0
   behaviourListData: []
   playerTransform: {fileID: 0}
@@ -837,7 +837,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
   _maxHp: 0
-  attakPoint: 0
+  attackPoint: 0
   defencePoint: 0
   behaviourListData: []
   playerTransform: {fileID: 0}
@@ -1541,6 +1541,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Part1
       objectReference: {fileID: 0}
+    - target: {fileID: 5029149804414845993, guid: d9d8e65e2c97b32438de5882f02980e5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7341051496236682338, guid: d9d8e65e2c97b32438de5882f02980e5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -114.94267
@@ -1580,6 +1584,10 @@ PrefabInstance:
     - target: {fileID: 7341051496236682338, guid: d9d8e65e2c97b32438de5882f02980e5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9151002105818238638, guid: d9d8e65e2c97b32438de5882f02980e5, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1805,7 +1813,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -1952,11 +1960,68 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
   _maxHp: 0
-  attakPoint: 0
+  attackPoint: 0
   defencePoint: 0
   behaviourListData: []
   playerTransform: {fileID: 0}
   hpBarLocation: {fileID: 0}
+--- !u!1001 &5578630799742360896
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2733167921909671966, guid: 0900c57f309cdc847917f06f58e7a62a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -17.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 2733167921909671966, guid: 0900c57f309cdc847917f06f58e7a62a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 25.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2733167921909671966, guid: 0900c57f309cdc847917f06f58e7a62a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 2733167921909671966, guid: 0900c57f309cdc847917f06f58e7a62a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7299965
+      objectReference: {fileID: 0}
+    - target: {fileID: 2733167921909671966, guid: 0900c57f309cdc847917f06f58e7a62a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2733167921909671966, guid: 0900c57f309cdc847917f06f58e7a62a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.68345094
+      objectReference: {fileID: 0}
+    - target: {fileID: 2733167921909671966, guid: 0900c57f309cdc847917f06f58e7a62a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2733167921909671966, guid: 0900c57f309cdc847917f06f58e7a62a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2733167921909671966, guid: 0900c57f309cdc847917f06f58e7a62a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -86.228
+      objectReference: {fileID: 0}
+    - target: {fileID: 2733167921909671966, guid: 0900c57f309cdc847917f06f58e7a62a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5255232805673833123, guid: 0900c57f309cdc847917f06f58e7a62a, type: 3}
+      propertyPath: m_Name
+      value: Part2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0900c57f309cdc847917f06f58e7a62a, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1974,3 +2039,4 @@ SceneRoots:
   - {fileID: 1804390459}
   - {fileID: 332322119}
   - {fileID: 1946698638}
+  - {fileID: 5578630799742360896}
