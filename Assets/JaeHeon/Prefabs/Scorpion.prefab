@@ -1195,6 +1195,7 @@ GameObject:
   - component: {fileID: 9164061269032085072}
   - component: {fileID: 886420324542358980}
   - component: {fileID: 3143633011460584127}
+  - component: {fileID: 5669622804923075379}
   m_Layer: 0
   m_Name: Scorpion
   m_TagString: Untagged
@@ -1260,6 +1261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
   _maxHp: 50
+  maxBuffCount: 3
   attackPoint: 16
   defencePoint: 3
   behaviourListData:
@@ -1350,6 +1352,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3604ceba36d11340a35b28604f4c1e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DrawCircleWhenMouseOver
+--- !u!114 &5669622804923075379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6675629720354093767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62c12e25c747c964baee827e5e197615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBuff
+  enemyBuffType: 0
+  buffAmount: 5
 --- !u!1 &6869920660760612235
 GameObject:
   m_ObjectHideFlags: 0
