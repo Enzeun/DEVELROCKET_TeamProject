@@ -27,6 +27,11 @@ public class EnemyBuff : MonoBehaviour
             RemoveBuffStack();
             Debug.Log("버프 스택이 최대치에 도달했습니다.");
         }
+        else if (eBase.buffStack == eBase.maxBuffCount_)
+        {
+            DoBuff(buffAmount);
+            RemoveBuffStack();
+        }
         else
         {
             DoBuff(buffAmount);
