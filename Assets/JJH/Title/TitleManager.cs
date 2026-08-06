@@ -148,17 +148,12 @@ public class TitleManager : MonoBehaviour
             startBtn.interactable = true;
             exitBtn.interactable = true;
         });
-
-
-
-
-
     }
 
     public void StartGame()
     {
-        GameStateManager.Instance.LoadSceneName = "JJH_TestScene";
-        SceneManager.LoadScene("JJH_LoadingScene");
+        GameStateManager.Instance.LoadSceneName = "Battle_Round_1";
+        SceneManager.LoadScene("LoadingScene");
     }
 
     public void ExitGame()
