@@ -71,29 +71,26 @@ public class EnemyBase : MonoBehaviour
     private void Awake()
     {
         //InitStat();
-        Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attackPoint} / defence : {defencePoint}");
+        //Debug.Log($"현재 HP : {currentHp} / maxHP : {maxHp}  / attack : {attackPoint} / defence : {defencePoint}");
         ani = GetComponent<EnemyAnimation>();
         behaviour = GetComponent<EnemySelectBehaviour>();
+        currentHp = maxHp;
     }
 
-    private void Start()
-    {
-        SetTarget();
-    }
 
-    //private void InitStat()
-    //{
-    //    currentHp = maxHp;
-    //}
-
-    private void SetTarget()
+    public void InitEnemyTarget(PlayerCombat _playerCombat)
     {
-        if (playerCombat == null)
+        if (_playerCombat == null)
         {
-            playerCombat = FindFirstObjectByType<PlayerCombat>();
-            playerTransform = playerCombat.transform;
-            playerStat = playerCombat.player;
+            Debug.Log("_playerCombat 이 null 임. 확인 필요!! **********");
         }
+
+        playerCombat = _playerCombat;
+
+        playerTransform = playerCombat.transform;
+
+        playerStat = playerCombat.player;
+
     }
 
     public List<BehaviorData> GetListData()
@@ -192,10 +189,14 @@ public class EnemyBase : MonoBehaviour
         if (amount > 0)
         {
             ani.EnemyTakeDamage();
+
             amount = Math.Max(0, amount - defencePoint);
-            currentHp = Math.Clamp(currentHp, 0, currentHp - (amount));
+
+            currentHp = Math.Clamp((currentHp - amount), 0, maxHp);
+
             OnTakeDamage?.Invoke(this, currentHp, amount);
         }
+
         if (currentHp <= 0)
         {
             Die();
@@ -204,7 +205,7 @@ public class EnemyBase : MonoBehaviour
 
     public void ApplyDamage()
     {
-        if(playerStat == null)
+        if (playerStat == null)
         {
             playerStat = playerCombat.player;
         }
