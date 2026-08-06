@@ -715,9 +715,20 @@ public class TurnManager : MonoBehaviour
 
     private void Start()
     {
-        InitializeBattle();
+        StartCoroutine(WaitForStartGame());
     }
 
+    private IEnumerator WaitForStartGame()
+    {
+        yield return new WaitForSeconds(1);
+
+        InitializeBattle();
+
+        uIManager.FadeDarkImage(0.5f);
+
+        yield return new WaitForSeconds(0.5f);
+
+    }
 
     //================== UI Show / Hide 관련 =============================================================================
 
