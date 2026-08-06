@@ -85,6 +85,8 @@ public class TurnManager : MonoBehaviour
     }
     [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
     private int remainEnemy = -1;
+    [ShowInInspector, BoxGroup("필드 값 추적"), ReadOnly]
+    public int currentRound { get; private set; } = 0; // 플레이어 턴, 적 턴 <- 하나의 라운드
 
 
     // 플레이어와 적의 행동은 큐로 관리
@@ -103,7 +105,6 @@ public class TurnManager : MonoBehaviour
     private PlayerCombat playerCombat;
     private PlayerBaseStat player;
     public bool isBattleStarted { get; private set; } = false; // 전투가 최초로 시작될 때 true, 
-    public int currentRound { get; private set; } = 0; // 플레이어 턴, 적 턴 <- 하나의 라운드
 
 
 
@@ -162,7 +163,7 @@ public class TurnManager : MonoBehaviour
     {
         CheckRemainEnemy();
 
-        player.NowCost = player.MaxCost;
+        player.ResetCost();
 
         currentSelectedSkillId = -1;
 
@@ -338,6 +339,7 @@ public class TurnManager : MonoBehaviour
         {
             return EnemyBattleState.NoMoreEnemyQueue;
         }
+
         return EnemyBattleState.ContinueBattle;
 
     }
@@ -861,6 +863,7 @@ public class TurnManager : MonoBehaviour
         // 만약 버프면 바로 코루틴으로
         if (turnData.enemy_Behaviour == Enemy_Behaviour.Buff)
         {
+            turnData.casterEnemy.StartBehaviour();
             StartCoroutine(WaitEnemyAttackDelay());
         }
         else
@@ -891,7 +894,7 @@ public class TurnManager : MonoBehaviour
 
     private IEnumerator WaitEnemyAttackDelay()
     {
-        // 0.5 초 기다린다
+        // 기다린다
         yield return waitOnefSec;
 
         // 전투 결과를 확인하고 분기로 나눈다

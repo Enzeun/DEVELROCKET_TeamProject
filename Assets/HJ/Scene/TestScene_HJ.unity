@@ -1676,17 +1676,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1607076268}
   m_CullTransparentMesh: 1
---- !u!114 &1855152893 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 135301550757834459, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
-  m_PrefabInstance: {fileID: 298316135129350796}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1876157299
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1784,6 +1773,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 398937100572937277, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 398937100572937277, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 398937100572937277, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 398937100572937277, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 398937100572937277, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 398937100572937277, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 897507650719080238, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1854,6 +1867,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6833494518934210003, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
       propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6858320177075781564, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
+      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7650648428305105461, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
@@ -1913,13 +1930,33 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1280228786}
     - target: {fileID: 9024340784222397340, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
-      propertyPath: endTurnButton
-      value: 
-      objectReference: {fileID: 1855152893}
-    - target: {fileID: 9024340784222397340, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
       propertyPath: ReadyBattleCanvas
       value: 
       objectReference: {fileID: 344641978}
+    - target: {fileID: 9207140959018026928, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9207140959018026928, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9207140959018026928, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9207140959018026928, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9207140959018026928, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9207140959018026928, guid: 4e395f3b26af4c447b7b74d38d743429, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
