@@ -114,6 +114,8 @@ public class TurnManager : MonoBehaviour
 
 
     WaitForSeconds waitHalfSec = new WaitForSeconds(0.5f);
+    WaitForSeconds waitOnefSec = new WaitForSeconds(1f);
+    WaitForSeconds waitTwofSec = new WaitForSeconds(1f);
 
 
 
@@ -150,8 +152,7 @@ public class TurnManager : MonoBehaviour
 
 
         // 초기화 완료 후 1초 뒤 게임시작버튼 활성화
-
-        StartCoroutine(GoToStepWithWait(TurnState.StartBattle, 1.0f));
+        StartCoroutine(GoToStepWithWait(TurnState.StartBattle));
     }
 
     /// <summary>
@@ -220,11 +221,11 @@ public class TurnManager : MonoBehaviour
     }
 
     // 지정된 state 로 넘어가기 + 일정 시간 뒤에 넘어가기
-    private IEnumerator GoToStepWithWait(TurnState state, float sec)
+    private IEnumerator GoToStepWithWait(TurnState state)
     {
         if (state == _currentState) yield break;
 
-        yield return new WaitForSeconds(sec);
+        yield return waitTwofSec;
 
         _currentState = state;
 
@@ -374,7 +375,7 @@ public class TurnManager : MonoBehaviour
 
         foreach (var enemy in enemyList)
         {
-            if (enemy.isDead)
+            if (!enemy.isDead)
             {
                 remainEnemy++;
             }
@@ -402,8 +403,6 @@ public class TurnManager : MonoBehaviour
         foreach (EnemyBase enemy in enemyList)
         {
             enemy.InitEnemyTarget(playerCombat);
-            //enemy.OnDie += (enemy) => { enemyList.Remove(enemy); }; 
-            // 처음엔 죽으면 List 에서 지웠으나, 그냥 isDead 로 판정하고 남겨두는게 좋을 것 같아서 주석처리함.
         }
 
     }
@@ -461,12 +460,6 @@ public class TurnManager : MonoBehaviour
     {
         // 모든 적이 순차적으로 행동결정
         StartCoroutine(EnemyPlanningRoutine());
-
-        // 행동이 끝나면 전체 유닛 행동아이콘 표시
-        uIManager.ShowBehaveIcon();
-
-        // 다음 단계로
-        GoToStep(TurnState.PlayerTurnStart);
     }
 
     /// <summary>
@@ -491,6 +484,17 @@ public class TurnManager : MonoBehaviour
 
             yield return waitHalfSec;
         }
+
+        EndEnemyPlanning();
+    }
+
+    private void EndEnemyPlanning()
+    {
+        // 행동이 끝나면 전체 유닛 행동아이콘 표시
+        uIManager.ShowBehaveIcon();
+
+        // 다음 단계로
+        GoToStep(TurnState.PlayerTurnStart);
     }
 
     //=============== Player Turn Start 구간 ================================================================================
@@ -517,7 +521,7 @@ public class TurnManager : MonoBehaviour
         }
 
         // 스킬 메뉴를 보여준다
-        uIManager.ShowSkillMenu(true);
+        uIManager.ShowSkillMenu();
 
         // 플레이어가 행동할 때 까지 대기.
     }
@@ -571,6 +575,7 @@ public class TurnManager : MonoBehaviour
 
         if (nowCost < skillData.GetCost())
         {
+            Debug.Log("스킬 코스트가 부족합니다.");
             return CheckSkillResult.OverCost;
         }
 
@@ -619,9 +624,7 @@ public class TurnManager : MonoBehaviour
             return;
         }
 
-        // 코스트가 없으면 멈춘다.
-        // 임시로 턴을 종료하게 만듦
-        EndPlayerPlanning();
+        // 코스트가 없으면 대기
     }
 
     // 범위 공격에서의 로직
@@ -642,9 +645,8 @@ public class TurnManager : MonoBehaviour
             return;
         }
 
-        // 코스트가 없으면 멈춘다.
-        // 임시로 턴을 종료하게 만듦
-        EndPlayerPlanning();
+        // 코스트가 없으면 대기
+
     }
 
 
@@ -790,6 +792,9 @@ public class TurnManager : MonoBehaviour
 
     private void PlayerCompleteAttack()
     {
+        // 애니메이션을 idle로 복귀
+        playerCombat.PlayerActiveIdle();
+
         StartCoroutine(PlayerDelay());
     }
 
@@ -843,39 +848,53 @@ public class TurnManager : MonoBehaviour
 
     private void PlayNextEnemyTurn()
     {
-        switch (CheckEnemyBattleState())
-        {
-            case EnemyBattleState.PlayerIsDead:
-                GoToStep(TurnState.GameOver);
-                break;
-
-            case EnemyBattleState.NoMoreEnemyQueue:
-                GoToStep(TurnState.EnemyTurnEnd);
-                break;
-
-            case EnemyBattleState.ContinueBattle:
-                break;
-        }
-
+        // 큐 데이터를 꺼낸다
         EnemyTurnData turnData = enemyQueue.Dequeue();
 
+        // 캐스터가 죽어있으면 스킵한다.
         if (turnData.casterEnemy == null || turnData.casterEnemy.isDead)
         {
             PlayNextEnemyTurn();
             return;
         }
+
+        // 만약 버프면 바로 코루틴으로
+        if (turnData.enemy_Behaviour == Enemy_Behaviour.Buff)
+        {
+            StartCoroutine(WaitEnemyAttackDelay());
+        }
         else
         {
-            StartCoroutine(PlayEnemyAttackRoutine(turnData.casterEnemy));
+            // 아니면 공격을 시작한다.
+            RunEnemyAttack(turnData.casterEnemy);
         }
     }
 
-    private IEnumerator PlayEnemyAttackRoutine(EnemyBase caster)
+    private void RunEnemyAttack(EnemyBase caster)
     {
+        // 데미지 받을 때 다음 단계로 넘어가므로, 여기서 구독한다.
+        player.OnDamagedTaken -= EnemyAttackCompleted;
+        player.OnDamagedTaken += EnemyAttackCompleted;
+
+        // 공격 시작
         caster.StartBehaviour();
+    }
 
-        yield return new WaitForSeconds(1.5f);
+    private void EnemyAttackCompleted(int damage)
+    {
+        // 바로 구독을 해제해준다
+        player.OnDamagedTaken -= EnemyAttackCompleted;
 
+        // 대기시간을 가진다
+        StartCoroutine(WaitEnemyAttackDelay());
+    }
+
+    private IEnumerator WaitEnemyAttackDelay()
+    {
+        // 0.5 초 기다린다
+        yield return waitOnefSec;
+
+        // 전투 결과를 확인하고 분기로 나눈다
         switch (CheckEnemyBattleState())
         {
             case EnemyBattleState.PlayerIsDead:
@@ -885,21 +904,27 @@ public class TurnManager : MonoBehaviour
             case EnemyBattleState.NoMoreEnemyQueue:
                 GoToStep(TurnState.EnemyTurnEnd);
                 break;
+
             case EnemyBattleState.ContinueBattle:
+                PlayNextEnemyTurn();
                 break;
         }
-
-        PlayNextEnemyTurn();
     }
+
 
     //======================== Enemy Turn End 구간 ====================================================
 
     private void EnemyTurnEnd()
     {
-        GoToStep(TurnState.EndRound);
+        StartCoroutine(EnemyTurnEndDelay());
     }
 
+    private IEnumerator EnemyTurnEndDelay()
+    {
+        yield return waitTwofSec;
 
+        GoToStep(TurnState.EndRound);
+    }
 
 
     //======================== End Round 구간 ==============================================================
@@ -911,7 +936,7 @@ public class TurnManager : MonoBehaviour
 
     private IEnumerator RoundResult()
     {
-        yield return new WaitForSeconds(3f);
+        yield return waitOnefSec;
 
         GoToStep(TurnState.StartNewRound);
     }

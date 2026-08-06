@@ -58,7 +58,7 @@ public class BattleUIManager : MonoBehaviour
     {
         darkImage.alpha = 1f;
 
-        skillCanvas.enabled = false;
+        skillCanvas.gameObject.SetActive(false);
 
         endTurnButton.interactable = false;
     }
@@ -424,7 +424,7 @@ public class BattleUIManager : MonoBehaviour
     }
 
 
-    public void ShowSkillMenu(bool show)
+    public void ShowSkillMenu(bool show = true)
     {
         if (show)
         {

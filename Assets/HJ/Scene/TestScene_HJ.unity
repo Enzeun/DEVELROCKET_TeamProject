@@ -1101,14 +1101,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1354381945093947630, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
-      propertyPath: _maxHp
-      value: 250
-      objectReference: {fileID: 0}
-    - target: {fileID: 1354381945093947630, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
-      propertyPath: <maxHp>k__BackingField
-      value: 300
-      objectReference: {fileID: 0}
     - target: {fileID: 2219866939652499699, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1318,7 +1310,7 @@ MonoBehaviour:
   enemyList: []
   isGameOver: 0
   currentSelectedSkillId: 0
-  currentTargetEnemy: {fileID: 0}
+  remainEnemy: -1
   uIManager: {fileID: 1096197459}
 --- !u!4 &1257734678
 Transform:
@@ -1479,10 +1471,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1354381945093947630, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
-      propertyPath: _maxHp
-      value: 200
-      objectReference: {fileID: 0}
     - target: {fileID: 2219866939652499699, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1522,10 +1510,6 @@ PrefabInstance:
     - target: {fileID: 2219866939652499699, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3411338925293372594, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6675629720354093767, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
       propertyPath: m_Name
@@ -1711,10 +1695,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1354381945093947630, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
-      propertyPath: _maxHp
-      value: 150
-      objectReference: {fileID: 0}
     - target: {fileID: 2219866939652499699, guid: 1e392c84a47442b438ebfdc735c69d4a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
