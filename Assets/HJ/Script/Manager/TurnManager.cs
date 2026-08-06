@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class TurnManager : MonoBehaviour
@@ -98,7 +99,6 @@ public class TurnManager : MonoBehaviour
     // 필수 참조 필드
     [SerializeField, BoxGroup("**필수 참조 필드**"), Required]
     private BattleUIManager uIManager;
-
 
 
     // 턴 매니저 전투 관리 필드
@@ -416,6 +416,8 @@ public class TurnManager : MonoBehaviour
         uIManager.InitUIDictinary();
         uIManager.InitializeAllHpBar();
         uIManager.SetEnemyUILocation();
+        // 시작 전 UI 보여주기
+        uIManager.ShowReadyBattleUI(true);
     }
 
     //================== Start Battle 구간 =============================================================================
@@ -426,8 +428,7 @@ public class TurnManager : MonoBehaviour
     private void StartBattle()
     {
         uIManager.OnBattleStartClicked += OnBattleStart;
-        // 시작 전 UI 보여주기
-        uIManager.ShowReadyBattleUI(true);
+
     }
 
     private void OnBattleStart()
@@ -959,7 +960,7 @@ public class TurnManager : MonoBehaviour
 
     private void GameOver()
     {
-
+        uIManager.ShowGameOver();
     }
 
 
@@ -998,13 +999,13 @@ public class TurnManager : MonoBehaviour
 
     private IEnumerator WaitForStartGame()
     {
-        yield return new WaitForSeconds(1);
+        yield return waitOnefSec;
 
         InitializeBattle();
 
         uIManager.FadeDarkImage(0.5f);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return waitHalfSec;
 
     }
 
