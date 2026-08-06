@@ -44,19 +44,19 @@ public class EnemyAnimation : MonoBehaviour
     [BoxGroup("조작가능한 필드"), SerializeField] 
     private float projectileSpeed = 20f;
     [BoxGroup("조작가능한 필드"), SerializeField] 
-    private float distanceOfPlayerAtNormalAttack = 2f;
+    private float distanceOfPlayerAtNormalAttack = 1.5f;
     [BoxGroup("조작가능한 필드"), SerializeField]
     private float rotateInterval = 0.4f;
     [BoxGroup("조작가능한 필드"), SerializeField]
     private float waitInterval = 0.4f;
     [BoxGroup("조작가능한 필드"), SerializeField]
-    private float animatingInterval = 1f;
+    private float animatingInterval = 0.5f;
     [BoxGroup("조작가능한 필드"), SerializeField]
     private float destroyEffectInterval = 2f;
     [BoxGroup("조작가능한 필드"), SerializeField]
-    private float applyDamageInterval = 1f;
+    private float applyDamageInterval = 0.1f;
     [BoxGroup("조작가능한 필드"), SerializeField]
-    private Vector3 playerYOffset = new Vector3(0f, 1.3f, 0f);
+    private Vector3 playerYOffset = new Vector3(0f, 1.1f, 0f);
 
     //시작할 때 현재 상태 저장용 필드
     Transform currentTransform;

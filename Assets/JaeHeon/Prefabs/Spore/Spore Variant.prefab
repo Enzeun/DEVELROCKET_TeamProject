@@ -8,6 +8,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 82415887343627328, guid: 55db5580e3ab92145ba1760bbefed9fa, type: 3}
+      propertyPath: _maxHp
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 82415887343627328, guid: 55db5580e3ab92145ba1760bbefed9fa, type: 3}
+      propertyPath: attackPoint
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 82415887343627328, guid: 55db5580e3ab92145ba1760bbefed9fa, type: 3}
+      propertyPath: defencePoint
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 82415887343627328, guid: 55db5580e3ab92145ba1760bbefed9fa, type: 3}
+      propertyPath: behaviourListData.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 82415887343627328, guid: 55db5580e3ab92145ba1760bbefed9fa, type: 3}
+      propertyPath: behaviourListData.Array.data[0].Weight_
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 82415887343627328, guid: 55db5580e3ab92145ba1760bbefed9fa, type: 3}
+      propertyPath: behaviourListData.Array.data[1].Weight_
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 82415887343627328, guid: 55db5580e3ab92145ba1760bbefed9fa, type: 3}
+      propertyPath: behaviourListData.Array.data[0].BehaviorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 82415887343627328, guid: 55db5580e3ab92145ba1760bbefed9fa, type: 3}
+      propertyPath: behaviourListData.Array.data[1].BehaviorType
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1750020311401349680, guid: 55db5580e3ab92145ba1760bbefed9fa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -48,9 +80,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2258296482199667848, guid: 55db5580e3ab92145ba1760bbefed9fa, type: 3}
+      propertyPath: buffPrefab
+      value: 
+      objectReference: {fileID: 682793325478354899, guid: 441613b5593a5e84881ac951c3ab057f, type: 3}
     - target: {fileID: 5037447714859364566, guid: 55db5580e3ab92145ba1760bbefed9fa, type: 3}
       propertyPath: m_Name
-      value: Spore
+      value: Spore Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
