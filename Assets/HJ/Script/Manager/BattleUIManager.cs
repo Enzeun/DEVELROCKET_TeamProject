@@ -20,6 +20,9 @@ public class BattleUIManager : MonoBehaviour
     private DamageNumber player_NumberPrefab;
     [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
     private RectTransform playerHP_Number_Location;
+    [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
+    private TextMeshProUGUI NowCostText;
+
 
     // 적 관련 참조
     [SerializeField, Required, BoxGroup("**참조필요!**적")]
@@ -69,11 +72,12 @@ public class BattleUIManager : MonoBehaviour
         {
             playerStat.OnHpChanged -= PlayerHpChangedUI;
             playerStat.OnDamagedTaken -= TakeDamage_UI_NumberAnimation_Player;
+            playerStat.OnCostChanged -= OnPlayerUseCost;
         }
         foreach (var enemy in enemyList)
         {
             enemy.OnTakeDamage -= Enemy_TakeDamage;
-            enemy.OnDie += OnEnemyDie;
+            enemy.OnDie -= OnEnemyDie;
         }
     }
 
@@ -108,8 +112,12 @@ public class BattleUIManager : MonoBehaviour
     {
         int playerMaxHp = playerStat.MaxHP;
 
-        playerHpBarText.text = $"{playerMaxHp}/{playerMaxHp}";
+        playerHpBarText.text = $"{playerStat.NowHP}/{playerMaxHp}";
+
         playerHpSlider.value = 1;
+
+        NowCostText.text = $"{playerStat.NowCost} / {playerStat.MaxCost}";
+
 
         foreach (var enemy in enemyList)
         {
@@ -127,7 +135,8 @@ public class BattleUIManager : MonoBehaviour
 
             enemyHpbar.hpSlider.value = 1;
 
-            enemyHpbar.hpText.text = $"{maxHp}/{maxHp}";
+            enemyHpbar.hpText.text = $"{enemy.currentHp}/{maxHp}";
+
         }
     }
 
@@ -246,13 +255,13 @@ public class BattleUIManager : MonoBehaviour
     {
         enemy.OnTakeDamage -= Enemy_TakeDamage;
         enemy.OnDie -= OnEnemyDie;
-
+        UI_Dictionary[enemy].hpSlider.gameObject.SetActive(false);
     }
     //====================== Player 코스트 사용할 때 메서드 ====================================================================================================
 
     private void OnPlayerUseCost(int current, int max)
     {
-
+        NowCostText.text = $"{current} / {max}";
     }
 
 
