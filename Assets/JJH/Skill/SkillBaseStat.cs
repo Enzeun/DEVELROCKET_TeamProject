@@ -71,7 +71,12 @@ public class SkillBaseStat
 
         NowUpgradeList.ForEach(lifeStill => {
             if (lifeStill == SkillUpgradeType.LifeStill)
-                value += 15;
+            {
+                if (TargetType == SkillTargetType.Area)
+                    value += 5;
+                else
+                    value += 15;
+            }
         });
 
         if (value == 0) return false;
@@ -83,6 +88,20 @@ public class SkillBaseStat
     }
 
     /// <summary>
+    /// 현재 스킬이 DownCost 속성을 이미 가지고 있는지 확인
+    /// </summary>
+    /// <returns>가지고 있을 경우 : true</returns>
+    public bool IsDownCost()
+    {
+        foreach (var cost in NowUpgradeList)
+        {
+            if (cost == SkillUpgradeType.DownCost) return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
     /// 현재 스킬 비용 반환
     /// </summary>
     /// <returns>int : 스킬 비용 값</returns>
@@ -90,12 +109,11 @@ public class SkillBaseStat
     {
         int value = 0;
 
-        NowUpgradeList.ForEach(lifeStill => {
-            if (lifeStill == SkillUpgradeType.DownCost)
+        NowUpgradeList.ForEach(cost => {
+            if (cost == SkillUpgradeType.DownCost)
                 value += 1;
         });
 
         return Mathf.Clamp(Cost - value, 1, Cost);
-
     }
 }
