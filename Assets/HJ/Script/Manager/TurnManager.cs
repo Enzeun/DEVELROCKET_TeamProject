@@ -2,8 +2,9 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TurnManager : MonoBehaviour
 {
@@ -59,6 +60,10 @@ public class TurnManager : MonoBehaviour
 
 
     // 추적하며 디버깅 할 필드
+    [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
+    private Scene currentScene;
+    [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
+    private int SceneIndex;
     [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
     private TurnState _currentState = TurnState.Initialize; // 초기상태로 시작
     public TurnState currentState { get => _currentState; }
@@ -123,7 +128,7 @@ public class TurnManager : MonoBehaviour
     //===============================================================================================
 
 
-
+    
 
     //===============================================================================================
 
@@ -971,6 +976,8 @@ public class TurnManager : MonoBehaviour
     private void GoToNextFloor()
     {
         Debug.Log("카드 고르기 여기서 하면 됨");
+
+        SceneManager.LoadScene(SceneIndex + 1);
     }
 
 
@@ -980,8 +987,14 @@ public class TurnManager : MonoBehaviour
     private void GameOver()
     {
         uIManager.ShowGameOver();
+        uIManager.OnGoToTitleBtnClicked += GoToTitle;
+
     }
 
+    private void GoToTitle()
+    {
+        SceneManager.LoadScene(0);
+    }
 
 
     //===============================================================================================
@@ -1014,6 +1027,9 @@ public class TurnManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(WaitForStartGame());
+
+        currentScene = SceneManager.GetActiveScene();
+        SceneIndex = currentScene.buildIndex;
     }
 
     private IEnumerator WaitForStartGame()
