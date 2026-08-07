@@ -9,6 +9,7 @@ using SF = UnityEngine.SerializeField;
 
 public class TitleManager : MonoBehaviour
 {
+    #region 직렬화 데이터
     [Header("타이틀")]
     [SF] private Image menuBackground;
     [SF] private CanvasGroup titleGroup;
@@ -37,6 +38,9 @@ public class TitleManager : MonoBehaviour
 
     [Header("기타")]
     [SF] private AnimationCurve barEase;
+
+    #endregion
+
     public void Start()
     {
         StartCoroutine(nameof(StartEvent));

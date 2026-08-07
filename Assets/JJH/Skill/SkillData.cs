@@ -16,7 +16,7 @@ public static class SkillData
             // 코스트
             2,
             // 피해량
-            120,
+            100,
             SkillPoseType.Horizontal,
             // 가능한 업그레이드
             new List<SkillUpgradeType> { 
@@ -32,8 +32,8 @@ public static class SkillData
             1001,
             "메테오",
             "대상에게 200%의 피해를 줍니다.",
-            4,      
-            250,
+            3,      
+            200,
             SkillPoseType.Instance,
             new List<SkillUpgradeType> {
                 SkillUpgradeType.Damage,
@@ -48,8 +48,8 @@ public static class SkillData
             1002,
             "낙뢰", 
             "모든 대상에게 150%의 피해를 줍니다.", 
-            5, 
-            180, 
+            4, 
+            150, 
             SkillPoseType.Stomp,
             new List<SkillUpgradeType> {
                 SkillUpgradeType.Damage,
