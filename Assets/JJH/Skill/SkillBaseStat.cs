@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static SkillEnums;
+using static SkillConstants;
 
 /// <summary>
 /// 스킬 기본 구조
@@ -117,5 +118,18 @@ public class SkillBaseStat
         int count = NowUpgradeList.Count(x => x == SkillUpgradeType.DownCost);
 
         return Mathf.Clamp(Cost - count, 1, Cost);
+    }
+
+    public string GetDescription()
+    {
+        int damage = SkillDamageCalcByUpgrade();
+        string targetType =
+            TargetType == SkillTargetType.Single ?
+            "<color=#E32D10>단일</color>" : "<color=#1D5DC4>광역</color>";
+        string desc = Description
+            .Replace($"[{DAMAGE}]", damage.ToString())
+            .Replace($"[{TARGET_TYPE}]", targetType);
+
+        return desc;
     }
 }
