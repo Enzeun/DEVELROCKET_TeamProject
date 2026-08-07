@@ -19,7 +19,7 @@ public class EnemyProjectile : MonoBehaviour
         if (other.transform.TryGetComponent<PlayerCombat>(out PlayerCombat combat))
         {
             isCalc = true;
-            combat.player.TakeDamage(projectileDamage);
+            //combat.player.TakeDamage(projectileDamage);
             Destroy(this.gameObject);
         }
     }

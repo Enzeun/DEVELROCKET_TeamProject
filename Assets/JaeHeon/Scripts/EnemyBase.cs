@@ -243,7 +243,7 @@ public class EnemyBase : MonoBehaviour
                 currentDefencePoint += amount;
                 break;
             case EnemyType.Plant:
-                currentHp = Math.Min(currentHp += amount, maxHp);
+                currentDefencePoint += amount;
                     break;
             case EnemyType.Worm:
                 break;

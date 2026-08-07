@@ -501,7 +501,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBuff
   enemyType: 1
-  buffAmount: 10
+  buffAmount: 3
 --- !u!1 &5551549313384924501
 GameObject:
   m_ObjectHideFlags: 0

@@ -107,6 +107,10 @@ public class EnemyAnimation : MonoBehaviour
             animator.SetTrigger("ProjectileAttack");
         });
         seq.AppendInterval(animatingInterval);
+        seq.AppendCallback(() =>
+        {
+            enemyBase.ApplyDamage();
+        });
         seq.Append(transform.DORotate(currentRotation.eulerAngles, rotateInterval));
     }
 
