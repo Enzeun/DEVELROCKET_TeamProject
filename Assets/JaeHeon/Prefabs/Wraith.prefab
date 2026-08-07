@@ -819,7 +819,7 @@ MonoBehaviour:
   defencePoint: 8
   behaviourListData:
   - BehaviorType: 1
-    Weight_: 30
+    Weight_: 50
   - BehaviorType: 6
     Weight_: 30
   playerTransform: {fileID: 0}

@@ -22,7 +22,7 @@ public class EnemyBuff : MonoBehaviour
     [Button("버프 수치 체크 및 적용")]
     public void CheckBuff()
     {
-        if (eBase.buffStack >= eBase.maxBuffCount_)
+        if (eBase.buffStack > eBase.maxBuffCount_)
         {
             RemoveBuffStack();
             Debug.Log("버프 스택이 최대치에 도달했습니다.");

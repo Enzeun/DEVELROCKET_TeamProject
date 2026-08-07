@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933a5412bb7fe8b46824de0f283f049e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
-  _maxHp: 250
+  _maxHp: 200
   maxBuffCount: 3
   attackPoint: 34
   defencePoint: 4
@@ -277,8 +277,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.6, y: 3.2, z: 3}
-  m_Center: {x: 0, y: 1.6, z: -0.3}
+  m_Size: {x: 1.59, y: 2.79, z: 1.9}
+  m_Center: {x: 0, y: 1.37, z: -0.3}
 --- !u!114 &3693548572017401148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,7 +457,7 @@ Transform:
   m_GameObject: {fileID: 4109810559625045744}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.624, y: 0, z: -0}
+  m_LocalPosition: {x: -1.04, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
