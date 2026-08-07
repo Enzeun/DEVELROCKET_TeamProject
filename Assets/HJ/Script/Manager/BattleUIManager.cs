@@ -49,6 +49,8 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
     private CanvasGroup gameOverCanvas;
     [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
+    private CanvasGroup victoryCanvas;
+    [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
     private CanvasGroup darkImage;
 
     // 참조해야하는 필드들
@@ -484,6 +486,13 @@ public class BattleUIManager : MonoBehaviour
                       .SetEase (Ease.InQuad);
     }
 
+    public void ShowVictory()
+    {
+        victoryCanvas.alpha = 0f;
+        victoryCanvas.gameObject.SetActive(true);
+        victoryCanvas.DOFade(1f, 0.8f)
+                     .SetEase(Ease.InQuad);
+    }
 
     // ============= UI 콜백 이벤트 =================================================================================
 
@@ -501,16 +510,22 @@ public class BattleUIManager : MonoBehaviour
         OnSkillBtnClicked?.Invoke(id);
     }
 
+    public void InvokeVictoryBtnClicked()
+    {
+        OnVictoryBtnClicked?.Invoke() ;
+    }
+
     public Action OnBattleStartClicked;
     public Action OnEndTurnBtnClicked;
     public Action<int> OnSkillBtnClicked;
+    public Action OnVictoryBtnClicked;
 
     //================== 카메라 이벤트 =============================================================================
     [SerializeField, BoxGroup("** 카메라 참조 **"), Required]
     private CinemachineImpulseSource camImpulse;
 
 
-    [Button, BoxGroup("디버깅용 임시 메서드")]
+    [Button, BoxGroup("카메라 디버깅")]
     private void ShakeCamera()
     {
         camImpulse.GenerateImpulse(1f);

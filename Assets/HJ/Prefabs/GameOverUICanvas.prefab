@@ -226,13 +226,14 @@ GameObject:
   - component: {fileID: 5759736817421439813}
   - component: {fileID: 5178765963868787260}
   - component: {fileID: 688056824564169862}
+  - component: {fileID: 8664318874176496419}
   m_Layer: 5
   m_Name: GameOverUICanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4935706607658319095
 RectTransform:
   m_ObjectHideFlags: 0
@@ -316,6 +317,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 119
+--- !u!225 &8664318874176496419
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5906735557064658849}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7485973324800713313
 GameObject:
   m_ObjectHideFlags: 0
