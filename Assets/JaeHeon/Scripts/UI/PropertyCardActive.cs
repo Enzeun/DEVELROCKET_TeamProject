@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static SkillEnums;
 
 public class PropertyCardActive : MonoBehaviour
@@ -12,9 +13,10 @@ public class PropertyCardActive : MonoBehaviour
     [BoxGroup(""), SerializeField]
     List<GameObject> cards = new();
     [BoxGroup(""), SerializeField]
-    Dictionary<int, List<SkillUpgradeType>> upgradeList = new();
+    List<KeyValuePair<int,SkillUpgradeType>> upgradeList = new();
     [BoxGroup(""), SerializeField]
     private bool isMake = false;
+    // 이 창을 매 씬마다 배치할건지
 
 
     [BoxGroup("설정"), SerializeField]
@@ -34,45 +36,52 @@ public class PropertyCardActive : MonoBehaviour
         CardRotate(cards);
     }
 
+    //리스트 섞기, 리스트에서 3개 뽑기 , 화면에 뿌려주기, 
+
     private void MakeCardList()
     {
         if(isMake)
         {
             isMake = true;
-
-            //upgradeList = new();
+            List<KeyValuePair<int,SkillUpgradeType>> da = new();
             Dictionary<int, SkillBaseStat> data = player.player.SkillData;
             foreach (var item in data)
             {
                 int key = item.Key;
-                upgradeList[key] = new List<SkillUpgradeType>();
+                KeyValuePair<int, SkillUpgradeType> value = new();
 
                 item.Value.UpgradeAbleList.ForEach(upgrade =>
                 {
                     if (upgrade == SkillUpgradeType.DownCost && !item.Value.IsDownCost())
-                        upgradeList[key].Add(upgrade);
+                        value =new(key,upgrade);
 
                     else if (upgrade != SkillUpgradeType.DownCost)
-                        upgradeList[key].Add(upgrade);
+                        value = new(key, upgrade);
+
+                    upgradeList.Add(value);
                 });
             }
         }
 
         Debug.Log(upgradeList.Count);
-
-
-
     }
 
     private void CardRotate(List<GameObject> cards)
     {
         foreach (GameObject card in cards)
         {
+            card.GetComponent<Image>().color = Color.black;
+
             card.transform.DOPunchRotation(
                 punch: punchValue,
                 duration: durationValue,
                 vibrato: vibratoValue,
                 elasticity: elasticValue);
         }
+    }
+
+    private void ShuffleCards()
+    {
+
     }
 }
