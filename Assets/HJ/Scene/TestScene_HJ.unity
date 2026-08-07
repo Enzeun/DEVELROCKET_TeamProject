@@ -764,7 +764,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[0].Weight_
@@ -772,7 +772,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[1].Weight_
-      value: 30
+      value: 48.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
+      propertyPath: behaviourListData.Array.data[2].Weight_
+      value: 21.72
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[0].BehaviorType
@@ -780,6 +784,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[1].BehaviorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
+      propertyPath: behaviourListData.Array.data[2].BehaviorType
       value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1141,7 +1149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[0].Weight_
@@ -1149,7 +1157,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[1].Weight_
-      value: 30
+      value: 48.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
+      propertyPath: behaviourListData.Array.data[2].Weight_
+      value: 21.72
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[0].BehaviorType
@@ -1157,6 +1169,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[1].BehaviorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
+      propertyPath: behaviourListData.Array.data[2].BehaviorType
       value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1218,7 +1234,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[0].Weight_
@@ -1226,7 +1242,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[1].Weight_
-      value: 30
+      value: 48.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
+      propertyPath: behaviourListData.Array.data[2].Weight_
+      value: 21.72
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[0].BehaviorType
@@ -1234,6 +1254,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[1].BehaviorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
+      propertyPath: behaviourListData.Array.data[2].BehaviorType
       value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2005,7 +2029,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[0].Weight_
@@ -2013,7 +2037,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[1].Weight_
-      value: 30
+      value: 48.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
+      propertyPath: behaviourListData.Array.data[2].Weight_
+      value: 21.72
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[0].BehaviorType
@@ -2021,6 +2049,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[1].BehaviorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
+      propertyPath: behaviourListData.Array.data[2].BehaviorType
       value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2082,7 +2114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[0].Weight_
@@ -2090,7 +2122,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[1].Weight_
-      value: 30
+      value: 48.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
+      propertyPath: behaviourListData.Array.data[2].Weight_
+      value: 21.72
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[0].BehaviorType
@@ -2098,6 +2134,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
       propertyPath: behaviourListData.Array.data[1].BehaviorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976719210908756150, guid: 20afc467da7c73c45ad8f9d896f08ab4, type: 3}
+      propertyPath: behaviourListData.Array.data[2].BehaviorType
       value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
