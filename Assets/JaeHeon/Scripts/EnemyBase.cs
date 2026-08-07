@@ -287,4 +287,10 @@ public class EnemyBase : MonoBehaviour
     {
         return attackPoint;
     }
+
+    //적 소환
+    public void SpawnEnemy()
+    {
+        ani.EnemySpawn();
+    }
 }
