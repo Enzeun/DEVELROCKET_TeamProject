@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6738138551822002453}
   - component: {fileID: 8237712532993303480}
   - component: {fileID: 226210274867144285}
+  - component: {fileID: 5361809565114881337}
   m_Layer: 5
   m_Name: Skill_Btn
   m_TagString: Untagged
