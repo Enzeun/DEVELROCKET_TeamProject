@@ -203,10 +203,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933a5412bb7fe8b46824de0f283f049e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
-  _maxHp: 30
+  _maxHp: 250
   maxBuffCount: 3
-  attackPoint: 14
-  defencePoint: 0
+  attackPoint: 34
+  defencePoint: 4
   behaviourListData:
   - BehaviorType: 1
     Weight_: 40

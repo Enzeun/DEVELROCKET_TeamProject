@@ -1260,9 +1260,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933a5412bb7fe8b46824de0f283f049e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
-  _maxHp: 50
+  _maxHp: 120
   maxBuffCount: 3
-  attackPoint: 16
+  attackPoint: 32
   defencePoint: 3
   behaviourListData:
   - BehaviorType: 1
@@ -1364,7 +1364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62c12e25c747c964baee827e5e197615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBuff
-  enemyBuffType: 0
+  enemyType: 0
   buffAmount: 5
 --- !u!1 &6869920660760612235
 GameObject:

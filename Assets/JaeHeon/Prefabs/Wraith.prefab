@@ -813,17 +813,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933a5412bb7fe8b46824de0f283f049e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
-  _maxHp: 400
+  _maxHp: 600
   maxBuffCount: 3
-  attackPoint: 22
+  attackPoint: 60
   defencePoint: 8
   behaviourListData:
   - BehaviorType: 1
-    Weight_: 20
-  - BehaviorType: 2
-    Weight_: 10
-  - BehaviorType: 3
-    Weight_: 40
+    Weight_: 30
   - BehaviorType: 6
     Weight_: 30
   playerTransform: {fileID: 0}
@@ -858,10 +854,10 @@ MonoBehaviour:
   enemyBase: {fileID: 0}
   targetTransform: {fileID: 0}
   projectilePrefab: {fileID: 0}
-  projectileEffectPrefab: {fileID: 0}
+  projectileEffectPrefab: {fileID: 5932506449497926068, guid: abd83025c99838f4dbd2d06640a21c77, type: 3}
   EmissionTransform: {fileID: 0}
-  spellPrefab: {fileID: 0}
-  buffPrefab: {fileID: 0}
+  spellPrefab: {fileID: 800211394734574691, guid: 28cd63c762984524d9d305769033b4e7, type: 3}
+  buffPrefab: {fileID: 5943402860343802046, guid: 791a844400dd9674fb1568afd1369472, type: 3}
   enemyMagicSpeed: 0.4
   enemyMoveSpeed: 1
   projectileSpeed: 20
