@@ -164,8 +164,9 @@ public class TitleManager : MonoBehaviour
 
     public void StartGame()
     {
-        GameStateManager.Instance.LoadSceneName = "Battle_Round_1";
-        SceneManager.LoadScene("LoadingScene");
+        GameStateManager.Instance.saveSkillData = new();
+        GameStateManager.Instance.LoadSceneName = GameStateManager.GameSceneName.Battle_1;
+        SceneManager.LoadScene((int)GameStateManager.GameSceneName.Loading);
     }
 
     public void ExitGame()
