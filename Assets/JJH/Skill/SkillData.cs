@@ -12,7 +12,7 @@ public static class SkillData
             // 이름
             "화염살",
             // 스킬 설명
-            "대상에게 140%의 피해를 줍니다.",
+            "[damage]%의 [targetType]피해를 줍니다.",
             // 코스트
             2,
             // 피해량
@@ -31,7 +31,7 @@ public static class SkillData
         [1001] = new SkillBaseStat(
             1001,
             "화염구",
-            "대상에게 250%의 피해를 줍니다.",
+            "[damage]%의 [targetType]피해를 줍니다.",
             4,      
             250,
             SkillPoseType.Instance,
@@ -46,8 +46,8 @@ public static class SkillData
         ),
         [1002] = new SkillBaseStat(
             1002,
-            "낙뢰", 
-            "모든 대상에게 200%의 피해를 줍니다.", 
+            "낙뢰",
+            "[damage]%의 [targetType]피해를 줍니다.", 
             5, 
             200, 
             SkillPoseType.Stomp,

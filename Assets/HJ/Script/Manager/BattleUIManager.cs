@@ -163,11 +163,9 @@ public class BattleUIManager : MonoBehaviour
 
             if (btncon != null)
             {
-                SkillBaseStat skillBaseStat = playerStat.SkillData[1000 + i];
-                btncon.SetSkillName(skillBaseStat.Name);
-                btncon.SetSkillCost(skillBaseStat.GetCost());
+                SkillBaseStat skillBaseStat = playerStat.SkillData[1000 + i];                
+                btncon.SetSkillInfo(skillBaseStat, playerStat.AtkPoint);
             }
-
         }
     }
 
