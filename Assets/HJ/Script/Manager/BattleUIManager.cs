@@ -510,7 +510,7 @@ public class BattleUIManager : MonoBehaviour
     private CinemachineImpulseSource camImpulse;
 
 
-    [Button, BoxGroup("디버깅용 임시 메서드")]
+    [Button, BoxGroup("카메라 디버깅")]
     private void ShakeCamera()
     {
         camImpulse.GenerateImpulse(1f);
