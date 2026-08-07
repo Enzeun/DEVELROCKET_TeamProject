@@ -60,10 +60,24 @@ public class PlayerBaseStat
     /// <param name="damage">피해량</param>
     public void TakeDamage(int damage)
     {
-        NowHP = Mathf.Clamp(NowHP - (damage - DefPoint), 0, MaxHP);
+        int finalDamage = FinalDmage(damage);
+
+        NowHP = Mathf.Clamp(NowHP - finalDamage, 0, MaxHP);
 
         if (NowHP <= 0) OnDead?.Invoke();
-        else OnDamagedTaken?.Invoke(damage);
+        else OnDamagedTaken?.Invoke(finalDamage);
+
+        OnHpChanged?.Invoke(NowHP, MaxHP);
+    }
+
+
+    /// <summary>
+    /// 캐릭터가 받는 체력 회복
+    /// </summary>
+    /// <param name="heal">회복량</param>
+    public void TakeHeal(int heal)
+    {
+        NowHP = Mathf.Min(NowHP + heal, MaxHP);
 
         OnHpChanged?.Invoke(NowHP, MaxHP);
     }
@@ -91,6 +105,16 @@ public class PlayerBaseStat
     {
         NowCost = MaxCost;
         OnCostChanged?.Invoke(NowCost, MaxCost);
+    }
+
+    /// <summary>
+    /// 받은 대미지 대비 방어력 계산
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <returns></returns>
+    public int FinalDmage(int damage)
+    {
+        return damage - DefPoint;
     }
 
 }
