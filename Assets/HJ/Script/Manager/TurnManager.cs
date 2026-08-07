@@ -108,7 +108,7 @@ public class TurnManager : MonoBehaviour
 
 
     // 턴 매니저 전투 관리 필드
-    private PlayerCombat playerCombat;
+    public PlayerCombat playerCombat { get; private set; }
     private PlayerBaseStat player;
     public bool isBattleStarted { get; private set; } = false; // 전투가 최초로 시작될 때 true, 
 
@@ -987,15 +987,14 @@ public class TurnManager : MonoBehaviour
 
     private void EndBattle()
     {
-        uIManager.ShowVictory();
-        uIManager.OnVictoryBtnClicked += GoToNextFloor;
+        uIManager.ShowSkillupgrade();        
     }
 
-    private void GoToNextFloor()
+    public void SkillUpgradeComplete()
     {
-        Debug.Log("카드 고르기 여기서 하면 됨");
+        uIManager.ShowVictory();
 
-        GotoNextScene();
+        uIManager.OnVictoryBtnClicked += GotoNextScene;
     }
 
     private void GotoNextScene()
