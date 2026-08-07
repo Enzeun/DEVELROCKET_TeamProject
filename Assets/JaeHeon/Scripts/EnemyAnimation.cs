@@ -14,6 +14,7 @@ using System.Collections;
 /// Buff
 /// TakeDamage
 /// ProjectileAttack
+/// Spawn
 /// 
 /// </summary>
 
@@ -92,8 +93,6 @@ public class EnemyAnimation : MonoBehaviour
             targetTransform = FindFirstObjectByType<PlayerCombat>().transform;
         }
     }
-
- 
 
     [Button] //발사 공격
     public void EnemyShootProjectile(Transform targetTransform)
@@ -225,5 +224,10 @@ public class EnemyAnimation : MonoBehaviour
     public void EnemyDie()
     {
         animator.SetTrigger("Die");
+    }
+    [Button("Spawn Trigger")]
+    public void EnemySpawn()
+    {
+        animator.SetTrigger("Spawn");
     }
 }

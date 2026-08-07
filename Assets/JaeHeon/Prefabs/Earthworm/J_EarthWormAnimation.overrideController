@@ -9,8 +9,6 @@ AnimatorOverrideController:
   m_Name: J_EarthWormAnimation
   m_Controller: {fileID: 9100000, guid: 1d906c0bed0632344ab4e1ae345ce7c5, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 1827226128182048838, guid: 1f62647641f011742910cdfa1f1546c2, type: 3}
-    m_OverrideClip: {fileID: 1827226128182048838, guid: ed98b7d6b99b374428708b868de9f3a9, type: 3}
   - m_OriginalClip: {fileID: 1827226128182048838, guid: d338ff4e6effab446a9693d08ccc0499, type: 3}
     m_OverrideClip: {fileID: 1827226128182048838, guid: c72832676042b064e8099c0e52021550, type: 3}
   - m_OriginalClip: {fileID: 7400000, guid: 92c7cd43bfe27734ebd791db7a9ce4ca, type: 2}
@@ -29,3 +27,7 @@ AnimatorOverrideController:
     m_OverrideClip: {fileID: 1827226128182048838, guid: 40cbf93c667332d4ca5e6ea8bb5a162c, type: 3}
   - m_OriginalClip: {fileID: 7400000, guid: 33d7d4f98e2c17f40a97435a8a565d42, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 08e2183de4c3e2f40a7ce79b1b5d6f67, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 5554b49afbda8b4449cb36b48b27c6d4, type: 2}
+    m_OverrideClip: {fileID: 1827226128182048838, guid: ed98b7d6b99b374428708b868de9f3a9, type: 3}
+  - m_OriginalClip: {fileID: 1827226128182048838, guid: ad9413c99aeffe948bf646c4ca2a8def, type: 3}
+    m_OverrideClip: {fileID: 1827226128182048838, guid: ed98b7d6b99b374428708b868de9f3a9, type: 3}

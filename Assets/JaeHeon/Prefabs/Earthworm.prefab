@@ -65,6 +65,7 @@ Transform:
   - {fileID: 6205039922201361915}
   - {fileID: 2193522343226556643}
   - {fileID: 5772906415286929652}
+  - {fileID: 5940890354093975396}
   m_Father: {fileID: 6037519956395947062}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1934952655990673727
@@ -384,9 +385,9 @@ MonoBehaviour:
   animator: {fileID: 0}
   enemyBase: {fileID: 0}
   targetTransform: {fileID: 0}
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 5932506449497926068, guid: e69b7aad56af3fc49bc493f5d87c9fe9, type: 3}
   projectileEffectPrefab: {fileID: 0}
-  EmissionTransform: {fileID: 0}
+  EmissionTransform: {fileID: 5940890354093975396}
   spellPrefab: {fileID: 0}
   buffPrefab: {fileID: 7732767809087312978, guid: c60c39cefb8389b429e60f7fb3907b77, type: 3}
   enemyMagicSpeed: 0.4
@@ -729,6 +730,37 @@ Transform:
   m_Children:
   - {fileID: 1990899433840702867}
   m_Father: {fileID: 7263371556773222534}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7555868066359993112
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5940890354093975396}
+  m_Layer: 0
+  m_Name: EmissionTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5940890354093975396
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7555868066359993112}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.273, y: 0, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3361048498814347371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8009892439022694518
 GameObject:
