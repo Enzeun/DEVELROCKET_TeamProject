@@ -13,6 +13,7 @@ using HIn = UnityEngine.HideInInspector;
 using Hovl;
 public class SkillEffectSpawner : MonoBehaviour
 {
+    #region 베이스 데이터
     // 낙뢰 0.93초
     // 화염구 0.43초
     // 투사체는 히트판정으로
@@ -23,23 +24,37 @@ public class SkillEffectSpawner : MonoBehaviour
         public float hitTime;
         public GameObject prefab;
     }
+    #endregion
 
+    #region 직렬화 데이터
+    [Header("플레이어 관련")]
     [SF] private Transform PlayerTransform;
     [SF] private Transform PlayerStaffTransformByHorizontal;
     [SF] private Transform PlayerStaffTransformByVertical;
+
+    [Header("이펙트 관련")]
     [SF] private EffectBase[] prefabs;
+
+    [Header("스크립트")]
     [SF] private PlayerCombat playerCombat;
+
+    [Header("기타")]
     [SF] private Transform areaEffectTransform;
+
+    #endregion
+
+    #region 필드 변수
     private Dictionary<int, IObjectPool<GameObject>> effectPool;
     private Coroutine hitTimer;
 
     [HIn] public bool ProjectileHit;
+    private int skillIdCk;
 
     /// <summary>
     /// 스킬 사용 후, 적이 피격해 이펙트가 끝날 경우 작동
     /// </summary>
     public event Action OnEffectFinished;
-    private int skillIdCk;
+    #endregion
 
     private void Awake()
     {
