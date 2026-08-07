@@ -207,15 +207,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933a5412bb7fe8b46824de0f283f049e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
-  _maxHp: 80
+  _maxHp: 280
   maxBuffCount: 3
-  attackPoint: 24
+  attackPoint: 45
   defencePoint: 5
   behaviourListData:
-  - BehaviorType: 0
-    Weight_: 0
-  - BehaviorType: 0
-    Weight_: 0
+  - BehaviorType: 1
+    Weight_: 4
+  - BehaviorType: 2
+    Weight_: 3
+  - BehaviorType: 3
+    Weight_: 1
+  - BehaviorType: 6
+    Weight_: 2
   playerTransform: {fileID: 0}
   hpBarLocation: {fileID: 5184697098936071411}
 --- !u!114 &-3808605793012896727
