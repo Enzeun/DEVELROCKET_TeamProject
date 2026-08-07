@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static SkillEnums;
 
@@ -17,10 +18,27 @@ public class SkillBaseStat
     /// </summary>
     private int Damage;
 
+    /// <summary>
+    /// 스킬 발동 자세
+    /// </summary>
     public SkillPoseType Pose;
+    /// <summary>
+    /// 가능한 업그레이드 목록
+    /// </summary>
     public List<SkillUpgradeType> UpgradeAbleList;
+
+    /// <summary>
+    /// 현재 가진 업그레이드 목록
+    /// </summary>
     public List<SkillUpgradeType> NowUpgradeList;
+
+    /// <summary>
+    /// 스킬이 지정할 수 있는 범위 타입(단일/광역)
+    /// </summary>
     public SkillTargetType TargetType;
+    /// <summary>
+    /// 스킬이 발동되는 형태(투사체/즉발)
+    /// </summary>
     public SkillTargetSubType TargetSubType;
 
     public SkillBaseStat(int id, string name, string description, int cost, int damage, 
@@ -65,26 +83,17 @@ public class SkillBaseStat
     /// <returns>bool : 흡혈 가능 여부</returns>
     public bool IsLifeStill(out int result)
     {
-        result = 0;
+        int count = NowUpgradeList.Count(x => x == SkillUpgradeType.LifeStill);
 
-        int value = 0;
-
-        NowUpgradeList.ForEach(lifeStill => {
-            if (lifeStill == SkillUpgradeType.LifeStill)
-            {
-                if (TargetType == SkillTargetType.Area)
-                    value += 5;
-                else
-                    value += 15;
-            }
-        });
-
-        if (value == 0) return false;
-        else
+        if (count > 0)
         {
-            result = value;
+            int value = (TargetType == SkillTargetType.Area) ? 5 : 15;
+            result = count * value;
             return true;
         }
+
+        result = 0;
+        return false;
     }
 
     /// <summary>
@@ -93,10 +102,8 @@ public class SkillBaseStat
     /// <returns>가지고 있을 경우 : true</returns>
     public bool IsDownCost()
     {
-        foreach (var cost in NowUpgradeList)
-        {
-            if (cost == SkillUpgradeType.DownCost) return true;
-        }
+        if (NowUpgradeList.Contains(SkillUpgradeType.DownCost))
+            return true;
 
         return false;
     }
@@ -107,13 +114,8 @@ public class SkillBaseStat
     /// <returns>int : 스킬 비용 값</returns>
     public int GetCost()
     {
-        int value = 0;
+        int count = NowUpgradeList.Count(x => x == SkillUpgradeType.DownCost);
 
-        NowUpgradeList.ForEach(cost => {
-            if (cost == SkillUpgradeType.DownCost)
-                value += 1;
-        });
-
-        return Mathf.Clamp(Cost - value, 1, Cost);
+        return Mathf.Clamp(Cost - count, 1, Cost);
     }
 }

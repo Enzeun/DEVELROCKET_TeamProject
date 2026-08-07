@@ -162,6 +162,7 @@ public class TitleManager : MonoBehaviour
         });
     }
 
+    // 게임 시작 시 작동하는 함수
     public void StartGame()
     {
         GameStateManager.Instance.saveSkillData = new();
@@ -169,6 +170,7 @@ public class TitleManager : MonoBehaviour
         SceneManager.LoadScene((int)GameStateManager.GameSceneName.Loading);
     }
 
+    // 게임 종료시 작동하는 함수
     public void ExitGame()
     {
 #if UNITY_EDITOR

@@ -80,13 +80,13 @@ MonoBehaviour:
   PlayerStaffTransformByHorizontal: {fileID: 0}
   PlayerStaffTransformByVertical: {fileID: 0}
   prefabs:
-  - name: "\uB2E8\uC77C1"
+  - id: 1000
     hitTime: 0
     prefab: {fileID: 928563981591244199, guid: 199a510684af24946a1dedb9dac9cbaa, type: 3}
-  - name: "\uB2E8\uC77C2"
+  - id: 1001
     hitTime: 0.43
     prefab: {fileID: 5512189878761795797, guid: 66b1e1bbb9e73f046812f88b62757de2, type: 3}
-  - name: "\uAD11\uC5ED1"
+  - id: 1002
     hitTime: 0.93
     prefab: {fileID: 7700718497256769321, guid: 4ba24b88a40d89747b92dba1a95aa12f, type: 3}
   playerCombat: {fileID: 0}
