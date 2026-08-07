@@ -49,7 +49,7 @@ public class SceneLoadManager : MonoBehaviour
         fade.gameObject.SetActive(false);
 
         // 비동기 씬 로드 시작
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(GameStateManager.Instance.LoadSceneName);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync((int)GameStateManager.Instance.LoadSceneName);
         asyncLoad.allowSceneActivation = false;
 
         float targetProgress = 0;

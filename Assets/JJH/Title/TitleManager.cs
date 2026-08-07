@@ -9,7 +9,9 @@ using SF = UnityEngine.SerializeField;
 
 public class TitleManager : MonoBehaviour
 {
+    #region 직렬화 데이터
     [Header("타이틀")]
+    [SF] private Image menuBackground;
     [SF] private CanvasGroup titleGroup;
     [SF] private Image titleImage;
     [SF] private Image titleImageBackground;
@@ -36,6 +38,9 @@ public class TitleManager : MonoBehaviour
 
     [Header("기타")]
     [SF] private AnimationCurve barEase;
+
+    #endregion
+
     public void Start()
     {
         StartCoroutine(nameof(StartEvent));
@@ -52,17 +57,22 @@ public class TitleManager : MonoBehaviour
         exitBtnCanvasGroup.gameObject.SetActive(false);
         btnGroup.gameObject.SetActive(false);
         sideBar.gameObject.SetActive(false);
+        menuBackground.gameObject.SetActive(false);
 
         // 초기 설정
-        
+        Vector2 menuBackgroundSize = menuBackground.rectTransform.sizeDelta;
+        menuBackground.rectTransform.sizeDelta = new(0, menuBackground.rectTransform.sizeDelta.y);
+
         startBtnCanvasGroup.gameObject.SetActive(true);
         exitBtnCanvasGroup.gameObject.SetActive(true);
         sideBar.gameObject.SetActive(true);
         titleGroup.gameObject.SetActive(true);
+        menuBackground.gameObject.SetActive(true);
         sideBarCanvasGroup.alpha = 0;
         startBtnCanvasGroup.alpha = 0;
         exitBtnCanvasGroup.alpha = 0;
         titleGroup.alpha = 0;
+        
         btnGroup.gameObject.SetActive(true);
 
         yield return null;
@@ -97,6 +107,12 @@ public class TitleManager : MonoBehaviour
         float btnCount = 2;
 
         float sideBarTime = btnAnimationTime + ((btnAnimationTime - btnDelayTime) * btnCount);
+
+        var background = DOTween.Sequence();
+
+        background.Join(menuBackground.rectTransform.DOSizeDelta(menuBackgroundSize, 0.25f));
+        background.Play();
+        yield return background.WaitForCompletion();
 
         var title = DOTween.Sequence();
 
@@ -150,12 +166,15 @@ public class TitleManager : MonoBehaviour
         });
     }
 
+    // 게임 시작 시 작동하는 함수
     public void StartGame()
     {
-        GameStateManager.Instance.LoadSceneName = "Battle_Round_1";
-        SceneManager.LoadScene("LoadingScene");
+        GameStateManager.Instance.saveSkillData = new();
+        GameStateManager.Instance.LoadSceneName = GameStateManager.GameSceneName.Battle_1;
+        SceneManager.LoadScene((int)GameStateManager.GameSceneName.Loading);
     }
 
+    // 게임 종료시 작동하는 함수
     public void ExitGame()
     {
 #if UNITY_EDITOR

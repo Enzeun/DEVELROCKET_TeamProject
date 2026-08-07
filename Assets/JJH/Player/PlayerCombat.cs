@@ -14,7 +14,7 @@ public class PlayerCombat : MonoBehaviour
     private static readonly int IsStrongHash = Animator.StringToHash("IsStrong");
     #endregion
 
-    #region 직렬화 변수
+    #region 직렬화 데이터
     [Header("스크립트")]
     [SF] private SkillEffectSpawner spawner;
 
@@ -24,7 +24,7 @@ public class PlayerCombat : MonoBehaviour
 
     #endregion
 
-    #region 지역 변수
+    #region 필드 변수
     // 플레이어 기본 스탯은 임시로 상수
     public PlayerBaseStat player;
 
@@ -194,10 +194,13 @@ public class PlayerCombat : MonoBehaviour
         isEndSet = false;
     }
 
+    /// <summary>
+    /// 스킬 시전 시 애니메이션 이벤트에서 호출하는 함수
+    /// </summary>
     public void EffectActive()
     {
         if (nowSkillData != null && nowTarget != null)
-            spawner.SpawnEffect(nowSkillData.Name, nowSkillData, nowTarget);
+            spawner.SpawnEffect(nowSkillData.Id, nowSkillData, nowTarget);
     }
 
     /// <summary>

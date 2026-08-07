@@ -10,13 +10,13 @@ public static class SkillData
             // 아이디
             1000,
             // 이름
-            "단일1",
+            "화염살",
             // 스킬 설명
-            "설명1",
+            "대상에게 140%의 피해를 줍니다.",
             // 코스트
             2,
             // 피해량
-            100,
+            140,
             SkillPoseType.Horizontal,
             // 가능한 업그레이드
             new List<SkillUpgradeType> { 
@@ -30,10 +30,10 @@ public static class SkillData
         ),
         [1001] = new SkillBaseStat(
             1001,
-            "단일2",
-            "설명2",
-            3,      
-            200,
+            "화염구",
+            "대상에게 250%의 피해를 줍니다.",
+            4,      
+            250,
             SkillPoseType.Instance,
             new List<SkillUpgradeType> {
                 SkillUpgradeType.Damage,
@@ -46,10 +46,10 @@ public static class SkillData
         ),
         [1002] = new SkillBaseStat(
             1002,
-            "광역1", 
-            "설명3", 
-            4, 
-            150, 
+            "낙뢰", 
+            "모든 대상에게 200%의 피해를 줍니다.", 
+            5, 
+            200, 
             SkillPoseType.Stomp,
             new List<SkillUpgradeType> {
                 SkillUpgradeType.Damage,

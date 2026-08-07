@@ -2,8 +2,9 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TurnManager : MonoBehaviour
 {
@@ -60,6 +61,10 @@ public class TurnManager : MonoBehaviour
 
     // 추적하며 디버깅 할 필드
     [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
+    private Scene currentScene;
+    [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
+    private int sceneIndex;
+    [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
     private TurnState _currentState = TurnState.Initialize; // 초기상태로 시작
     public TurnState currentState { get => _currentState; }
     [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
@@ -88,7 +93,8 @@ public class TurnManager : MonoBehaviour
     private int remainEnemy = -1;
     [ShowInInspector, BoxGroup("필드 값 추적"), ReadOnly]
     public int currentRound { get; private set; } = 0; // 플레이어 턴, 적 턴 <- 하나의 라운드
-
+    [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
+    private bool isEnemyTurnStarted = false; // 적 턴이 중복되지 않게 막는 필드
 
     // 플레이어와 적의 행동은 큐로 관리
     private Queue<PlayerTurnData> playerQueue = new Queue<PlayerTurnData>();
@@ -123,7 +129,7 @@ public class TurnManager : MonoBehaviour
     //===============================================================================================
 
 
-
+    
 
     //===============================================================================================
 
@@ -447,7 +453,7 @@ public class TurnManager : MonoBehaviour
     {
         foreach (var enemy in enemyList)
         {
-
+            enemy.SpawnEnemy();
         }
     }
 
@@ -845,8 +851,9 @@ public class TurnManager : MonoBehaviour
 
     //========================= Player Turn End 구간 =====================================================
 
+  
     private void PlayerTurnEnd()
-    {
+    { 
         StartCoroutine(PlayerTurnEndDelay());
     }
 
@@ -859,20 +866,35 @@ public class TurnManager : MonoBehaviour
 
     //====================== Enemy Turn 구간 ==============================================================
 
-    private void EnemyTurn()
-    {
+    private void EnemyTurn()    
+    {        
         PlayNextEnemyTurn();
     }
 
     private void PlayNextEnemyTurn()
     {
+        if (isEnemyTurnStarted)
+        {
+            Debug.Log("이미 적이 행동 중인데 실행이 되고 있습니다.");
+            return;
+        }
+
+        if (enemyQueueCount == 0)
+        {
+            Debug.Log("enemy Queue 에 아무것도 없는데 실행이 되고 있습니다. 확인이 필요합니다");
+            WaitEnemyAttackDelay();
+            return;
+        }
+
+        isEnemyTurnStarted = true;
+
         // 큐 데이터를 꺼낸다
         EnemyTurnData turnData = enemyQueue.Dequeue();
 
         // 캐스터가 죽어있으면 스킵한다.
         if (turnData.casterEnemy == null || turnData.casterEnemy.isDead)
-        {
-            PlayNextEnemyTurn();
+        {            
+            StartCoroutine(WaitEnemyAttackDelay());
             return;
         }
 
@@ -913,6 +935,7 @@ public class TurnManager : MonoBehaviour
         // 기다린다
         yield return waitOnefSec;
 
+        isEnemyTurnStarted = false;
         // 전투 결과를 확인하고 분기로 나눈다
         switch (CheckEnemyBattleState())
         {
@@ -971,17 +994,36 @@ public class TurnManager : MonoBehaviour
     private void GoToNextFloor()
     {
         Debug.Log("카드 고르기 여기서 하면 됨");
+
+        GotoNextScene();
     }
 
+    private void GotoNextScene()
+    {
+        if (sceneIndex + 1 < SceneManager.sceneCountInBuildSettings)
+        {
+            // 다음 씬이 없으면 타이틀 씬으로
+            SceneManager.LoadScene(0);
+        }
 
+        // 다음씬으로 이동
+        SceneManager.LoadScene(sceneIndex + 1);
+
+    }
 
     //==================== Game Over 구간 ===========================================================================
 
     private void GameOver()
     {
         uIManager.ShowGameOver();
+        uIManager.OnGoToTitleBtnClicked += GoToTitle;
+
     }
 
+    private void GoToTitle()
+    {
+        SceneManager.LoadScene(0);
+    }
 
 
     //===============================================================================================
@@ -1014,6 +1056,9 @@ public class TurnManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(WaitForStartGame());
+
+        currentScene = SceneManager.GetActiveScene();
+        sceneIndex = currentScene.buildIndex;
     }
 
     private IEnumerator WaitForStartGame()
