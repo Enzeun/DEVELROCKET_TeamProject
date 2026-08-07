@@ -1,12 +1,14 @@
 using DG.Tweening;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using static SkillEnums;
-using static Shuffle;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Splines.ExtrusionShapes;
+using UnityEngine.UI;
+using static Shuffle;
+using static SkillEnums;
 
 public static class Shuffle
 {
@@ -70,9 +72,8 @@ public class PropertyCardActive : MonoBehaviour
         displayCardCount = cardsDescription.Count;
         SetPlayer();
         InitCard();
-        CardRotate(cards);
+        StartCoroutine(CardRotate(cards));
         MakeCardList();
-
     }
 
     public void SetPlayer()
@@ -89,15 +90,15 @@ public class PropertyCardActive : MonoBehaviour
             Image card = cards[i].GetComponent<Image>();
 
             cardIcons[i].sprite = cardDefalutIcon;
+            cardIcons[i].color = Color.white;
             card.sprite = cardDefalutFrame;
+            card.color = Color.white;
             cardsDescription[i].text = null;
-
         }
     }
 
     private void MakeCardList()
     {
-        //List<KeyValuePair<int, SkillUpgradeType>> da = new();
         data = player.player.SkillData;
 
         foreach (var item in data)
@@ -116,24 +117,23 @@ public class PropertyCardActive : MonoBehaviour
                 upgradeList.Add(value);
             });
         }
-
-        //Debug.Log(upgradeList.Count);
-        //ShowCards();
     }
 
-    private void CardRotate(List<GameObject> cards)
+    private IEnumerator CardRotate(List<GameObject> cards)
     {
+        Sequence sq = DOTween.Sequence();
         foreach (GameObject card in cards)
         {
-            card.transform.DOPunchRotation(
+            sq.Join(card.transform.DOPunchRotation(
                 punch: punchValue,
                 duration: durationValue,
                 vibrato: vibratoValue,
-                elasticity: elasticValue).OnComplete(() =>
-                {
-                    ShowCards();
-                });
+                elasticity: elasticValue));
         }
+
+        yield return sq.WaitForCompletion();
+
+        ShowCards();
     }
 
     private void ShowCards()
@@ -148,12 +148,8 @@ public class PropertyCardActive : MonoBehaviour
             return;
         }
 
-        for(int i = 0; i < displayCardCount; i++)
-        {
-            //cardsDescription[i].text =  upgradeList[i].Key.ToString() + upgradeList[i].Value.ToString();
-            DisplayCardFrame();
-            DisplayCardIcon();
-        }
+        DisplayCardFrame();
+        DisplayCardIcon();
     }
 
     private void DisplayCardFrame()
@@ -186,16 +182,22 @@ public class PropertyCardActive : MonoBehaviour
     {
         for (int i = 0; i < displayCardCount; i++)
         {
+            Image currentIcon = cardIcons[i].GetComponent<Image>();
+            Debug.Log(currentIcon.sprite);
+            Debug.Log(displayCardCount);
             switch (upgradeList[i].Key.ToString())
             {
                 case "1000":
-                    cardIcons[i].GetComponent<Image>().sprite = skillIcons[0];
+                    
+                    currentIcon.sprite = skillIcons[0];
+                    if(ColorUtility.TryParseHtmlString("#FFD225", out Color outColor))
+                        currentIcon.color = outColor;
                     break;
                 case "1001":
-                    cardIcons[i].GetComponent<Image>().sprite = skillIcons[1];
+                    currentIcon.sprite = skillIcons[1];
                     break;
                 case "1002":
-                    cardIcons[i].GetComponent<Image>().sprite = skillIcons[2];
+                    currentIcon.sprite = skillIcons[2];
                     break;
             }
         }
