@@ -162,7 +162,7 @@ public class PropertyCardActive : MonoBehaviour
                 case SkillUpgradeType.Damage:
                     currentCard.sprite = cardFrames[0];
                     currentCard.color = Color.red;
-                    cardsDescription[i].text = "데미지 증가";
+                    cardsDescription[i].text = "데미지 50% 증가";
                     break;
                 case SkillUpgradeType.DownCost:
                     currentCard.sprite = cardFrames[1];
@@ -172,7 +172,7 @@ public class PropertyCardActive : MonoBehaviour
                 case SkillUpgradeType.LifeStill:
                     currentCard.sprite = cardFrames[2];
                     currentCard.color = Color.springGreen;
-                    cardsDescription[i].text = "HP 흡수";
+                    cardsDescription[i].text = "피해 15% 흡혈\n(광역 : 5%)";
                     break;
             }
         }
