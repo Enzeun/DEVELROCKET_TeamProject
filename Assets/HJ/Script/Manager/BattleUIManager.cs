@@ -2,12 +2,13 @@ using DamageNumbersPro;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 using static UnityEngine.Rendering.DebugUI;
-using System.Linq;
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -45,6 +46,10 @@ public class BattleUIManager : MonoBehaviour
     private UnityEngine.UI.Button[] skillButtons;
     [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
     private UnityEngine.UI.Button endTurnButton;
+    [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
+    private CanvasGroup gameOverCanvas;
+    [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
+    private CanvasGroup victoryCanvas;
     [SerializeField, Required, BoxGroup("**UI 컴포넌트 참조**")]
     private CanvasGroup darkImage;
 
@@ -195,6 +200,7 @@ public class BattleUIManager : MonoBehaviour
 
         HP_Decrease_UIAnimation_Player(endValue);
 
+        ShakeCamera();
     }
 
     private void TakeDamage_UI_NumberAnimation_Player(int damage)
@@ -233,6 +239,8 @@ public class BattleUIManager : MonoBehaviour
         TakeDamage_UI_NumberAnimation_Enemy(damage, uiController);
 
         HP_Decrease_UIAnimation_Enemy(endValue, uiController);
+
+        ShakeCamera();
 
         return;
 
@@ -470,6 +478,22 @@ public class BattleUIManager : MonoBehaviour
                  .SetEase(Ease.InQuad);
     }
 
+    public void ShowGameOver()
+    {        
+        gameOverCanvas.alpha = 0f;
+        gameOverCanvas.gameObject.SetActive(true);
+        gameOverCanvas.DOFade(1f, 0.8f)
+                      .SetEase (Ease.InQuad);
+    }
+
+    public void ShowVictory()
+    {
+        victoryCanvas.alpha = 0f;
+        victoryCanvas.gameObject.SetActive(true);
+        victoryCanvas.DOFade(1f, 0.8f)
+                     .SetEase(Ease.InQuad);
+    }
+
     // ============= UI 콜백 이벤트 =================================================================================
 
     public void InvokeBattleStart()
@@ -486,7 +510,24 @@ public class BattleUIManager : MonoBehaviour
         OnSkillBtnClicked?.Invoke(id);
     }
 
+    public void InvokeVictoryBtnClicked()
+    {
+        OnVictoryBtnClicked?.Invoke() ;
+    }
+
     public Action OnBattleStartClicked;
     public Action OnEndTurnBtnClicked;
     public Action<int> OnSkillBtnClicked;
+    public Action OnVictoryBtnClicked;
+
+    //================== 카메라 이벤트 =============================================================================
+    [SerializeField, BoxGroup("** 카메라 참조 **"), Required]
+    private CinemachineImpulseSource camImpulse;
+
+
+    [Button, BoxGroup("카메라 디버깅")]
+    private void ShakeCamera()
+    {
+        camImpulse.GenerateImpulse(1f);
+    }
 }

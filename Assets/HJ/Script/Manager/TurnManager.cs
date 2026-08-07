@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class TurnManager : MonoBehaviour
@@ -98,7 +99,6 @@ public class TurnManager : MonoBehaviour
     // 필수 참조 필드
     [SerializeField, BoxGroup("**필수 참조 필드**"), Required]
     private BattleUIManager uIManager;
-
 
 
     // 턴 매니저 전투 관리 필드
@@ -416,6 +416,8 @@ public class TurnManager : MonoBehaviour
         uIManager.InitUIDictinary();
         uIManager.InitializeAllHpBar();
         uIManager.SetEnemyUILocation();
+        // 시작 전 UI 보여주기
+        uIManager.ShowReadyBattleUI(true);
     }
 
     //================== Start Battle 구간 =============================================================================
@@ -426,17 +428,27 @@ public class TurnManager : MonoBehaviour
     private void StartBattle()
     {
         uIManager.OnBattleStartClicked += OnBattleStart;
-        // 시작 전 UI 보여주기
-        uIManager.ShowReadyBattleUI(true);
+
     }
 
     private void OnBattleStart()
     {
+        Debug.Log("버튼 클릭");
         uIManager.OnBattleStartClicked -= OnBattleStart;
         // 시작 전 UI 숨기기
         uIManager.ShowReadyBattleUI(false);
+        // 몬스터 스폰 애니메이션
+        SpawnAllEnemies();
         // 라운드 시작
         GoToStep(TurnState.StartNewRound);
+    }
+
+    private void SpawnAllEnemies()
+    {
+        foreach (var enemy in enemyList)
+        {
+
+        }
     }
 
     //================ Start New Round 구간 ===============================================================================
@@ -546,6 +558,8 @@ public class TurnManager : MonoBehaviour
 
             // 단일 공격일 경우
             case CheckSkillResult.IsSingleAttack:
+                // 먼저 턴종료 버튼을 비활성화
+                uIManager.EnableEndTurnBtn(false);
                 // 적 클릭에 이벤트 구독을 한다
                 UnSubscribeEnemyClicked();
                 SubscribeEnemyClicked();
@@ -626,7 +640,9 @@ public class TurnManager : MonoBehaviour
             return;
         }
 
-        // 코스트가 없으면 대기
+        // 코스트가 없으면 턴종료 버튼을 활성화하고 대기
+        uIManager.EnableEndTurnBtn();
+
     }
 
     // 범위 공격에서의 로직
@@ -948,10 +964,14 @@ public class TurnManager : MonoBehaviour
 
     private void EndBattle()
     {
-
+        uIManager.ShowVictory();
+        uIManager.OnVictoryBtnClicked += GoToNextFloor;
     }
 
-
+    private void GoToNextFloor()
+    {
+        Debug.Log("카드 고르기 여기서 하면 됨");
+    }
 
 
 
@@ -959,7 +979,7 @@ public class TurnManager : MonoBehaviour
 
     private void GameOver()
     {
-
+        uIManager.ShowGameOver();
     }
 
 
@@ -998,13 +1018,13 @@ public class TurnManager : MonoBehaviour
 
     private IEnumerator WaitForStartGame()
     {
-        yield return new WaitForSeconds(1);
+        yield return waitOnefSec;
 
         InitializeBattle();
 
         uIManager.FadeDarkImage(0.5f);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return waitHalfSec;
 
     }
 
