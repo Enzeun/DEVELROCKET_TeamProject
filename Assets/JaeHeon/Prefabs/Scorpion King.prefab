@@ -211,7 +211,11 @@ MonoBehaviour:
   maxBuffCount: 3
   attackPoint: 24
   defencePoint: 5
-  behaviourListData: []
+  behaviourListData:
+  - BehaviorType: 0
+    Weight_: 0
+  - BehaviorType: 0
+    Weight_: 0
   playerTransform: {fileID: 0}
   hpBarLocation: {fileID: 5184697098936071411}
 --- !u!114 &-3808605793012896727

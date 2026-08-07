@@ -219,7 +219,7 @@ public class EnemyBase : MonoBehaviour
         {
             ani.EnemyTakeDamage();
 
-            amount = Math.Max(0, amount - defencePoint);
+            amount = Math.Max(0, amount - currentDefencePoint);
 
             currentHp = Math.Clamp((currentHp - amount), 0, maxHp);
 
@@ -280,7 +280,7 @@ public class EnemyBase : MonoBehaviour
         {
             playerStat = playerCombat.player;
         }
-        playerStat.TakeDamage(attackPoint);
+        playerStat.TakeDamage(currentAttackPoint);
     }
 
     public int GetAttackPoint()
