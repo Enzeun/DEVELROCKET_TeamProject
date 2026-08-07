@@ -1,17 +1,23 @@
+using System;
 using UnityEngine;
 using static UnityEngine.ParticleSystem;
 using SF = UnityEngine.SerializeField;
 
 public class CharaMotionFreezer : MonoBehaviour
 {
+    [Serializable]
+    private class EffectSet
+    {
+        public ParticleSystem particle;
+        public float stopValue;
+    }
+
     private static readonly int HorizontalHash = Animator.StringToHash("Horizontal");
     private static readonly int MotionHash = Animator.StringToHash("Motion");
 
     [SF] private Animator monsterAnime;
     [SF] private Animator charaAnime;
-    [SF] private Transform skillTransform;
-    [SF] private ParticleSystem[] skillEffect;
-    public float simulateTime = 1.5f;
+    [SF] private EffectSet[] skillEffect;
 
     private void Awake()
     {
@@ -20,11 +26,11 @@ public class CharaMotionFreezer : MonoBehaviour
         charaAnime.Play(HorizontalHash, 0, 0.5f);
         charaAnime.speed = 0;
 
-        foreach (ParticleSystem ps in skillEffect)
+        foreach (var ps in skillEffect)
         {
-            ps.Simulate(0.3f, true, true, false);
-            ps.Pause();
-        }
+            ps.particle.Simulate(ps.stopValue, true, true, false);
 
+            ps.particle.Pause();
+        }
     }
 }

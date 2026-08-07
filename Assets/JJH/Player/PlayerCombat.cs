@@ -194,10 +194,13 @@ public class PlayerCombat : MonoBehaviour
         isEndSet = false;
     }
 
+    /// <summary>
+    /// 스킬 시전 시 애니메이션 이벤트에서 호출하는 함수
+    /// </summary>
     public void EffectActive()
     {
         if (nowSkillData != null && nowTarget != null)
-            spawner.SpawnEffect(nowSkillData.Name, nowSkillData, nowTarget);
+            spawner.SpawnEffect(nowSkillData.Id, nowSkillData, nowTarget);
     }
 
     /// <summary>
