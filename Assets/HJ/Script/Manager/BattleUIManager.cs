@@ -545,11 +545,17 @@ public class BattleUIManager : MonoBehaviour
         OnGoToTitleBtnClicked?.Invoke();
     }
 
+    public void InvokeSkillUpgrade()
+    {
+        OnSkillUpgradeCompleted?.Invoke();
+    }
+
     public Action OnBattleStartClicked;
     public Action OnEndTurnBtnClicked;
     public Action<int> OnSkillBtnClicked;
     public Action OnVictoryBtnClicked;
     public Action OnGoToTitleBtnClicked;
+    public Action OnSkillUpgradeCompleted;
 
     //================== 카메라 이벤트 =============================================================================
     [SerializeField, BoxGroup("** 카메라 참조 **"), Required]

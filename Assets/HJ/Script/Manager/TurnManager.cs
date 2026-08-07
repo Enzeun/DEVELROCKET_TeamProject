@@ -751,6 +751,9 @@ public class TurnManager : MonoBehaviour
         UnSubscribePlayerCompleteAttack();
         SubscribePlayerCompleteAttack();
 
+        // 스킬 시전 모션 시작
+        playerCombat.PlayerActiveSkillSelect();
+
         PlayNextSkill();
     }
 
@@ -806,8 +809,7 @@ public class TurnManager : MonoBehaviour
 
     private IEnumerator PlayBeforeAttackRoutine()
     {
-        // 스킬 시전 모션 시작
-        playerCombat.PlayerActiveSkillSelect();
+        
         // 0.5초 후
         yield return waitHalfSec;
         // 실제 공격
@@ -816,9 +818,6 @@ public class TurnManager : MonoBehaviour
 
     private void PlayerCompleteAttack()
     {
-        // 애니메이션을 idle로 복귀
-        playerCombat.PlayerActiveIdle();
-
         StartCoroutine(PlayerDelay());
     }
 
@@ -836,12 +835,20 @@ public class TurnManager : MonoBehaviour
 
             // 큐에 남은 데이터가 없으면
             case PlayerBattleState.NoMoreSkillQueue:
+
+                // 애니메이션을 idle로 복귀
+                playerCombat.PlayerActiveIdle();
+
                 // 턴 종료
                 GoToStep(TurnState.PlayerTurnEnd);
                 yield break;
 
             // 모든 적이 처치됐으면
             case PlayerBattleState.NoMoreEnemy:
+
+                // 애니메이션을 idle로 복귀
+                playerCombat.PlayerActiveIdle();
+
                 // 배틀 종료
                 GoToStep(TurnState.EndBattle);
                 yield break;
@@ -987,14 +994,16 @@ public class TurnManager : MonoBehaviour
 
     private void EndBattle()
     {
-        uIManager.ShowSkillupgrade();        
+        uIManager.OnSkillUpgradeCompleted += SkillUpgradeComplete;
+
+        uIManager.ShowSkillupgrade();
     }
 
     public void SkillUpgradeComplete()
     {
-        uIManager.ShowVictory();
-
         uIManager.OnVictoryBtnClicked += GotoNextScene;
+
+        uIManager.ShowVictory();
     }
 
     private void GotoNextScene()

@@ -176,16 +176,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 701371131143548346, guid: 693e69c64c5499540a580d55ba1e623c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 9024340784222397340}
+    - target: {fileID: 701371131143548346, guid: 693e69c64c5499540a580d55ba1e623c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 701371131143548346, guid: 693e69c64c5499540a580d55ba1e623c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SkillUpgradeComplete
+      value: InvokeSkillUpgrade
       objectReference: {fileID: 0}
     - target: {fileID: 701371131143548346, guid: 693e69c64c5499540a580d55ba1e623c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: TurnManager, Assembly-CSharp
+      value: BattleUIManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 701371131143548346, guid: 693e69c64c5499540a580d55ba1e623c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -200,16 +204,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2987608967043061075, guid: 693e69c64c5499540a580d55ba1e623c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 9024340784222397340}
+    - target: {fileID: 2987608967043061075, guid: 693e69c64c5499540a580d55ba1e623c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2987608967043061075, guid: 693e69c64c5499540a580d55ba1e623c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SkillUpgradeComplete
+      value: InvokeSkillUpgrade
       objectReference: {fileID: 0}
     - target: {fileID: 2987608967043061075, guid: 693e69c64c5499540a580d55ba1e623c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: TurnManager, Assembly-CSharp
+      value: BattleUIManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2987608967043061075, guid: 693e69c64c5499540a580d55ba1e623c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -344,16 +352,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8147118538963579741, guid: 693e69c64c5499540a580d55ba1e623c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 9024340784222397340}
+    - target: {fileID: 8147118538963579741, guid: 693e69c64c5499540a580d55ba1e623c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8147118538963579741, guid: 693e69c64c5499540a580d55ba1e623c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SkillUpgradeComplete
+      value: InvokeSkillUpgrade
       objectReference: {fileID: 0}
     - target: {fileID: 8147118538963579741, guid: 693e69c64c5499540a580d55ba1e623c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: TurnManager, Assembly-CSharp
+      value: BattleUIManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8147118538963579741, guid: 693e69c64c5499540a580d55ba1e623c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
