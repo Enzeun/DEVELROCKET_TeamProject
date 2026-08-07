@@ -23,7 +23,8 @@ public class BattleUIManager : MonoBehaviour
     private RectTransform playerHP_Number_Location;
     [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
     private TextMeshProUGUI NowCostText;
-
+    [SerializeField, Required, BoxGroup("**참조필요!**플레이어")]
+    private Canvas skillUpgrade;
 
     // 적 관련 참조
     [SerializeField, Required, BoxGroup("**참조필요!**적")]
@@ -512,6 +513,12 @@ public class BattleUIManager : MonoBehaviour
                      .SetEase(Ease.InQuad);
     }
 
+    public void ShowSkillupgrade()
+    {        
+        OpenPopup(skillUpgrade);
+    }
+
+
     // ============= UI 콜백 이벤트 =================================================================================
 
     public void InvokeBattleStart()
@@ -538,11 +545,17 @@ public class BattleUIManager : MonoBehaviour
         OnGoToTitleBtnClicked?.Invoke();
     }
 
+    public void InvokeSkillUpgrade()
+    {
+        OnSkillUpgradeCompleted?.Invoke();
+    }
+
     public Action OnBattleStartClicked;
     public Action OnEndTurnBtnClicked;
     public Action<int> OnSkillBtnClicked;
     public Action OnVictoryBtnClicked;
     public Action OnGoToTitleBtnClicked;
+    public Action OnSkillUpgradeCompleted;
 
     //================== 카메라 이벤트 =============================================================================
     [SerializeField, BoxGroup("** 카메라 참조 **"), Required]

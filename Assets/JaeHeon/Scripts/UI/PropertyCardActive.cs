@@ -68,11 +68,16 @@ public class PropertyCardActive : MonoBehaviour
     private void OnEnable()
     {
         displayCardCount = cardsDescription.Count;
+        SetPlayer();
         InitCard();
         CardRotate(cards);
         MakeCardList();
 
-        
+    }
+
+    public void SetPlayer()
+    {
+        player = TurnManager.instance.playerCombat;
     }
 
     //리스트 섞기, 리스트에서 3개 뽑기 , 화면에 뿌려주기, 

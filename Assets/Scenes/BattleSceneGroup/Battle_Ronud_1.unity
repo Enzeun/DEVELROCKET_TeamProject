@@ -595,6 +595,7 @@ MonoBehaviour:
   isGameOver: 0
   currentSelectedSkillId: 0
   remainEnemy: -1
+  isEnemyTurnStarted: 0
   uIManager: {fileID: 1096197459}
 --- !u!4 &1257734678
 Transform:
