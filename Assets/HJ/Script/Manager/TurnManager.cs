@@ -108,7 +108,7 @@ public class TurnManager : MonoBehaviour
 
 
     // 턴 매니저 전투 관리 필드
-    private PlayerCombat playerCombat;
+    public PlayerCombat playerCombat { get; private set; }
     private PlayerBaseStat player;
     public bool isBattleStarted { get; private set; } = false; // 전투가 최초로 시작될 때 true, 
 
@@ -751,6 +751,9 @@ public class TurnManager : MonoBehaviour
         UnSubscribePlayerCompleteAttack();
         SubscribePlayerCompleteAttack();
 
+        // 스킬 시전 모션 시작
+        playerCombat.PlayerActiveSkillSelect();
+
         PlayNextSkill();
     }
 
@@ -806,8 +809,7 @@ public class TurnManager : MonoBehaviour
 
     private IEnumerator PlayBeforeAttackRoutine()
     {
-        // 스킬 시전 모션 시작
-        playerCombat.PlayerActiveSkillSelect();
+        
         // 0.5초 후
         yield return waitHalfSec;
         // 실제 공격
@@ -816,9 +818,6 @@ public class TurnManager : MonoBehaviour
 
     private void PlayerCompleteAttack()
     {
-        // 애니메이션을 idle로 복귀
-        playerCombat.PlayerActiveIdle();
-
         StartCoroutine(PlayerDelay());
     }
 
@@ -836,12 +835,20 @@ public class TurnManager : MonoBehaviour
 
             // 큐에 남은 데이터가 없으면
             case PlayerBattleState.NoMoreSkillQueue:
+
+                // 애니메이션을 idle로 복귀
+                playerCombat.PlayerActiveIdle();
+
                 // 턴 종료
                 GoToStep(TurnState.PlayerTurnEnd);
                 yield break;
 
             // 모든 적이 처치됐으면
             case PlayerBattleState.NoMoreEnemy:
+
+                // 애니메이션을 idle로 복귀
+                playerCombat.PlayerActiveIdle();
+
                 // 배틀 종료
                 GoToStep(TurnState.EndBattle);
                 yield break;
@@ -987,15 +994,16 @@ public class TurnManager : MonoBehaviour
 
     private void EndBattle()
     {
-        uIManager.ShowVictory();
-        uIManager.OnVictoryBtnClicked += GoToNextFloor;
+        uIManager.OnSkillUpgradeCompleted += SkillUpgradeComplete;
+
+        uIManager.ShowSkillupgrade();
     }
 
-    private void GoToNextFloor()
+    public void SkillUpgradeComplete()
     {
-        Debug.Log("카드 고르기 여기서 하면 됨");
+        uIManager.OnVictoryBtnClicked += GotoNextScene;
 
-        GotoNextScene();
+        uIManager.ShowVictory();
     }
 
     private void GotoNextScene()
