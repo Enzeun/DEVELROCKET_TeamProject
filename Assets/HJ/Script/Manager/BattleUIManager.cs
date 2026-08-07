@@ -149,7 +149,25 @@ public class BattleUIManager : MonoBehaviour
     {
         playerCombat = _playerCombat;
         playerStat = playerCombat.player;
+        SetPlayerSkillBtn();
         SubscribePlayerEvent();
+    }
+
+    private void SetPlayerSkillBtn()
+    {
+        for (int i = 0; i < skillButtons.Length; i++)
+        {
+
+            skillButtons[i].TryGetComponent<SkillBtnController>(out SkillBtnController btncon);
+
+            if (btncon != null)
+            {
+                SkillBaseStat skillBaseStat = playerStat.SkillData[1000 + i];
+                btncon.SetSkillName(skillBaseStat.Name);
+                btncon.SetSkillCost(skillBaseStat.GetCost());
+            }
+
+        }
     }
 
     private void SubscribePlayerEvent()
@@ -430,7 +448,7 @@ public class BattleUIManager : MonoBehaviour
 
                 UI_Dictionary.TryGetValue(enemy, out uiController);
 
-                if(uiController == null)
+                if (uiController == null)
                 {
                     Debug.Log("UI 아이콘이 없습니다! 확인하세요");
                 }
@@ -451,7 +469,7 @@ public class BattleUIManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("스킬메뉴 닫기");            
+            Debug.Log("스킬메뉴 닫기");
             EnableSkillButtons(false);
             ClosePopup(skillCanvas);
         }
@@ -459,7 +477,7 @@ public class BattleUIManager : MonoBehaviour
 
     private void EnableSkillButtons(bool enable = true)
     {
-        foreach(var btn in skillButtons)
+        foreach (var btn in skillButtons)
         {
             btn.interactable = enable;
         }
@@ -479,11 +497,11 @@ public class BattleUIManager : MonoBehaviour
     }
 
     public void ShowGameOver()
-    {        
+    {
         gameOverCanvas.alpha = 0f;
         gameOverCanvas.gameObject.SetActive(true);
         gameOverCanvas.DOFade(1f, 0.8f)
-                      .SetEase (Ease.InQuad);
+                      .SetEase(Ease.InQuad);
     }
 
     public void ShowVictory()
@@ -512,13 +530,19 @@ public class BattleUIManager : MonoBehaviour
 
     public void InvokeVictoryBtnClicked()
     {
-        OnVictoryBtnClicked?.Invoke() ;
+        OnVictoryBtnClicked?.Invoke();
+    }
+
+    public void InvokeGoToTitle()
+    {
+        OnGoToTitleBtnClicked?.Invoke();
     }
 
     public Action OnBattleStartClicked;
     public Action OnEndTurnBtnClicked;
     public Action<int> OnSkillBtnClicked;
     public Action OnVictoryBtnClicked;
+    public Action OnGoToTitleBtnClicked;
 
     //================== 카메라 이벤트 =============================================================================
     [SerializeField, BoxGroup("** 카메라 참조 **"), Required]
