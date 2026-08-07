@@ -220,7 +220,7 @@ public class PlayerCombat : MonoBehaviour
 
                 if (skill.IsLifeStill(out int healVal))
                     player.TakeHeal(((damage - stat.currentDefencePoint) * healVal + 50) / 100);
-                Debug.Log(skill.GetDescription());
+
                 stat.TakeDamage(damage);
             }
         }
@@ -238,7 +238,7 @@ public class PlayerCombat : MonoBehaviour
 
                     if (skill.IsLifeStill(out int healVal))
                         player.TakeHeal(((damage - stat.currentDefencePoint) * healVal + 50) / 100);
-                    Debug.Log(skill.GetDescription());
+
                     stat.TakeDamage(damage);
                 }
             }
