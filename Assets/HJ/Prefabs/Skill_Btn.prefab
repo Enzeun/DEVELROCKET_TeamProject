@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6738138551822002453}
   - component: {fileID: 8237712532993303480}
   - component: {fileID: 226210274867144285}
-  - component: {fileID: 5361809565114881337}
+  - component: {fileID: 402101849644785552}
   m_Layer: 5
   m_Name: Skill_Btn
   m_TagString: Untagged
@@ -139,8 +139,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillBtnController
   skillNameText: {fileID: 2787016708966116163}
   skillCostText: {fileID: 7185828659787580565}
-  skillDescText: {fileID: 0}
-  skillDmgText: {fileID: 0}
+  skillDescText: {fileID: 3476071047966823110}
+  skillDmgText: {fileID: 9181017881864129467}
+  skillInfoCanvas: {fileID: 6045813959299487023}
+--- !u!114 &402101849644785552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359563544025619182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 226210274867144285}
+          m_TargetAssemblyTypeName: SkillBtnController, Assembly-CSharp
+          m_MethodName: MouseEnter
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 226210274867144285}
+          m_TargetAssemblyTypeName: SkillBtnController, Assembly-CSharp
+          m_MethodName: MouseExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1317234801178436365
 GameObject:
   m_ObjectHideFlags: 0
@@ -290,6 +336,7 @@ GameObject:
   - component: {fileID: 6164825190708980077}
   - component: {fileID: 5347110536280706842}
   - component: {fileID: 5480776034090814779}
+  - component: {fileID: 6045813959299487023}
   m_Layer: 5
   m_Name: SkillInfoPanel
   m_TagString: Untagged
@@ -315,8 +362,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 504}
-  m_SizeDelta: {x: 300, y: 498.2}
+  m_AnchoredPosition: {x: 0, y: 333}
+  m_SizeDelta: {x: 300, y: 320.9}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &6164825190708980077
 CanvasRenderer:
@@ -382,6 +429,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!225 &6045813959299487023
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2265437337083499545}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2396113850195276379
 GameObject:
   m_ObjectHideFlags: 0
@@ -584,7 +643,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC2A4\uD0AC\uC785\uB2C8\uB2E4\u3134\uB77C\u3163\u3147\u3141\uB108\u3163\uB77C\u3153\u3141\u3134\uC544\u3163\uB7EC\u314F\u3163\u3134\u3141\u3147\uB7EC\u3163\uB0AD\uBA38\u3163\u3141\u3147\uB098\uB801\u3141\uB2C8\u314F\uB7FC\u3134\uC774\u314F\uB801\u3134\uBBF8\u314F\uB7EC"
+  m_text: "000\uB4F8 \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7d8e59399564b824fa2ad1f5dce1e0b3, type: 2}
   m_sharedMaterial: {fileID: 2499000917883643342, guid: 7d8e59399564b824fa2ad1f5dce1e0b3, type: 2}
@@ -611,8 +670,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1025,7 +1084,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 270, y: 370}
+  m_SizeDelta: {x: 270, y: 197.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1770896958621068243
 CanvasRenderer:
