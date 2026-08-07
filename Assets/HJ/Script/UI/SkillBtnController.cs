@@ -14,26 +14,16 @@ public class SkillBtnController : MonoBehaviour
     private TextMeshProUGUI skillDescText;
     [SerializeField, Required]
     private TextMeshProUGUI skillDmgText;
-    [SerializeField, Required]
-    private CanvasGroup skillInfoCanvas;
-
 
     private SkillBaseStat mySkill;
-    private int playerBaseAttack;
 
-    public void SetSkillInfo(SkillBaseStat skill, int attack)
+    public void SetSkillInfo(SkillBaseStat skill)
     {
         mySkill = skill;
-
-        playerBaseAttack = attack;
 
         SetSkillName();
 
         SetSkillCost();
-
-        SetSkillDesc();
-
-        SetSkillDmg();
     }
 
     public void SetSkillName()
@@ -50,23 +40,25 @@ public class SkillBtnController : MonoBehaviour
 
     public void SetSkillDesc()
     {
-        string desc = mySkill.GetDescription();
-        skillDescText.text = desc;
+        int cost;
+        skillDescText.text = $"";
     }
 
     public void SetSkillDmg()
     {
-        int dmg = (playerBaseAttack * mySkill.SkillDamageCalcByUpgrade() + 50) / 100;
-        skillDmgText.text = $"데미지 : {dmg}";
+        int cost = mySkill.GetCost();
+        skillCostText.text = $"cost: {cost}";
     }
 
 
-    public void MouseEnter()
+    private void OnMouseEnter()
     {
-        skillInfoCanvas.alpha = 1;
+        
     }
-    public void MouseExit()
+
+    private void OnMouseExit()
     {
-        skillInfoCanvas.alpha = 0;
+        
     }
+
 }
