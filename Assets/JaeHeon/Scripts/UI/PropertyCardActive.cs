@@ -1,5 +1,4 @@
 using DG.Tweening;
-using NUnit.Framework;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
@@ -7,8 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Splines.ExtrusionShapes;
 using UnityEngine.UI;
 using static Shuffle;
 using static SkillEnums;
@@ -105,7 +102,7 @@ public class PropertyCardActive : MonoBehaviour
         data = player.player.SkillData;
 
         bool ableOverpower = UnityEngine.Random.Range(0, 100) > 85;
-        bool ableOvercharge = UnityEngine.Random.Range(0, 100) > 0;
+        bool ableOvercharge = UnityEngine.Random.Range(0, 100) > 90;
         bool ableWideRange = UnityEngine.Random.Range(0, 100) > 85;
 
         foreach (var item in data)
