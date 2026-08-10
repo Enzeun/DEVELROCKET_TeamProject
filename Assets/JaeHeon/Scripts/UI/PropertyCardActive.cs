@@ -1,10 +1,13 @@
 using DG.Tweening;
 using NUnit.Framework;
 using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Splines.ExtrusionShapes;
 using UnityEngine.UI;
 using static Shuffle;
@@ -46,6 +49,8 @@ public class PropertyCardActive : MonoBehaviour
     [BoxGroup(""), SerializeField]
     private List<Sprite> cardFrames = new();
     [BoxGroup(""), SerializeField]
+    private List<Animator> cardAnimator = new();
+    [BoxGroup(""), SerializeField]
     private Sprite cardDefalutFrame;
     [BoxGroup(""), SerializeField]
     private Sprite cardDefalutIcon;
@@ -62,6 +67,7 @@ public class PropertyCardActive : MonoBehaviour
     [BoxGroup("설정"), SerializeField]
     private int displayCardCount = 3;
 
+    private static readonly int IsSpecialHash = Animator.StringToHash("IsSpecial");
     Dictionary<int, SkillBaseStat> data;
 
     private void OnEnable()
@@ -98,6 +104,10 @@ public class PropertyCardActive : MonoBehaviour
     {
         data = player.player.SkillData;
 
+        bool ableOverpower = UnityEngine.Random.Range(0, 100) > 85;
+        bool ableOvercharge = UnityEngine.Random.Range(0, 100) > 0;
+        bool ableWideRange = UnityEngine.Random.Range(0, 100) > 85;
+
         foreach (var item in data)
         {
             int key = item.Key;
@@ -105,10 +115,29 @@ public class PropertyCardActive : MonoBehaviour
 
             item.Value.UpgradeAbleList.ForEach(upgrade =>
             {
+                // 코스트 감소는 1회만 가능
                 if (upgrade == SkillUpgradeType.DownCost && !item.Value.IsDownCost())
                     value = new(key, upgrade);
 
-                else if (upgrade != SkillUpgradeType.DownCost)
+                // 압도는 1회만 획득 가능
+                if (upgrade == SkillUpgradeType.Overpower && ableOverpower && 
+                    !item.Value.IsOverPower())
+                    value = new(key, upgrade);
+
+                // 과충전은 1회만 획득 가능
+                if(upgrade == SkillUpgradeType.Overcharge &&  ableOvercharge && 
+                    !item.Value.IsOverCharge())
+                    value = new(key, upgrade);
+
+                // 광역화는 1회만 획득 가능
+                if(upgrade == SkillUpgradeType.WideRange && ableWideRange)
+                    value = new(key, upgrade); 
+
+                else if (upgrade != SkillUpgradeType.DownCost && 
+                        upgrade != SkillUpgradeType.WideRange &&
+                        upgrade != SkillUpgradeType.Overcharge &&
+                        upgrade != SkillUpgradeType.Overpower
+                        )
                     value = new(key, upgrade);
 
                 upgradeList.Add(value);
@@ -144,6 +173,39 @@ public class PropertyCardActive : MonoBehaviour
             Debug.Log($"{upgradeList.Count} 갯수만 존재해서 shuffle 안됨");
             return;
         }
+        
+        // 단일 스킬 광역화
+        int wideRangeIndex = upgradeList.FindIndex(x => x.Value == SkillUpgradeType.WideRange);
+        
+        if (wideRangeIndex >= 0)
+        {
+            KeyValuePair<int, SkillUpgradeType> temp = upgradeList[wideRangeIndex];
+
+            upgradeList.RemoveAt(wideRangeIndex);
+            upgradeList.Insert(0, temp);
+        }
+
+        // 단일 스킬 과충전
+        int overchargeIndex = upgradeList.FindIndex(x => x.Value == SkillUpgradeType.Overcharge);
+
+        if (wideRangeIndex >= 0)
+        {
+            KeyValuePair<int, SkillUpgradeType> temp = upgradeList[overchargeIndex];
+
+            upgradeList.RemoveAt(overchargeIndex);
+            upgradeList.Insert(0, temp);
+        }
+
+        // 광역 스킬 압도
+        int overpowerIndex = upgradeList.FindIndex(x => x.Value == SkillUpgradeType.Overpower);
+
+        if (overpowerIndex >= 0)
+        {
+            KeyValuePair<int, SkillUpgradeType> temp = upgradeList[overpowerIndex];
+
+            upgradeList.RemoveAt(overpowerIndex);
+            upgradeList.Insert(0, temp);
+        }
 
         DisplayCardFrame();
         DisplayCardIcon();
@@ -154,7 +216,11 @@ public class PropertyCardActive : MonoBehaviour
         for (int i = 0; i < displayCardCount; i++)
         {
             Image currentCard = cards[i].GetComponent<Image>();
+            Animator nowAnimator = cardAnimator[i];
             currentCard.color = Color.white;
+            nowAnimator.enabled = false;
+            nowAnimator.SetBool(IsSpecialHash, false);
+
             switch (upgradeList[i].Value)
             {
                 case SkillUpgradeType.Damage:
@@ -172,6 +238,27 @@ public class PropertyCardActive : MonoBehaviour
                     currentCard.color = Color.springGreen;
                     cardsDescription[i].text = "피해 15% 흡혈\n(광역 : 5%)";
                     break;
+                case SkillUpgradeType.Overcharge:
+                    currentCard.sprite = cardFrames[3];
+                    currentCard.color = Color.gold;
+                    nowAnimator.enabled = true;
+                    nowAnimator.SetBool(IsSpecialHash, true);
+                    cardsDescription[i].text = "<b>[과충전]</b> 부여</size>\n한 턴에 재사용 시 마다 데미지 40% 증가";
+                    break;
+                case SkillUpgradeType.WideRange:
+                    currentCard.sprite = cardFrames[3];
+                    currentCard.color = Color.gold;
+                    nowAnimator.enabled = true;
+                    nowAnimator.SetBool(IsSpecialHash, true);
+                    cardsDescription[i].text = "<b>[광역화]</b> 부여\n스킬의 대상을 광역으로 변경";
+                    break;
+                case SkillUpgradeType.Overpower:
+                    currentCard.sprite = cardFrames[3];
+                    currentCard.color = Color.gold;
+                    nowAnimator.enabled = true;
+                    nowAnimator.SetBool(IsSpecialHash, true);
+                    cardsDescription[i].text = "<b>[압도]</b> 부여\n대상이 하나일 때 1회 추가 공격";
+                    break;
             }
         }
     }
@@ -180,12 +267,9 @@ public class PropertyCardActive : MonoBehaviour
         for (int i = 0; i < displayCardCount; i++)
         {
             Image currentIcon = cardIcons[i].GetComponent<Image>();
-            Debug.Log(currentIcon.sprite);
-            Debug.Log(displayCardCount);
             switch (upgradeList[i].Key.ToString())
             {
                 case "1000":
-                    
                     currentIcon.sprite = skillIcons[0];
                     if(ColorUtility.TryParseHtmlString("#FFD225", out Color outColor))
                         currentIcon.color = outColor;
@@ -204,16 +288,26 @@ public class PropertyCardActive : MonoBehaviour
     {
         foreach(var card in cards)
         {
-            if (!card.TryGetComponent<Button>(out Button btn))
+            if (!card.TryGetComponent(out Button btn))
                 return;
             btn.interactable = false;
         }
 
         int id = upgradeList[index].Key;
-
+        SkillUpgradeType value = upgradeList[index].Value;
         SkillBaseStat skill = player.player.SkillData[id];
-        skill.NowUpgradeList.Add(upgradeList[index].Value);
-
+        if (value == SkillUpgradeType.WideRange  || 
+            value == SkillUpgradeType.Overcharge ||
+            value == SkillUpgradeType.DownCost   || 
+            value == SkillUpgradeType.Overpower)
+        { 
+            skill.UpgradeAbleList.Remove(value); 
+            if(value  == SkillUpgradeType.WideRange)
+                skill.TargetType = SkillTargetType.Area; 
+        }
+            
+        skill.NowUpgradeList.Add(value);
+        
         GameStateManager.Instance.saveSkillData = new Dictionary<int, SkillBaseStat>(player.player.SkillData);
     }
 }

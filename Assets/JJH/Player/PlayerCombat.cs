@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static SkillEnums;
@@ -38,6 +39,8 @@ public class PlayerCombat : MonoBehaviour
     private bool effectFinSub = false;
 
     private bool isEndSet = true;
+
+    private int damageUpCount = 0;
     #endregion
 
     private void OnEnable()
@@ -68,6 +71,14 @@ public class PlayerCombat : MonoBehaviour
         PlayerCombatStatInit();
     }
 
+    private void Update()
+    {
+        if(TurnManager.instance.currentState != TurnManager.TurnState.ExecuteSkills)
+        {
+            damageUpCount = 0;
+        }
+    }
+
     /// <summary>
     /// 전투를 위한 플레이어 데이터 생성
     /// </summary>
@@ -87,9 +98,6 @@ public class PlayerCombat : MonoBehaviour
 
         SubEvent();
     }
-
-    
-
     public void PlayerMove(Transform to)
     {
         moveTween?.Kill();
@@ -208,6 +216,7 @@ public class PlayerCombat : MonoBehaviour
     /// </summary>
     public void EffectEnd()
     {
+        
         if(nowSkillData.TargetType == SkillTargetType.Single && !isEndSet)
         {
             isEndSet = true;
@@ -221,26 +230,48 @@ public class PlayerCombat : MonoBehaviour
                 if (skill.IsLifeStill(out int healVal))
                     player.TakeHeal(((damage - stat.currentDefencePoint) * healVal + 50) / 100);
 
-                stat.TakeDamage(damage);
+                int defencePointIgnore = 0;
+                // 1번 스킬 강화 체크
+                if (skill.Id == 1000 && damageUpCount > 0)
+                    damage += (damage * (damageUpCount * 40) + 50) / 100;
+                else if (skill.Id == 1001)
+                    defencePointIgnore = ((stat.currentDefencePoint * 30) + 50) / 100;
+
+                stat.TakeDamage(damage + defencePointIgnore);
+
+                if (skill.Id == 1000) damageUpCount++;
             }
         }
         else if (nowSkillData.TargetType == SkillTargetType.Area && !isEndSet)
         {
             isEndSet = true;
-
             SkillBaseStat skill = nowSkillData;
+            List<EnemyBase> targetData = new();
 
             foreach (Transform t in nowTarget)
             {
                 if (t != null && t.TryGetComponent(out EnemyBase stat))
                 {
-                    int damage = (player.AtkPoint * skill.SkillDamageCalcByUpgrade() + 50) / 100;
-
-                    if (skill.IsLifeStill(out int healVal))
-                        player.TakeHeal(((damage - stat.currentDefencePoint) * healVal + 50) / 100);
-
-                    stat.TakeDamage(damage);
+                    if (!stat.isDead) targetData.Add(stat);
                 }
+            }
+
+            foreach (EnemyBase stat in targetData)
+            {
+                int damage = (player.AtkPoint * skill.SkillDamageCalcByUpgrade() + 50) / 100;
+
+                if (targetData.Count == 1 && skill.IsOverPower())
+                    stat.TakeDamage(damage);
+
+                if (skill.IsLifeStill(out int healVal))
+                    player.TakeHeal(((damage - stat.currentDefencePoint) * healVal + 50) / 100);
+
+                int defencePointIgnore = 0;
+
+                if (skill.Id == 1001)
+                    defencePointIgnore = ((stat.currentDefencePoint * 30) + 50) / 100;
+
+                stat.TakeDamage(damage + defencePointIgnore);
             }
         }
     }

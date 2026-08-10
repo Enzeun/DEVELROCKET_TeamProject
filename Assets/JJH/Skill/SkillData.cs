@@ -16,13 +16,15 @@ public static class SkillData
             // 코스트
             2,
             // 피해량
-            140,
+            150,
             SkillPoseType.Horizontal,
             // 가능한 업그레이드
             new List<SkillUpgradeType> { 
                 SkillUpgradeType.Damage,
                 SkillUpgradeType.DownCost,
-                SkillUpgradeType.LifeStill  }
+                SkillUpgradeType.LifeStill,
+                SkillUpgradeType.Overcharge
+            }
             ,
             // 타겟 지정 종류
             SkillTargetType.Single,
@@ -31,14 +33,16 @@ public static class SkillData
         [1001] = new SkillBaseStat(
             1001,
             "화염구",
-            "[damage]%의 [targetType]피해를 줍니다.",
-            4,      
-            250,
+            "[damage]%의 [targetType]피해를 줍니다.\n<size=16>방어력 관통 30%</size>",
+            4,
+            260,
             SkillPoseType.Instance,
             new List<SkillUpgradeType> {
                 SkillUpgradeType.Damage,
                 SkillUpgradeType.DownCost,
-                SkillUpgradeType.LifeStill  }
+                SkillUpgradeType.LifeStill,
+                SkillUpgradeType.WideRange
+            }
             ,                     
             SkillTargetType.Single,
             SkillTargetSubType.Multi
@@ -49,12 +53,14 @@ public static class SkillData
             "낙뢰",
             "[damage]%의 [targetType]피해를 줍니다.", 
             5, 
-            200, 
+            190,
             SkillPoseType.Stomp,
             new List<SkillUpgradeType> {
                 SkillUpgradeType.Damage,
                 SkillUpgradeType.DownCost,
-                SkillUpgradeType.LifeStill  }
+                SkillUpgradeType.LifeStill,
+                SkillUpgradeType.Overpower
+            }
             ,                   
             SkillTargetType.Area,
             SkillTargetSubType.Single
