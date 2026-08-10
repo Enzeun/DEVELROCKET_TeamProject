@@ -101,9 +101,9 @@ public class PropertyCardActive : MonoBehaviour
     {
         data = player.player.SkillData;
 
-        bool ableOverpower = UnityEngine.Random.Range(0, 100) > 85;
-        bool ableOvercharge = UnityEngine.Random.Range(0, 100) > 90;
-        bool ableWideRange = UnityEngine.Random.Range(0, 100) > 85;
+        bool ableOverpower = UnityEngine.Random.Range(0, 100) >= 85;
+        bool ableOvercharge = UnityEngine.Random.Range(0, 100) >= 90;
+        bool ableWideRange = UnityEngine.Random.Range(0, 100) >= 85;
 
         foreach (var item in data)
         {
