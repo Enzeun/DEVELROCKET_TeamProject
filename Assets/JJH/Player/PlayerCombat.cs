@@ -72,7 +72,8 @@ public class PlayerCombat : MonoBehaviour
 
     private void Update()
     {
-        if(TurnManager.instance.currentState != TurnManager.TurnState.ExecuteSkills)
+        if(TurnManager.instance != null &&
+            TurnManager.instance.currentState != TurnManager.TurnState.ExecuteSkills)
         {
             damageUpCount = 0;
         }
@@ -263,8 +264,7 @@ public class PlayerCombat : MonoBehaviour
             {
                 int damage = (player.AtkPoint * skill.SkillDamageCalcByUpgrade() + 50) / 100;
 
-                if (targetData.Count == 1 && skill.IsOverPower())
-                    stat.TakeDamage(damage);
+
 
                 if (skill.IsLifeStill(out int healVal))
                     player.TakeHeal(((damage - stat.currentDefencePoint) * healVal + 50) / 100);
@@ -273,6 +273,9 @@ public class PlayerCombat : MonoBehaviour
 
                 if (skill.Id == 1001)
                     defencePointIgnore = ((stat.currentDefencePoint * 30) + 50) / 100;
+
+                if (targetData.Count == 1 && skill.IsOverPower())
+                    stat.TakeDamage(damage);
 
                 stat.TakeDamage(damage + defencePointIgnore);
             }

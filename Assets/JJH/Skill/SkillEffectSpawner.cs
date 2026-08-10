@@ -190,7 +190,7 @@ public class SkillEffectSpawner : MonoBehaviour
     /// <summary>
     /// 스킬 이펙트 Pooling.Get()
     /// </summary>
-    /// <param name="skillName">사용하는 스킬 이름</param>
+    /// <param name="id">사용하는 스킬의 아이디</param>
     /// <returns></returns>
     private GameObject GetObject(int id) {
 
