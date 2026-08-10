@@ -109,6 +109,22 @@ public class SkillBaseStat
         return false;
     }
 
+    public bool IsOverCharge()
+    {
+        if (NowUpgradeList.Contains(SkillUpgradeType.Overcharge))
+            return true;
+
+        return false;
+    }
+
+    public bool IsOverPower()
+    {
+        if (NowUpgradeList.Contains(SkillUpgradeType.Overpower))
+            return true;
+
+        return false;
+    }
+
     /// <summary>
     /// 현재 스킬 비용 반환
     /// </summary>

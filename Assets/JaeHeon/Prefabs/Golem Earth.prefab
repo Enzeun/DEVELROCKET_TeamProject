@@ -512,15 +512,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
   _maxHp: 300
-  maxBuffCount: 3
+  maxBuffCount: 5
   attackPoint: 34
-  defencePoint: 10
+  defencePoint: 5
   behaviourListData:
   - BehaviorType: 1
     Weight_: 50
   - BehaviorType: 6
     Weight_: 30
   playerTransform: {fileID: 0}
+  playerCombat: {fileID: 0}
   hpBarLocation: {fileID: 2348417866517095436}
 --- !u!114 &-1590017183247390402
 MonoBehaviour:
@@ -559,6 +560,7 @@ MonoBehaviour:
   enemyMagicSpeed: 0.4
   enemyMoveSpeed: 1
   projectileSpeed: 20
+  projectileHitInterval: 0.5
   distanceOfPlayerAtNormalAttack: 2
   rotateInterval: 0.4
   waitInterval: 0.4
@@ -612,7 +614,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBuff
   enemyType: 2
-  buffAmount: 3
+  buffAmount: 2
 --- !u!1 &3281604490257342398
 GameObject:
   m_ObjectHideFlags: 0
