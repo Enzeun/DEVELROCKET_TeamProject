@@ -62,9 +62,6 @@ public class PropertyCardActive : MonoBehaviour
     [BoxGroup("설정"), SerializeField]
     private int displayCardCount = 3;
 
-    [SerializeField] private List<CardInfo> cardInfo;
-
-
     Dictionary<int, SkillBaseStat> data;
 
     private void OnEnable()
