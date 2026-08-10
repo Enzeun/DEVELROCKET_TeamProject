@@ -107,10 +107,10 @@ public class EnemyAnimation : MonoBehaviour
             animator.SetTrigger("ProjectileAttack");
         });
         seq.AppendInterval(animatingInterval);
-        seq.AppendCallback(() =>
-        {
-            enemyBase.ApplyDamage();
-        });
+        //seq.AppendCallback(() =>
+        //{
+        //    enemyBase.ApplyDamage();
+        //});
         seq.Append(transform.DORotate(currentRotation.eulerAngles, rotateInterval));
     }
 
@@ -123,6 +123,7 @@ public class EnemyAnimation : MonoBehaviour
         projectile.GetComponent<EnemyProjectile>().projectileDamage = enemyBase.currentAttackPoint;
         Vector3 direction = ((targetTransform.position + playerYOffset) - EmissionTransform.position).normalized;
         projectile.transform.forward = direction;
+        projectile.GetComponent<EnemyProjectile>().combat = enemyBase.playerCombat;
         ObjectDestroy(projectile, destroyEffectInterval);
 
         if (projectileEffectPrefab != null)
@@ -166,7 +167,7 @@ public class EnemyAnimation : MonoBehaviour
     private IEnumerator ApplyDamageRoutine()
     {
         yield return ws;
-        Debug.Log("start routine");
+        //Debug.Log("start routine");
         enemyBase.ApplyDamage();
     }
 
