@@ -27,12 +27,10 @@ public class SkillBaseStat
     /// 가능한 업그레이드 목록
     /// </summary>
     public List<SkillUpgradeType> UpgradeAbleList;
-
     /// <summary>
     /// 현재 가진 업그레이드 목록
     /// </summary>
     public List<SkillUpgradeType> NowUpgradeList;
-
     /// <summary>
     /// 스킬이 지정할 수 있는 범위 타입(단일/광역)
     /// </summary>
@@ -109,6 +107,10 @@ public class SkillBaseStat
         return false;
     }
 
+    /// <summary>
+    /// 현재 스킬이 Overcharge 속성을 이미 가지고 있는지 확인
+    /// </summary>
+    /// <returns>가지고 있을 경우 : true</returns>
     public bool IsOverCharge()
     {
         if (NowUpgradeList.Contains(SkillUpgradeType.Overcharge))
@@ -117,6 +119,10 @@ public class SkillBaseStat
         return false;
     }
 
+    /// <summary>
+    /// 현재 스킬이 Overpower 속성을 이미 가지고 있는지 확인
+    /// </summary>
+    /// <returns>가지고 있을 경우 : true</returns>
     public bool IsOverPower()
     {
         if (NowUpgradeList.Contains(SkillUpgradeType.Overpower))
@@ -136,6 +142,10 @@ public class SkillBaseStat
         return Mathf.Clamp(Cost - count, 1, Cost);
     }
 
+    /// <summary>
+    /// 현재 스킬의 설명 반환 (한국어/KR)
+    /// </summary>
+    /// <returns></returns>
     public string GetDescription()
     {
         int damage = SkillDamageCalcByUpgrade();
