@@ -2,7 +2,6 @@ using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using static SkillEnums;
 using SF = UnityEngine.SerializeField;
 public class PlayerCombat : MonoBehaviour
@@ -73,7 +72,8 @@ public class PlayerCombat : MonoBehaviour
 
     private void Update()
     {
-        if(TurnManager.instance.currentState != TurnManager.TurnState.ExecuteSkills)
+        if(TurnManager.instance != null &&
+            TurnManager.instance.currentState != TurnManager.TurnState.ExecuteSkills)
         {
             damageUpCount = 0;
         }
@@ -98,6 +98,11 @@ public class PlayerCombat : MonoBehaviour
 
         SubEvent();
     }
+
+    /// <summary>
+    /// 플레이어 이동시 사용하는 함수
+    /// </summary>
+    /// <param name="to">이동할 좌표</param>
     public void PlayerMove(Transform to)
     {
         moveTween?.Kill();
@@ -115,6 +120,7 @@ public class PlayerCombat : MonoBehaviour
             .SetEase(Ease.Linear)
             .OnComplete(() => { PlayerActiveIdle(); moveTween = null; });
     }
+
     /// <summary>
     /// 현재 사용할 스킬과 타겟 데이터 지정
     /// </summary>
@@ -125,7 +131,6 @@ public class PlayerCombat : MonoBehaviour
         nowSkillData = data;
         nowTarget = target;
     }
-
 
     /// <summary>
     /// 플레이어 대기 자세 호출
@@ -216,7 +221,6 @@ public class PlayerCombat : MonoBehaviour
     /// </summary>
     public void EffectEnd()
     {
-        
         if(nowSkillData.TargetType == SkillTargetType.Single && !isEndSet)
         {
             isEndSet = true;
@@ -232,7 +236,7 @@ public class PlayerCombat : MonoBehaviour
 
                 int defencePointIgnore = 0;
                 // 1번 스킬 강화 체크
-                if (skill.Id == 1000 && damageUpCount > 0)
+                if (skill.Id == 1000 && damageUpCount > 0 && skill.IsOverCharge())
                     damage += (damage * (damageUpCount * 40) + 50) / 100;
                 else if (skill.Id == 1001)
                     defencePointIgnore = ((stat.currentDefencePoint * 30) + 50) / 100;
@@ -260,8 +264,7 @@ public class PlayerCombat : MonoBehaviour
             {
                 int damage = (player.AtkPoint * skill.SkillDamageCalcByUpgrade() + 50) / 100;
 
-                if (targetData.Count == 1 && skill.IsOverPower())
-                    stat.TakeDamage(damage);
+
 
                 if (skill.IsLifeStill(out int healVal))
                     player.TakeHeal(((damage - stat.currentDefencePoint) * healVal + 50) / 100);
@@ -270,6 +273,9 @@ public class PlayerCombat : MonoBehaviour
 
                 if (skill.Id == 1001)
                     defencePointIgnore = ((stat.currentDefencePoint * 30) + 50) / 100;
+
+                if (targetData.Count == 1 && skill.IsOverPower())
+                    stat.TakeDamage(damage);
 
                 stat.TakeDamage(damage + defencePointIgnore);
             }

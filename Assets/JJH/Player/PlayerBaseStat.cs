@@ -70,7 +70,6 @@ public class PlayerBaseStat
         OnHpChanged?.Invoke(NowHP, MaxHP);
     }
 
-
     /// <summary>
     /// 캐릭터가 받는 체력 회복
     /// </summary>

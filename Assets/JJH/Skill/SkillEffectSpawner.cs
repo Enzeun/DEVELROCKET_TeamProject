@@ -1,16 +1,14 @@
 using DG.Tweening;
-using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Pool;
 using static SkillEnums;
 using SF = UnityEngine.SerializeField;
 using HIn = UnityEngine.HideInInspector;
 using Hovl;
+
 public class SkillEffectSpawner : MonoBehaviour
 {
     #region 베이스 데이터
@@ -192,7 +190,7 @@ public class SkillEffectSpawner : MonoBehaviour
     /// <summary>
     /// 스킬 이펙트 Pooling.Get()
     /// </summary>
-    /// <param name="skillName">사용하는 스킬 이름</param>
+    /// <param name="id">사용하는 스킬의 아이디</param>
     /// <returns></returns>
     private GameObject GetObject(int id) {
 

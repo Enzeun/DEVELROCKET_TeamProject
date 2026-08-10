@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
 using SF = UnityEngine.SerializeField;
 
 public class CharaMotionFreezer : MonoBehaviour
