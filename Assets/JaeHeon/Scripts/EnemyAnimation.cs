@@ -44,6 +44,8 @@ public class EnemyAnimation : MonoBehaviour
     float enemyMoveSpeed = 1f;
     [BoxGroup("조작가능한 필드"), SerializeField] 
     private float projectileSpeed = 20f;
+    [BoxGroup("조작가능한 필드"), SerializeField]
+    private float projectileHitInterval = 0.5f;
     [BoxGroup("조작가능한 필드"), SerializeField] 
     private float distanceOfPlayerAtNormalAttack = 1.5f;
     [BoxGroup("조작가능한 필드"), SerializeField]
@@ -124,7 +126,7 @@ public class EnemyAnimation : MonoBehaviour
         Vector3 direction = ((targetTransform.position + playerYOffset) - EmissionTransform.position).normalized;
         projectile.transform.forward = direction;
         projectile.GetComponent<EnemyProjectile>().combat = enemyBase.playerCombat;
-        ObjectDestroy(projectile, destroyEffectInterval);
+        ObjectDestroy(projectile, projectileHitInterval);
 
         if (projectileEffectPrefab != null)
         {
