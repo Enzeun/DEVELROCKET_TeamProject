@@ -541,6 +541,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: ActionText_Victory
       objectReference: {fileID: 0}
+    - target: {fileID: 8220899583958487780, guid: cef3854392eedff408f9361425ab0f3b, type: 3}
+      propertyPath: m_Maskable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8220899583958487780, guid: cef3854392eedff408f9361425ab0f3b, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
