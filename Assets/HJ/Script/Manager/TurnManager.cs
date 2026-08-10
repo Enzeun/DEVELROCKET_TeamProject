@@ -129,7 +129,7 @@ public class TurnManager : MonoBehaviour
     //===============================================================================================
 
 
-    
+
 
     //===============================================================================================
 
@@ -218,6 +218,8 @@ public class TurnManager : MonoBehaviour
     [Button, BoxGroup("디버깅")]
     private void GoToStep(TurnState state)
     {
+        if (isGameOver) return;
+
         if (state == _currentState) return;
 
         Debug.Log($"** Turn State 변경!! : {_currentState} -> {state} **");
@@ -230,6 +232,8 @@ public class TurnManager : MonoBehaviour
     // 지정된 state 로 넘어가기 + 일정 시간 뒤에 넘어가기
     private IEnumerator GoToStepWithWait(TurnState state)
     {
+        if (isGameOver) yield break;
+
         if (state == _currentState) yield break;
 
         yield return waitTwofSec;
@@ -244,6 +248,8 @@ public class TurnManager : MonoBehaviour
     /// </summary>
     private void RunTurnBehavior()
     {
+        if (isGameOver) return;
+
         switch (_currentState)
         {
             default: break;
@@ -396,7 +402,7 @@ public class TurnManager : MonoBehaviour
     {
         playerCombat = FindAnyObjectByType<PlayerCombat>();
         player = playerCombat.player;
-        player.OnDead += () => { isGameOver = true; };
+        player.OnDead += () => { isGameOver = true; GameOver(); };
     }
 
     /// <summary>
@@ -809,7 +815,7 @@ public class TurnManager : MonoBehaviour
 
     private IEnumerator PlayBeforeAttackRoutine()
     {
-        
+
         // 0.5초 후
         yield return waitHalfSec;
         // 실제 공격
@@ -858,9 +864,9 @@ public class TurnManager : MonoBehaviour
 
     //========================= Player Turn End 구간 =====================================================
 
-  
+
     private void PlayerTurnEnd()
-    { 
+    {
         StartCoroutine(PlayerTurnEndDelay());
     }
 
@@ -873,8 +879,8 @@ public class TurnManager : MonoBehaviour
 
     //====================== Enemy Turn 구간 ==============================================================
 
-    private void EnemyTurn()    
-    {        
+    private void EnemyTurn()
+    {
         PlayNextEnemyTurn();
     }
 
@@ -900,7 +906,7 @@ public class TurnManager : MonoBehaviour
 
         // 캐스터가 죽어있으면 스킵한다.
         if (turnData.casterEnemy == null || turnData.casterEnemy.isDead)
-        {            
+        {
             StartCoroutine(WaitEnemyAttackDelay());
             return;
         }
@@ -1021,11 +1027,15 @@ public class TurnManager : MonoBehaviour
 
     //==================== Game Over 구간 ===========================================================================
 
+    [SerializeField, BoxGroup("필드 값 추적"), ReadOnly]
+    private bool GameOverDoOnce = false;
     private void GameOver()
     {
+        if (GameOverDoOnce) return;
+
+        GameOverDoOnce = true;
         uIManager.ShowGameOver();
         uIManager.OnGoToTitleBtnClicked += GoToTitle;
-
     }
 
     private void GoToTitle()
