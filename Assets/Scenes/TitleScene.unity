@@ -995,6 +995,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3846922571485999104, guid: d34eec30dbb40f94ab9728918fd40720, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846922571485999104, guid: d34eec30dbb40f94ab9728918fd40720, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846922571485999104, guid: d34eec30dbb40f94ab9728918fd40720, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5836530760786218783, guid: d34eec30dbb40f94ab9728918fd40720, type: 3}
       propertyPath: m_Name
       value: TitleCanvas
@@ -1077,6 +1089,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6057021704805739843, guid: d34eec30dbb40f94ab9728918fd40720, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314620451948564061, guid: d34eec30dbb40f94ab9728918fd40720, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314620451948564061, guid: d34eec30dbb40f94ab9728918fd40720, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314620451948564061, guid: d34eec30dbb40f94ab9728918fd40720, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314620451948564061, guid: d34eec30dbb40f94ab9728918fd40720, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
