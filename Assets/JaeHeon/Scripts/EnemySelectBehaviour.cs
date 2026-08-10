@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,10 +31,12 @@ public class EnemySelectBehaviour : MonoBehaviour
 
 
     /// <summary>
-    /// Scriptable Object로 만든 데이터를 가져와서 Dictionary에 저장합니다.
+    /// 가중치 데이터를 가져와서 Dictionary에 저장합니다.
     /// </summary>
     private void SetValue_EnemyBehaviour()
     {
+        enemyBehaviourValue.Clear();
+
         sumWeight = 0f;
 
         for (int i = 0; i < enemyBehaviourListData.Count; ++i)
@@ -50,8 +53,11 @@ public class EnemySelectBehaviour : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     [ContextMenu("범위 측정 및 계산")]
+    [Button("행동의 범위 측정 및 계산")]
     public Enemy_Behaviour Calc_Enemy_Behaviour()
     {
+        SetValue_EnemyBehaviour();
+
         float behaviourRange = UnityEngine.Random.Range(1, sumWeight);
         float buffValue = GetWeight(Enemy_Behaviour.Buff);
 
@@ -107,7 +113,7 @@ public class EnemySelectBehaviour : MonoBehaviour
     private float GetWeight(Enemy_Behaviour behaviour)
     {
         if (enemyBehaviourValue.TryGetValue(behaviour, out float value) == false)
-            return -1.0f;
+            return 0f;
         
         return value;
     }

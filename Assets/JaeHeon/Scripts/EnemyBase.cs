@@ -75,7 +75,7 @@ public class EnemyBase : MonoBehaviour
     [BoxGroup("추적이 필요한 필드"), ShowInInspector, ReadOnly]
     public Transform playerTransform;
     [BoxGroup("추적이 필요한 필드"), ShowInInspector, ReadOnly]
-    private PlayerCombat playerCombat;
+    public PlayerCombat playerCombat;
     [BoxGroup("추적이 필요한 필드"), ShowInInspector, ReadOnly]
     private Enemy_Behaviour _currentBehaviour;
     public Enemy_Behaviour currentBehaviour { get => _currentBehaviour; }
