@@ -46,3 +46,8 @@
   - 적(애니메이션 포함) 구현
   - 적 Variation
   - 레벨 디자인
+ 
+---
+
+## 5. 소개영상 링크
+https://youtu.be/mKBGwljCwTE?si=WobMdCkV4T6wxowg
