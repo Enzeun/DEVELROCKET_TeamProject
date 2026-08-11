@@ -838,6 +838,7 @@ public class TurnManager : MonoBehaviour
 
     private IEnumerator PlayerDelay()
     {
+        if (currentState != TurnState.ExecuteSkills) yield break;
         // 0.5 초 기다린다
         yield return waitHalfSec;
         // 남은 적이 있는지, 큐에 데이터가 남았는지, 배틀 상황을 확인한다.
