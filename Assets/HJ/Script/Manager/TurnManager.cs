@@ -1023,7 +1023,7 @@ public class TurnManager : MonoBehaviour
 
     private void GotoNextScene()
     {
-        if (sceneIndex + 1 < SceneManager.sceneCountInBuildSettings)
+        if (sceneIndex + 1 > SceneManager.sceneCountInBuildSettings - 1)
         {
             // 다음 씬이 없으면 타이틀 씬으로
             SceneManager.LoadScene(0);
