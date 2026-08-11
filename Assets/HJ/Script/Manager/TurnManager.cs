@@ -715,7 +715,16 @@ public class TurnManager : MonoBehaviour
     {
         PlayerTurnData turnData;
 
-        EnemyBase[] targets = enemyList.ToArray();
+        // 죽은 enemy 는 제외시키고 타깃으로 설정
+        List<EnemyBase> targetList = new List<EnemyBase>();
+        foreach(var target in enemyList)
+        {
+            if (target.isDead) continue;
+
+            targetList.Add(target);
+        }
+
+        EnemyBase[] targets = targetList.ToArray();
 
         if (player.SkillData.TryGetValue(currentSelectedSkillId, out SkillBaseStat skill))
         {
