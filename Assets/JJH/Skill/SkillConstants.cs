@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public static class SkillConstants
 {
     public static string DAMAGE = "damage";
