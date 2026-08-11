@@ -717,7 +717,7 @@ public class TurnManager : MonoBehaviour
 
         // 죽은 enemy 는 제외시키고 타깃으로 설정
         List<EnemyBase> targetList = new List<EnemyBase>();
-        foreach(var target in enemyList)
+        foreach (var target in enemyList)
         {
             if (target.isDead) continue;
 
@@ -1009,6 +1009,13 @@ public class TurnManager : MonoBehaviour
 
     private void EndBattle()
     {
+        // 보스맵이면 바로 타이틀로 이동
+        if (sceneIndex == 9)
+        {
+            SkillUpgradeComplete();
+            return;
+        }
+
         uIManager.OnSkillUpgradeCompleted += SkillUpgradeComplete;
 
         uIManager.ShowSkillupgrade();
