@@ -44,7 +44,7 @@
 | **한 줄 정의** | 턴제, 로그라이크 |
 | **조작 방법** | ONLY 마우스 |
 | **실행 환경** | 1920x1080 해상도 |
-| **링크** | [팀 Notion 보드](https://app.notion.com/p/00-14617b291fef82759d2c81fd0e062db5?source=copy_link) \| [GitHub Repository](https://github.com/Enzeun/DEVELROCKET_TeamProject) \| [개인 Notion 보드](https://app.notion.com/p/3b8372a69eaa808a9f68f0bd685acccd?source=copy_link)
+| **링크** | [팀 Notion 보드](https://app.notion.com/p/00-14617b291fef82759d2c81fd0e062db5?source=copy_link) \| [GitHub Repository](https://github.com/Enzeun/DEVELROCKET_TeamProject) 
 
 ### 👥 팀원 및 담당 역할
 
@@ -56,5 +56,11 @@
 
 ---
 
-## 5. 소개영상 링크
-[YouTube](https://youtu.be/2JqrTg7JXtc)
+## 5. 프로젝트 관련 링크
+
+| 구분 | 링크 |
+| --- | --- |
+| **유투브 링크** | [YouTube](https://youtu.be/2JqrTg7JXtc) |
+| **김현준 Notion 보드** | [개인 Notion 보드](https://app.notion.com/p/3b8372a69eaa808a9f68f0bd685acccd?source=copy_link)
+
+
