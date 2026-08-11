@@ -69,11 +69,12 @@ public class PropertyCardActive : MonoBehaviour
 
     private void OnEnable()
     {
+        upgradeList = new List<KeyValuePair<int, SkillUpgradeType>>();
         displayCardCount = cardsDescription.Count;
         SetPlayer();
         InitCard();
-        StartCoroutine(CardRotate(cards));
         MakeCardList();
+        StartCoroutine(CardRotate(cards));
     }
 
     public void SetPlayer()
@@ -91,6 +92,10 @@ public class PropertyCardActive : MonoBehaviour
 
             cardIcons[i].sprite = cardDefalutIcon;
             cardIcons[i].color = Color.white;
+            foreach(Animator ani in cardAnimator)
+            {
+                ani.enabled = false;
+            }
             card.sprite = cardDefalutFrame;
             card.color = Color.white;
             cardsDescription[i].text = null;
@@ -185,7 +190,7 @@ public class PropertyCardActive : MonoBehaviour
         // 단일 스킬 과충전
         int overchargeIndex = upgradeList.FindIndex(x => x.Value == SkillUpgradeType.Overcharge);
 
-        if (wideRangeIndex >= 0)
+        if (overchargeIndex >= 0)
         {
             KeyValuePair<int, SkillUpgradeType> temp = upgradeList[overchargeIndex];
 
@@ -233,7 +238,7 @@ public class PropertyCardActive : MonoBehaviour
                 case SkillUpgradeType.LifeStill:
                     currentCard.sprite = cardFrames[2];
                     currentCard.color = Color.springGreen;
-                    cardsDescription[i].text = "피해 15% 흡혈\n(광역 : 5%)";
+                    cardsDescription[i].text = "피해 15% 흡혈\n(광역 : 7%)";
                     break;
                 case SkillUpgradeType.Overcharge:
                     currentCard.sprite = cardFrames[3];
