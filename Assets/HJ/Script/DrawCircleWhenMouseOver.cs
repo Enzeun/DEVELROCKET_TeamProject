@@ -6,6 +6,7 @@ public class DrawCircleWhenMouseOver : MonoBehaviour
 {
     private EnemyMarkerCircle enemyMarker;
     private Vector3 originalPosition;
+    EnemyBase enemy;
     private void Start()
     {
         enemyMarker = FindAnyObjectByType<EnemyMarkerCircle>();
@@ -15,14 +16,26 @@ public class DrawCircleWhenMouseOver : MonoBehaviour
             return;
         }
         originalPosition = enemyMarker.transform.position;
+
+
+        enemy = GetComponent<EnemyBase>();
+
+        if (enemy == null)
+        {
+            Debug.Log("잘못된 object에 붙어있습니다. 확인하세요");
+            return;
+        }
     }
     private void OnMouseEnter()
     {
+        if (enemy.isDead) return;
+
         if (!enabled || TurnManager.instance.currentState != TurnManager.TurnState.PlayerPlanning)
         {
             enemyMarker.gameObject.transform.position = originalPosition;
             return;
         }
+
         enemyMarker.gameObject.transform.position = transform.position;
     }
     private void OnMouseExit()
@@ -37,19 +50,15 @@ public class DrawCircleWhenMouseOver : MonoBehaviour
     }
     private void OnMouseDown()
     {
+        if (enemy.isDead) return;
+
         if (!enabled || TurnManager.instance.currentState != TurnManager.TurnState.PlayerPlanning)
         {
             enemyMarker.gameObject.transform.position = originalPosition;
             return;
         }
 
-        EnemyBase enemy = GetComponent<EnemyBase>();
 
-        if (enemy == null)
-        {
-            Debug.Log("잘못된 object에 붙어있습니다. 확인하세요");
-            return;
-        }
         OnEnemyClicked?.Invoke(enemy);
     }
 
