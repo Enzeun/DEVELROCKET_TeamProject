@@ -283,10 +283,10 @@ public class EnemyBase : MonoBehaviour
         playerStat.TakeDamage(currentAttackPoint);
     }
 
-    public int GetAttackPoint()
-    {
-        return attackPoint;
-    }
+    //public int GetAttackPoint()
+    //{
+    //    return attackPoint;
+    //}
 
     //적 소환
     public void SpawnEnemy()
