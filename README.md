@@ -35,17 +35,16 @@
   
 ## 👥 4. 팀원 (Contributors)
 
-| | |
-|---|---|
-|팀명	|김 조 하|
-|게임명	|라스트 매지션|
-|게임 한 줄 정의	|턴제, 로그라이크|
-|팀원 및 담당 역할	|김현준 – Turn Manager / Battle UI<br>조정훈 – Player / Skill / Title / Loading <br>하재헌 – Enemy / Skill Upgrade / Level Design|
-|Notion 보드 링크|	https://app.notion.com/p/00-14617b291fef82759d2c81fd0e062db5?source=copy_link|
-|GitHub 저장소 링크|	https://github.com/Enzeun/DEVELROCKET_TeamProject|
-|조작 방법	|ONLY 마우스|
-|실행 환경	|1920x1080 해상도|
-
+| 구분 | 내용 |
+| --- | --- |
+| **팀명** | 김 조 하 |
+| **게임명** | 라스트 매지션 |
+| **게임 한 줄 정의** | 턴제, 로그라이크 |
+| **팀원 및 담당 역할** | • **김현준**: Turn Manager / Battle UI<br>• **조정훈**: Player / Skill / Title / Loading<br>• **하재헌**: Enemy / Skill Upgrade / Level Design |
+| **Notion 보드 링크** | [Notion 보드](https://app.notion.com/p/00-14617b291fef82759d2c81fd0e062db5?source=copy_link) |
+| **GitHub 저장소 링크** | [GitHub Repository](https://github.com/Enzeun/DEVELROCKET_TeamProject) |
+| **조작 방법** | ONLY 마우스 |
+| **실행 환경** | 1920x1080 해상도 |
 
 ---
 
