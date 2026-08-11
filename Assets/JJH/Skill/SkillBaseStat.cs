@@ -85,7 +85,7 @@ public class SkillBaseStat
 
         if (count > 0)
         {
-            int value = (TargetType == SkillTargetType.Area) ? 5 : 15;
+            int value = (TargetType == SkillTargetType.Area) ? 7 : 15;
             result = count * value;
             return true;
         }

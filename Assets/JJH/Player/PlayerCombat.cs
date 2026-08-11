@@ -264,8 +264,6 @@ public class PlayerCombat : MonoBehaviour
             {
                 int damage = (player.AtkPoint * skill.SkillDamageCalcByUpgrade() + 50) / 100;
 
-
-
                 if (skill.IsLifeStill(out int healVal))
                     player.TakeHeal(((damage - stat.currentDefencePoint) * healVal + 50) / 100);
 

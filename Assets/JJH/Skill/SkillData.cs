@@ -15,7 +15,7 @@ public static class SkillData
             // 코스트
             2,
             // 피해량
-            150,
+            160,
             SkillPoseType.Horizontal,
             // 가능한 업그레이드
             new List<SkillUpgradeType> { 
