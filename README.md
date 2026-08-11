@@ -49,4 +49,4 @@
 ---
 
 ## 5. 소개영상 링크
-https://youtu.be/mKBGwljCwTE?si=WobMdCkV4T6wxowg
+[YouTube](https://youtu.be/2JqrTg7JXtc)
