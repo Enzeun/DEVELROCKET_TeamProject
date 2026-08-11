@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 using SF = UnityEngine.SerializeField;
 public class SceneLoadManager : MonoBehaviour
 {
